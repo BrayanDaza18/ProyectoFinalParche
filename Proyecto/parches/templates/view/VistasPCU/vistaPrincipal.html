@@ -1,0 +1,445 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vista Principal</title>
+  <!-- <link rel="stylesheet" href="CSS/bootstrap(1).css"/> -->
+  <link rel="stylesheet" href="{% static "CSS/bootstrap.css" %}" />
+  <link rel="stylesheet" href="{% static "css/style.css" %}">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- <link rel="stylesheet" href="CSS/stilos.css"> -->
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<body class="g-0">
+  <div class="container-fluid  index1"
+    style="background-image: url(/static/IMG/Fondo\ degradado\ de\ tonos\ verdes\ _\ Vector\ Premium.png)">
+   
+
+
+    <div class="row encabezado">
+      <div class="col-3 ms-5 mt-3">
+        <img id="logo" src="static/IMG/WhatsApp_Image_2023-04-30_at_9.22.07_PM-removebg-preview.png" alt="">
+      </div>
+      <div class="col-3 d-md-none">
+        <div class="menu-toggle" id="menu-toggle">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+        </div>
+      </div>
+    
+    <div class="menu-items col-5">
+      <a href="#eventos" class="scroll">
+        <h3>Eventos</h3>
+      </a>
+      <a href="#nosotros" class="scroll">
+        <h3>Nosotros</h3>
+      </a>
+      <a href="#contactanos">
+        <h3>Contactanos</h3>
+      </a>
+      <a href="{% url "login" %}" type="button" class="btn btn-primary btnIniciarS">Iniciar Sesion</a>
+    </div>
+  </div>
+    
+    
+    
+
+    <div class="row principal">
+      <div class="col-6">
+        <h1>Nos encargamos de la
+          <br>
+          gestión de tus
+          <br>
+          eventos deportivos
+          <br>
+          para que tú te
+          <br>
+          concentres en ganar.
+        </h1>
+
+        <button type="button" class="btn btn-light me-3 btnCrear">
+          <i class="fas fa-solid fa-trophy me-3" style="color: #179631;"></i>
+          <a href="{% url "CreateEvent" %}" style="color: #179631;">Crear Un Evento</a>
+        </button>
+      </div>
+      <div class="col-6">
+        <a href="{% url "CreateEvent" %}">
+          <img class="imgP"  src="{% static "IMG/imagen_2023-05-08_220016504-removebg-preview.png" %}" alt="" >
+        </a>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- Segunda parte de la vista -->
+  <div class=" fondo " id="eventos">
+    <div class="row container-fluid mt-3">
+      <div class="row event">
+        <div class="primerafila ">
+          <div class=" col-6 tablaUno rounded-2 ">
+
+            <div class="nombretorneo">
+              <h4 class="text-center " style="color:white ;">football-torneo</h4>
+            </div>
+            <div class="row  descripcion">
+              <div class="col-6 fondodegradado  mt-4">
+
+                <img src="{% static "img/Lighthouse.jpg" %}" class="img-fluid rounded-2 ms-4" alt="...">
+
+              </div>
+              <div class="col-6 ">
+                <div class="d-flex mt-4 ms-3 lugar ">
+                  <input type="text" class="rounded-2" value="limonar-cra19#4-2">
+                  <div class="dropdown fecha rounded-2  ">
+                    <input type="time">
+                  </div>
+
+                </div>
+                <div class="nombreEvento ">
+                  <input class="rounded-2 " type="text" placeholder="nombre del evento">
+                </div>
+                <div class="semanaEvento">
+                  <input type="date">
+                </div>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-6">
+                <div class="mapa  ">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31876.698412363232!2d-75.32120338916013!3d2.934280800000007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3b75e5f5cf0b23%3A0xbc8b39eb18d117e2!2scentro%20de%20la%20industria%2C%20la%20empresa%20y%20los%20servicios!5e0!3m2!1ses!2sco!4v1684033861851!5m2!1ses!2sco"
+                    class="rounded-2" width="190" height="150" style="border:1px solid;" allowfullscreen=""
+                    loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+              </div>
+              <div class="col-6 ">
+                <div class="form-floating comentario mb-3 ms-4">
+                  <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2Disabled"
+                    style="height: 80px ; width: 220px; 
+                      background-color: rgb(109, 203, 255);" disabled></textarea>
+                  <label for="floatingTextarea2Disabled">Comments</label>
+                </div>
+                <div class="contact me-5">
+                  <input class="rounded-2" placeholder="contacto" type="number">
+                </div>
+              </div>
+            </div>
+            <div class="vinculo mt-3">
+              <div class="col-6">
+                <button>UNIRME <img src="{% static "img/5402377_arrow_share_export_send_direction_icon.png" %} "
+                    style="margin-left:8px ;" width="22px" height="25px" alt=""> </button>
+              </div>
+              <div class="col-6">
+                <button>COMPARTIR <img src="{% static "img/3671856_alt_share_icon.png" %}" style="margin-left:8px ;" width="22px"
+                    height="25px" alt=""> </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-6 tablaDos  rounded-2">
+            <div class="nombretorneo">
+              <h4 class="text-center" style="color:white ;">basquetball-torneo</h4>
+            </div>
+            <div class="row  descripcion">
+              <div class="col-6  mt-4">
+
+                <img src="{% static "img/Lighthouse.jpg" %}" class="img-fluid rounded-2 ms-4" alt="...">
+
+              </div>
+              <div class="col-6 ">
+                <div class="d-flex mt-4 ms-3 lugar">
+                  <input type="text" class="rounded-2" value="limonar-cra19#4-2">
+                  <div class="dropdown fecha rounded-2">
+                    <input type="time">
+                  </div>
+
+                </div>
+                <div class="nombreEvento ">
+                  <input class="rounded-2 " type="text" placeholder="nombre del evento">
+                </div>
+                <div class="semanaEvento">
+                  <input type="date">
+                </div>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-6">
+                <div class="mapa  ">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31876.698412363232!2d-75.32120338916013!3d2.934280800000007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3b75e5f5cf0b23%3A0xbc8b39eb18d117e2!2scentro%20de%20la%20industria%2C%20la%20empresa%20y%20los%20servicios!5e0!3m2!1ses!2sco!4v1684033861851!5m2!1ses!2sco"
+                    class="rounded-2" width="190" height="150" style="border:1px solid;" allowfullscreen=""
+                    loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+              </div>
+              <div class="col-6 d-block">
+                <div class="form-floating comentario mb-3 ms-4">
+                  <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2Disabled"
+                    style="height: 90px ; width: 220px;  background-color: rgb(109, 203, 255);" disabled></textarea>
+                  <label for="floatingTextarea2Disabled">Comments</label>
+                </div>
+                <div class="contact me-5">
+                  <input class="rounded-2" placeholder="contacto" type="number">
+                </div>
+              </div>
+            </div>
+            <div class="vinculo mt-3">
+              <div class="col-6">
+                <button>UNIRME <img src="{% static "img/5402377_arrow_share_export_send_direction_icon.png" %}"
+                    style="margin-left:8px ;" height="25px" width="22px" alt=""> </button>
+              </div>
+              <div class="col-6">
+                <button>COMPARTIR <img src="{% static "img/3671856_alt_share_icon.png" %}" style="margin-left:8px ;" height="25px"
+                    width="22px" alt=""> </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="segundafila ">
+          <div class=" col-6 tablaUno rounded-2 ">
+
+            <div class="nombretorneo">
+              <h4 class="text-center " style="color:white ;">football-torneo</h4>
+            </div>
+            <div class="row  descripcion">
+              <div class="col-6  mt-4">
+
+                <img src="static/img/Lighthouse.jpg" class="img-fluid rounded-2 ms-4" alt="...">
+
+              </div>
+              <div class="col-6 ">
+                <div class="d-flex mt-4 ms-3 lugar">
+                  <input type="text" class="rounded-2" value="limonar-cra19#4-2">
+                  <div class="dropdown fecha rounded-2 ">
+                    <input type="time">
+                  </div>
+
+                </div>
+                <div class="nombreEvento  ">
+                  <input class="rounded-2 " type="text" placeholder="nombre del evento">
+                </div>
+                <div class="semanaEvento">
+
+                  <input type="date">
+                </div>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-6">
+                <div class="mapa  ">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31876.698412363232!2d-75.32120338916013!3d2.934280800000007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3b75e5f5cf0b23%3A0xbc8b39eb18d117e2!2scentro%20de%20la%20industria%2C%20la%20empresa%20y%20los%20servicios!5e0!3m2!1ses!2sco!4v1684033861851!5m2!1ses!2sco"
+                    class="rounded-2" width="190" height="150" style="border:1px solid;" allowfullscreen=""
+                    loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+              </div>
+              <div class="col-6 d-block">
+                <div class="form-floating comentario mb-3 ms-4">
+                  <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2Disabled"
+                    style="height: 90px ; width: 220px;   background-color: rgb(109, 203, 255);" disabled></textarea>
+                  <label for="floatingTextarea2Disabled">Comments</label>
+                </div>
+                <div class="contact me-5">
+                  <input class="rounded-2" placeholder="contacto" type="number">
+                </div>
+              </div>
+            </div>
+            <div class="vinculo mt-3">
+              <div class="col-6">
+                <button>UNIRME <img src="{% static "img/5402377_arrow_share_export_send_direction_icon.png" %}"
+                    style="margin-left:8px ;" height="25px" width="22px" alt=""> </button>
+              </div>
+              <div class="col-6">
+                <button>COMPARTIR <img src="{% static "img/3671856_alt_share_icon.png" %}" style="margin-left:8px ;" width="22px"
+                    height="25px" alt=""> </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-6 tablaDos  rounded-2 ">
+            <div class="nombretorneo ">
+              <h4 class="text-center" style="color:white ;">basquetball-torneo</h4>
+            </div>
+            <div class="row  descripcion">
+              <div class="col-6  mt-4">
+
+                <img src="static/img/Lighthouse.jpg" class="img-fluid rounded-2 ms-4" alt="...">
+
+              </div>
+              <div class="col-6 ">
+                <div class="d-flex mt-4 ms-3 lugar">
+                  <input type="text" class="rounded-2" value="limonar-cra19#4-2">
+                  <div class="dropdown fecha rounded-2">
+                    <input type="time">
+                  </div>
+
+                </div>
+                <div class="nombreEvento ">
+                  <input class="rounded-2 " type="text" placeholder="nombre del evento">
+                </div>
+                <div class="semanaEvento">
+                  <input type="date">
+                </div>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-6">
+                <div class="mapa  ">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31876.698412363232!2d-75.32120338916013!3d2.934280800000007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3b75e5f5cf0b23%3A0xbc8b39eb18d117e2!2scentro%20de%20la%20industria%2C%20la%20empresa%20y%20los%20servicios!5e0!3m2!1ses!2sco!4v1684033861851!5m2!1ses!2sco"
+                    class="rounded-2" width="190" height="150" style="border:1px solid;" allowfullscreen=""
+                    loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+              </div>
+              <div class="col-6 d-block ">
+                <div class="form-floating comentario mb-3 ms-4">
+                  <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2Disabled"
+                    style="height: 90px ; width: 220px; display: flex; justify-items: center;  background-color: rgb(109, 203, 255);"
+                    disabled></textarea>
+                  <label for="floatingTextarea2Disabled">Comments</label>
+                </div>
+                <div class="contact me-5 ">
+                  <input class="rounded-2" placeholder="contacto" type="number">
+                </div>
+              </div>
+            </div>
+            <div class="vinculo mt-3">
+              <div class="col-6">
+                <button>UNIRME <img src="{% static "img/5402377_arrow_share_export_send_direction_icon.png" %}"
+                    style="margin-left:8px ;" height="25px" width="22px" alt=""> </button>
+              </div>
+              <div class="col-6">
+                <button>COMPARTIR <img src="{% static "img/3671856_alt_share_icon.png" %}" style="margin-left:8px ;" height="25px"
+                    width="22px" alt=""> </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  
+
+
+
+
+
+
+
+
+  <!-- Tercera parte de la vista -->
+  <section class="container-fluid" id="nosotros"
+  style="background-image: url('https://img.freepik.com/vector-premium/vector-linea-puntos-fondo-abstracto-blanco-negro_551880-552.jpg?w=2000');">
+  <div>
+    <div class="row announcement">
+      <div class="col-md-1"></div>
+      <div class="col-md-4 mt-4">
+        <h2>Somos un equipo conformado por aprendices del Servicio Nacional de Aprendizaje (SENA), Nuestro
+          objetivo es aplicar nuestros conocimientos para resolver problemas y mejorar procesos, siempre
+          buscando la satisfacción del cliente y la calidad de nuestros servicios.
+        </h2>
+      </div>
+      <div class="col-md-2"></div>
+      <div class="col-md-4 mt-4">
+        <h2>En nuestra formación como aprendices, hemos adquirido habilidades en el manejo de lenguajes de
+          programación, bases de datos, metodologías de desarrollo y herramientas de gestión de proyectos,
+          entre otros. Asimismo, valoramos la importancia de la comunicación y el trabajo en equipo para
+          llevar a cabo proyectos exitosos.</h2>
+      </div>
+      <div class="col-md-1"></div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-md-1"></div>
+      <div class="col-md-5">
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-8">
+            <img src="img/logo-sena-verde-png-sin-fondo.png" width="300" class="my-4 img-fluid">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-5 text-center mt-5">
+        <h3>“No hemos fracasado. Hemos encontrado 10000 soluciones que no funcionan”</h3>
+      </div>
+      <div class="col-md-1"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Cuarta parte de la vista -->
+<section id="contactanos" class="container-fluid" style="background-color: rgb(214, 213, 213); padding: 50px 0;">
+  <div class="d-flex">
+    <div class="col-md-1"></div>
+    <div class="col-md-5 text-center correo">
+      <img src="{% static "img/logo.png" %}" alt="" class="img-fluid" style="max-width: 100%;">
+      <h3 class="mt-3">contactoparchecorp@gmail.com</h3>
+    </div>
+    <div class="col-md-5 text-center">
+      <div class="link">
+        <h1>Contactanos</h1>
+        <div style="height: 20px;"></div>
+        <img src="{% static "img/Facebook_Logo_(2019).png" %}" alt="" style="width: 55px; margin-bottom: 30px;">
+        <img
+          src="{% static "img/png-transparent-instagram-logo-instagram-facebook-inc-youtube-organization-instagram-removebg-preview.png" %}"
+          alt="" style="width: 55px; margin-bottom: 30px;">
+        <img
+          src="{% static "img/png-transparent-twitter-logo-social-media-iphone-organization-logo-twitter-computer-network-leaf-media-removebg-preview.png" %}"
+          alt="" style="width: 55px; margin-bottom: 30px;">
+      </div>
+    </div>
+    <div class="col-md-1"></div>
+  </div>
+  <div class="text-center mt-2">&copy; 2023 Parche. Todos los derechos reservados </div>
+</section>
+
+</body>
+
+</html>
+
+
+<script>
+  const scrollLinks = document.querySelectorAll('.scroll');
+
+  scrollLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault(); 
+
+      const targetId = link.getAttribute('href'); 
+      document.querySelector(targetId).scrollIntoView({
+        behavior: 'smooth'
+      });
+    });
+  });
+
+document.getElementById('menu-toggle').addEventListener('click', function() {
+  document.querySelector('.menu-items').classList.toggle('active');
+});
+
+</script>

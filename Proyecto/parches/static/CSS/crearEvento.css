@@ -1,0 +1,165 @@
+.pagina {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+.carta {
+  display: block;
+
+  align-items: center;
+  background-color: rgb(255, 255, 255);
+  border-radius: 50px 50px 50px 50px;
+  width: 90%;
+}
+.titulo {
+  display: flex;
+  align-items: center;
+  background-color: rgb(12, 13, 71);
+  border-radius: 50px 50px 50px 50px;
+  color: white;
+  height: 70px;
+  justify-content: center;
+}
+.parteUno {
+  justify-content: center;
+  display: flex;
+  text-align: center;
+  margin-top: 30px;
+}
+.seleccion {
+  display: block;
+  justify-content: center;
+}
+.selec {
+  background-color: rgb(209, 203, 203);
+  width: 230px;
+  border: none;
+}
+.seleccion input {
+  height: 45px;
+  border: none;
+  background-color: rgb(209, 203, 203);
+  width: 300px;
+  margin-bottom: 20px;
+  border-radius: 5px 5px;
+}
+.seleccion button {
+  height: 35px;
+  width: 250px;
+  border-radius: 5px 5px;
+}
+.seleccion input::placeholder {
+  color: black;
+}
+.cargarImagen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.bloque {
+  align-items: center;
+  display: flex;
+  width: 70%;
+  height: 90px;
+  background-color: rgb(209, 203, 203);
+}
+
+.parteDos {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
+.fecha {
+  display: block;
+}
+.fecha input {
+  width: 270px;
+  margin-top: 20px;
+  border: none;
+  background-color: rgb(209, 203, 203);
+  height: 35px;
+  border-radius: 5px 5px;
+}
+.descripcion{
+    display: flex;
+    justify-content: center;
+}
+.descripcion textarea {
+  margin-top: 25px;
+  background-color: rgb(209, 203, 203);
+  height: 80px;
+  width: 60%;
+  border-radius: 5px 5px;
+  border: none;
+}
+.descripcion textarea::placeholder {
+  color: black;
+}
+.parteTres {
+  margin-top: 25px;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
+.lugar input {
+  height: 35px;
+  width: 270px;
+  border: none;
+  background-color: rgb(209, 203, 203);
+  border-radius: 5px 5px;
+}
+.lugar input::placeholder {
+  color: black;
+}
+.contacto {
+  display: flex;
+  justify-content: center;
+}
+.contacto input {
+  height: 40px;
+  border: none;
+  background-color: rgb(209, 203, 203);
+  width: 55%;
+  margin-left: 10px;
+}
+.contacto input::placeholder {
+  color: black;
+}
+.parteCuatro {
+  display: flex;
+  justify-items: center;
+  text-align: center;
+  margin-top: 25px;
+}
+.mapa p {
+  font-size: 15px;
+  font-weight: bold;
+}
+.publicidad {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.publicidad img {
+  height: 170px;
+  width: 65%;
+  border-radius: 5px 5px;
+}
+.crearEvento {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  height: 55px;
+}
+.crearEvento button {
+  background-color: rgb(12, 13, 71);
+  color: white;
+  height: 45px;
+  border: none;
+  border-radius: 18px 18px 18px;
+  width: 150px;
+  font-size: 20px;
+  font-weight: bold;
+  margin-right: 35px;
+}

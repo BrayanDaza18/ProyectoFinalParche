@@ -1,0 +1,211 @@
+
+.paginaR {
+
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.cartaR {
+    background-color: rgb(255, 255, 255);
+    border-radius: 50px 50px 50px 50px;
+    width: 35%;
+}
+
+.palabraRegistro {
+    margin-top: 15px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.palabraRegistro h1 {
+    font-size: 55px;
+}
+
+.inputRegistro {
+    margin-top: 30px;
+    display: block;
+    text-align: center;
+}
+
+.inputRegistro input {
+    width: 350px;
+    height: 42px;
+    margin-bottom: 20px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 15px 15px 15px 15px;
+    border: rgb(172, 172, 172) solid 2px;
+
+}
+
+.botonRegistrarse {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+
+}
+
+.botonRegistrarse button {
+    background-color: rgb(4, 179, 75);
+    width: 175px;
+    height: 45px;
+    font-size: 19px;
+    color: white;
+    font-weight: bolder;
+    border: none;
+    border-radius: 30px 30px 30px 30px;
+
+}
+
+.cuentaExistente {
+    display: flex;
+    margin-top: 10px;
+    justify-content: center;
+    margin-bottom: 66px;
+
+}
+
+.cuentaExistente a {
+    text-decoration: none;
+    font-size: 18px;
+    color: black;
+}
+
+#mi-boton {
+    margin-left: 35px;
+    width: 83%;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 50px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+    transition-duration: 0.4s;
+}
+
+#mi-boton:hover {
+    background-color: #338f38;
+
+}
+
+
+
+.nombreRegistro input,
+.usuarioRegistro input,
+.correoRegistro input,
+.contraseñaRegistro input,
+.direccionRegistro input,
+.numeroRegistro input {
+    padding: 10px;
+    border-radius: 5px;
+    border-radius: 15px 15px 15px 15px;
+    border: rgb(172, 172, 172) solid 2px;
+}
+
+
+
+
+@media (max-width: 768px) {
+    .paginaR {
+
+        display: flex;
+        justify-content: center;
+        margin-top: 35px;
+    }
+
+    .cartaR {
+        background-color: rgb(255, 255, 255);
+        border-radius: 50px 50px 50px 50px;
+        width: 80%;
+    }
+
+    .palabraRegistro {
+        margin-top: 15px;
+        font-size: 1px;
+        text-align: center;
+        text-transform: uppercase;
+    }
+
+    .palabraRegistro h1 {
+        font-size: 35px;
+    }
+
+    .inputRegistro {
+        margin-top: 20px;
+        display: block;
+        text-align: center;
+    }
+
+    .inputRegistro input {
+        width: 250px;
+        height: 42px;
+        margin-bottom: 20px;
+        background-color: rgb(255, 255, 255);
+        border-radius: 15px 15px 15px 15px;
+        border: rgb(172, 172, 172) solid 2px;
+
+    }
+
+    .botonRegistrarse {
+        margin-top: 30px;
+        display: flex;
+        justify-content: center;
+        align-content: center;
+
+    }
+
+    .botonRegistrarse button {
+        background-color: rgb(4, 179, 75);
+        width: 175px;
+        height: 45px;
+        font-size: 19px;
+        color: white;
+        font-weight: bolder;
+        border: none;
+        border-radius: 30px 30px 30px 30px;
+
+    }
+
+    .cuentaExistente {
+        display: flex;
+        margin-top: 10px;
+        justify-content: center;
+        margin-bottom: 66px;
+
+    }
+
+    .cuentaExistente a {
+        text-decoration: none;
+        font-size: 18px;
+        color: black;
+    }
+
+    #mi-boton {
+        margin-top: 20px;
+        margin-left: 23px;
+        width: 83%;
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 50px;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+        transition-duration: 0.4s;
+    }
+    
+    #mi-boton:hover {
+        background-color: #338f38;
+    
+    }
+}

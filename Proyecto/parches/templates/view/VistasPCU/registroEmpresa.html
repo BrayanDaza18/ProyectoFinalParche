@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static "CSS/bootstrap(1).css" %}">
+    <link rel="stylesheet" href="{% static "CSS/registroEmpresa.css" %}">
+</head>
+<body style=" background-color: rgb(4, 179, 75)">
+   <div class="paginaR container-fluid">
+<div class="row cartaR">
+<div class="palabraRegistro">
+<h1 class="pregistro">registro</h1>
+</div>
+<div class="inputRegistro">
+    <div class="nombreRegistro">
+        <input type="text" placeholder="Nombre de la entidad">
+    </div>
+    
+    <!-- <div class="usuarioRegistro">
+        <input type="text" placeholder="Nombre el encargado">
+    </div> -->
+
+    <div class="correoRegistro">
+        <input type="text" placeholder="Correo">
+    </div>
+
+    <div class="contraseñaRegistro">
+        <input type="text" placeholder="Contraseña">
+    </div>
+
+    <div class="contraseñaRegistro">
+        <input type="text" placeholder="Direccion">
+    </div>
+   
+   
+    <div class="numeroRegistro">
+        <input type="text" placeholder="Numero de telefono">
+    </div>
+ 
+
+    
+
+</div>
+
+<input type="file" name="" id="input-file" style="display: none;">
+ <button id="mi-boton">Cargar Documento de Identidad</button>
+
+ <script>
+    let $miBoton = document.getElementById('mi-boton')
+
+$miBoton.addEventListener('click', (e) => {
+ e.target.previousElementSibling.click()
+})
+
+let $inputFile = document.getElementById('input-file') //debajo del $miBoton
+
+$inputFile.addEventListener('change', (e) => {
+   console.log(e.target.files[0].name);
+   $miBoton.innerHTML = e.target.files[0].name
+  })
+ </script>
+
+<div class="botonRegistrarse">
+<button>Registrate</button>
+</div>
+<div class="cuentaExistente">
+<a href="vista2.html">¿Ya tienes una cuenta creada?</a>
+</div>
+</div>
+   </div> 
+</body>
+</html>

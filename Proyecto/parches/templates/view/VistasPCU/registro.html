@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static "CSS/bootstrap(1).css" %}">
+    <link rel="stylesheet" href="{% static "CSS/registro.css" %}">
+</head>
+<body style=" background-color: rgb(4, 179, 75)">
+   <div class="paginaR container-fluid">
+<div class="row cartaR">
+<div class="palabraRegistro">
+<h1>registro</h1>
+</div>
+<div class="inputRegistro">
+    <div class="nombreRegistro">
+        <input type="text" placeholder="Nombre">
+    </div>
+    <div class="usuarioRegistro">
+        <input type="text" placeholder="Usuario">
+    </div>
+    <div class="contraseñaRegistro">
+        <input type="text" placeholder="Contraseña">
+    </div>
+    <div class="correoRegistro">
+        <input type="text" placeholder="Correo">
+    </div>
+    <div class="numeroRegistro">
+        <input type="text" placeholder="Numero">
+    </div>
+ 
+</div>
+<div class="botonRegistrarse">
+<button>Registrate</button>
+</div>
+<div class="cuentaExistente">
+<a href="{% url "login" %}">¿Ya tienes una cuenta creada?</a>
+</div>
+</div>
+   </div> 
+</body>
+</html>
