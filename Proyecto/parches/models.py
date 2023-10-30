@@ -5,6 +5,10 @@
 #   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
+# from django.contrib.auth.models import User
+from django.conf import settings
+from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
+                                        PermissionsMixin)
 from django.db import models
 
 
@@ -21,6 +25,7 @@ class Actividad(models.Model):
     contacto = models.CharField(max_length=30)
     puntosdeportivos = models.ForeignKey('Puntosdeportivos', models.DO_NOTHING)
     empresa_idempresa = models.ForeignKey('EmpresaPersona', models.DO_NOTHING, db_column='empresa_idEmpresa')  # Field name made lowercase.
+
 
     class Meta:
         managed = False
@@ -49,24 +54,27 @@ class EmpresaPersona(models.Model):
     telefono = models.CharField(max_length=40)
     tipousuario = models.CharField(db_column='tipoUsuario', max_length=1)  # Field name made lowercase.
 
+   
     class Meta:
         managed = False
         db_table = 'empresa/persona'
 
 
-class Persona(models.Model):
-    idpersona = models.AutoField(db_column='idPersona', primary_key=True)  # Field name made lowercase.
+class Persona(models.Model ):
+    idpersona = models.AutoField(db_column='idPersona', primary_key=True)
     documento = models.CharField(max_length=45)
     nombre = models.CharField(max_length=50)
     apellido = models.CharField(max_length=45)
     correo = models.CharField(max_length=45)
     telefono = models.IntegerField()
-    empresa_idempresa = models.ForeignKey(EmpresaPersona, models.DO_NOTHING, db_column='empresa_idEmpresa')  # Field name made lowercase.
+    
+ 
+
+    # Puedes agregar métodos personalizados y lógica de autenticación aquí
 
     class Meta:
         managed = False
         db_table = 'persona'
-        unique_together = (('idpersona', 'empresa_idempresa'),)
 
 
 class Puntosdeportivos(models.Model):
@@ -91,15 +99,55 @@ class Realizacion(models.Model):
         unique_together = (('actividad_idactividad', 'usuario_idusuario'),)
 
 
-class Usuario(models.Model):
-    idusuario = models.AutoField(db_column='idUsuario', primary_key=True)  # Field name made lowercase.
-    usuario = models.CharField(max_length=40)
-    contrasena = models.CharField(max_length=20)
-    correo = models.CharField(max_length=45)
-    fotoperfil = models.CharField(db_column='fotoPerfil', max_length=80)  # Field name made lowercase.
-    resena = models.CharField(max_length=40)
-    telefono = models.IntegerField()
 
-    class Meta:
-        managed = False
-        db_table = 'usuario'
+class UsuarioManager(BaseUserManager):
+    def create_user(self, usuario,correo, telefono, password=None):
+        if not usuario:
+            raise ValueError("El nombre de usuario es obligatorio")
+        usuario = self.model(usuario=usuario, correo=correo, telefono=telefono)
+        usuario.set_password(password)
+        usuario.save()
+        return usuario
+
+    def create_superuser(self, usuario, password ):
+        usuario = self.create_user( usuario=usuario, password=password)
+        usuario.usuario_administrador = True
+        usuario.save()
+        return usuario
+
+class Usuario(AbstractBaseUser, PermissionsMixin):
+    idusuario = models.AutoField(db_column='idUsuario', primary_key=True)
+    usuario = models.CharField(max_length=40, db_column='usuario', unique=True)
+    password = models.CharField(max_length=128) 
+    correo = models.CharField(max_length=45)
+    fotoperfil = models.CharField(db_column='fotoPerfil', max_length=80)
+    resena = models.CharField(max_length=40)
+    telefono = models.IntegerField(null=True)
+    usuario_activo = models.BooleanField(default= True)
+    usuario_administrador = models.BooleanField(default= False)
+    
+
+
+    # Configura los campos requeridos al crear un usuario
+    REQUIRED_FIELDS = ['correo', 'telefono']  # Agrega aquí los campos adicionales requeridos
+    USERNAME_FIELD = 'usuario'
+    # PASSWORD_FIELD = 'contrasena'  # No necesitas especificar esto, se utiliza el campo "password" por defecto
+
+    objects = UsuarioManager()
+
+    def __str__(self):
+        return self.usuario
+
+    def has_perm(self,perm, obj = None):
+        return True
+
+    def has_module_perms(self, app_label):
+        return True
+
+    @property
+    def is_staff(self):
+        return self.usuario_administrador
+
+    # class Meta:
+    #     managed = False
+    #     db_table = 'usuario'
