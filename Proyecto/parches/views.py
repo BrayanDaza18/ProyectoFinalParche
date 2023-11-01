@@ -51,3 +51,7 @@ def CoverImage(request):
 
 def ReportEvent(request):
      return render(request, 'view/VistasPCU/ReportEvent.html')
+
+
+def SelectUser(request):
+    return render(request, 'view/VistasPCU/seleccionDeUsuario.html')

@@ -1,0 +1,73 @@
+.recuadro h4 {
+    margin-top: 10px;
+}
+
+.recuadro h3 {
+    margin-top: 10px;
+}
+
+.recuadro div {
+    height: 50px;
+}
+
+.personal i,
+.empresa i {
+    font-size: 30px; 
+    margin-right: 15px;
+}
+
+.recuadro {
+    margin-top: 280px;
+    text-align: center;
+    border-radius: 30px;
+}
+
+.titulo {
+    background-color: rgb(6, 124, 53);
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+}
+
+.personal {
+    border-bottom: 1px solid black;
+   
+}
+.personal a{
+    text-decoration: none;
+    color: black;
+}
+.empresa a{
+    text-decoration: none;
+    color: black; 
+}
+
+
+@media (max-width: 768px) {
+    .recuadro {
+        margin-top: 280px; 
+        margin-left: 50px;
+        width: 300px;
+    }
+
+    .recuadro h3 {
+        font-size: 20px;
+    }
+    .recuadro div {
+        height: 60px;
+    }
+
+    .personal i,
+    .empresa i {
+        font-size: 24px;
+        margin-right: 10px; 
+    }
+
+    .empresa a{
+        text-decoration: none;
+        color: black; 
+    }
+
+    .recuadro h3 {
+        margin-top: 18px;
+    }
+}

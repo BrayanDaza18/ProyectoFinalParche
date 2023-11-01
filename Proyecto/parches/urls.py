@@ -12,6 +12,7 @@ urlpatterns = [
     path('profile', views.Profile, name='profile'),
     path('coverImage', views.CoverImage, name='CoverImagen'),
     path('Report', views.ReportEvent, name='Report'),
+    path('select/user', views.SelectUser, name='selectUser')
      
     
 ]
