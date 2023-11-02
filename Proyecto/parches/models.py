@@ -89,8 +89,8 @@ class Puntosdeportivos(models.Model):
 
 
 class Realizacion(models.Model):
-    actividad_idactividad = models.OneToOneField(Actividad, models.DO_NOTHING, db_column='actividad_idActividad', primary_key=True)  # Field name made lowercase.
-    usuario_idusuario = models.ForeignKey('Usuario', models.DO_NOTHING, db_column='usuario_idUsuario')  # Field name made lowercase.
+    actividad_idactividad = models.OneToOneField(Actividad, models.DO_NOTHING, db_column='actividad_idActividad', primary_key=True) 
+    usuario_idusuario = models.ForeignKey('Usuario', models.DO_NOTHING, db_column='usuario_idUsuario')  
     comentarios = models.CharField(max_length=45)
 
     class Meta:
@@ -100,21 +100,22 @@ class Realizacion(models.Model):
 
 
 
+
 class UsuarioManager(BaseUserManager):
-    def create_user(self, usuario,correo, telefono, password=None):
-        if not usuario:
-            raise ValueError("El nombre de usuario es obligatorio")
+    def create_user(self, usuario, correo, telefono, password):
         usuario = self.model(usuario=usuario, correo=correo, telefono=telefono)
-        usuario.set_password(password)
+        usuario.usuario_activo = True
+        usuario.set_password(password)  
         usuario.save()
         return usuario
 
-    def create_superuser(self, usuario, password ):
-        usuario = self.create_user( usuario=usuario, password=password)
+    def create_superuser(self, usuario, password):
+        usuario = self.create_user(usuario=usuario, correo="", telefono=0, password=password)
         usuario.usuario_administrador = True
         usuario.save()
         return usuario
 
+        
 class Usuario(AbstractBaseUser, PermissionsMixin):
     idusuario = models.AutoField(db_column='idUsuario', primary_key=True)
     usuario = models.CharField(max_length=40, db_column='usuario', unique=True)
