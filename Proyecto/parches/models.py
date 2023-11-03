@@ -36,7 +36,7 @@ class Actividad(models.Model):
 class Documento(models.Model):
     iddocumento = models.IntegerField(db_column='idDocumento', primary_key=True)  # Field name made lowercase.
     documentocol = models.CharField(db_column='Documentocol', max_length=45, blank=True, null=True)  # Field name made lowercase.
-    empresa_idempresa = models.ForeignKey('EmpresaPersona', models.DO_NOTHING, db_column='empresa_idEmpresa')  # Field name made lowercase.
+    empresa_idempresa = models.ForeignKey('EmpresaPersona', db_column='empresa_idEmpresa', on_delete=models.CASCADE) # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -44,20 +44,58 @@ class Documento(models.Model):
         unique_together = (('iddocumento', 'empresa_idempresa'),)
 
 
-class EmpresaPersona(models.Model):
+
+class EmpresaPersonaManager(BaseUserManager):
+    def create_user(self, usuario, correo, telefono, password):
+        usuario = self.model(usuario=usuario, correo=correo, telefono=telefono)
+        usuario.usuario_activo = True
+        usuario.set_password(password)  
+        usuario.save()
+        return usuario
+
+    def create_superuser(self, usuario, password):
+        usuario = self.create_user(usuario=usuario, correo="", telefono=0, password=password)
+        usuario.usuario_administrador = True
+        usuario.save()
+        return usuario
+
+class EmpresaPersona(AbstractBaseUser, PermissionsMixin):
     idregistro = models.AutoField(db_column='idRegistro', primary_key=True)  # Field name made lowercase.
     nit = models.CharField(max_length=45, blank=True, null=True)
-    nombreempresa = models.CharField(db_column='nombreEmpresa', unique=True, max_length=40)  # Field name made lowercase.
+    usuario = models.CharField(max_length=40, db_column='usuario', unique=True)
+    password = models.CharField(max_length=128) 
+    nombreempresa = models.CharField(db_column='nombreEmpresa', unique=True, max_length=40,null=True)  # Field name made lowercase.
     direccion = models.CharField(max_length=40)
-    correo = models.CharField(max_length=40)
-    contrasena = models.CharField(max_length=45)
+    correo = models.CharField(max_length=45)
     telefono = models.CharField(max_length=40)
     tipousuario = models.CharField(db_column='tipoUsuario', max_length=1)  # Field name made lowercase.
+    usuario_activo = models.BooleanField(default= True)
+    usuario_administrador = models.BooleanField(default= False)
 
-   
-    class Meta:
-        managed = False
-        db_table = 'empresa/persona'
+     
+    REQUIRED_FIELDS = ['correo', 'telefono'] 
+    USERNAME_FIELD = 'usuario'
+    # PASSWORD_FIELD = 'contrasena'  
+
+    objects = EmpresaPersonaManager()
+
+    def __str__(self):
+        return self.usuario
+
+    def has_perm(self,perm, obj = None):
+        return True
+
+    def has_module_perms(self, app_label):
+        return True
+
+    @property
+    def is_staff(self):
+        return self.usuario_administrador
+
+
+    # class Meta:
+    #     managed = Fals
+    #     db_table = 'empresa/persona'
 
 
 class Persona(models.Model ):
@@ -65,16 +103,13 @@ class Persona(models.Model ):
     documento = models.CharField(max_length=45)
     nombre = models.CharField(max_length=50)
     apellido = models.CharField(max_length=45)
-    correo = models.CharField(max_length=45)
-    telefono = models.IntegerField()
+    empresa_idEmpresa = models.ForeignKey('EmpresaPersona', db_column='empresa_idEmpresa', on_delete=models.CASCADE)
     
- 
 
-    # Puedes agregar métodos personalizados y lógica de autenticación aquí
-
-    class Meta:
-        managed = False
-        db_table = 'persona'
+    # class Meta:
+    #     managed = False
+    #     db_table = 'persona'
+        
 
 
 class Puntosdeportivos(models.Model):
@@ -99,24 +134,8 @@ class Realizacion(models.Model):
         unique_together = (('actividad_idactividad', 'usuario_idusuario'),)
 
 
-
-
-class UsuarioManager(BaseUserManager):
-    def create_user(self, usuario, correo, telefono, password):
-        usuario = self.model(usuario=usuario, correo=correo, telefono=telefono)
-        usuario.usuario_activo = True
-        usuario.set_password(password)  
-        usuario.save()
-        return usuario
-
-    def create_superuser(self, usuario, password):
-        usuario = self.create_user(usuario=usuario, correo="", telefono=0, password=password)
-        usuario.usuario_administrador = True
-        usuario.save()
-        return usuario
-
         
-class Usuario(AbstractBaseUser, PermissionsMixin):
+class Usuario(models.Model):
     idusuario = models.AutoField(db_column='idUsuario', primary_key=True)
     usuario = models.CharField(max_length=40, db_column='usuario', unique=True)
     password = models.CharField(max_length=128) 
@@ -124,31 +143,7 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     fotoperfil = models.CharField(db_column='fotoPerfil', max_length=80)
     resena = models.CharField(max_length=40)
     telefono = models.IntegerField(null=True)
-    usuario_activo = models.BooleanField(default= True)
-    usuario_administrador = models.BooleanField(default= False)
     
-
-
-    # Configura los campos requeridos al crear un usuario
-    REQUIRED_FIELDS = ['correo', 'telefono']  # Agrega aquí los campos adicionales requeridos
-    USERNAME_FIELD = 'usuario'
-    # PASSWORD_FIELD = 'contrasena'  # No necesitas especificar esto, se utiliza el campo "password" por defecto
-
-    objects = UsuarioManager()
-
-    def __str__(self):
-        return self.usuario
-
-    def has_perm(self,perm, obj = None):
-        return True
-
-    def has_module_perms(self, app_label):
-        return True
-
-    @property
-    def is_staff(self):
-        return self.usuario_administrador
-
-    # class Meta:
-    #     managed = False
-    #     db_table = 'usuario'
+    class Meta:
+        managed = False
+        db_table = 'usuario'

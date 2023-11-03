@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from .models import Usuario
+from .models import EmpresaPersona, Persona
 
 
 class FormUser(forms.ModelForm):
@@ -23,7 +23,7 @@ class FormUser(forms.ModelForm):
         }
     ))
     class Meta:
-        model = Usuario
+        model = EmpresaPersona
         fields = ('usuario', 'correo', 'telefono')
         widgets = {
             'usuario': forms.TextInput(
@@ -65,7 +65,41 @@ class FormUser(forms.ModelForm):
         return user
         
     
+
+class UserRegister(forms.ModelForm):
+    class Meta:
     
+     model = Persona
+     fields = ['documento','nombre', 'apellido']
+     widgets = {
+     'documento': forms.NumberInput( 
+         attrs= {
+            'class': 'form-control,justify-content-center',
+            'placeholder': 'documento',
+            'id': 'documento',
+            'required': 'required'
+      }),
+     'nombre': forms.TextInput(
+        attrs={
+             'class': 'form-control,justify-content-center',
+            'placeholder': 'nombre',
+            'id': 'nombre',
+            'required': 'required'
+        }),
+      'apellido': forms.TextInput(
+        attrs={
+             'class': 'form-control,justify-content-center',
+            'placeholder': 'apellido',
+            'id': 'apellido',
+            'required': 'required'
+     })
+     }
+    def save(self, commit = True):
+        user = super().save(commit= False)
+    
+        if commit:
+          user.save()
+        return user
         
 
 class USERFORM(UserCreationForm):

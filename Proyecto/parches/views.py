@@ -1,9 +1,8 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render
-from django.views.generic import CreateView
 
-from .forms import USERFORM, FormUser
-from .models import Usuario
+from .forms import FormUser, UserRegister
+from .models import EmpresaPersona, Persona
 
 # Create your views here.
 
@@ -11,16 +10,22 @@ def HomepageProject(request):
      return render(request, 'view/VistasPCU/vistaPrincipal.html' )
 
 def registerUser(request):
+    form = FormUser()
+    usuario = UserRegister()  
+     
     if request.method == 'POST':
         form = FormUser(request.POST)
-        if form.is_valid():
-            form.save()
-         
-        
-            return redirect('login')
-    else:
-        form = FormUser()
-    return render(request, 'registration/register.html', {'form': form})
+        usuario = UserRegister(request.POST)
+        if form.is_valid() and usuario.is_valid():
+           data = form.save() 
+           datos =usuario.save(commit = False)
+           datos.empresa_idEmpresa = data
+           datos.save()
+     
+        return redirect('login')
+
+    
+    return render(request, 'registration/register.html', {'form': form, 'usuario': usuario})
 
 
 def login(request):
