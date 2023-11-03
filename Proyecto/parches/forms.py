@@ -46,7 +46,14 @@ class FormUser(forms.ModelForm):
             'placeholder': 'telefono',
             'id': 'email',
             'required': 'required'
-        })
+        }),
+        # 'nombreempresa': forms.NumberInput(
+        #     attrs= {
+        #      'class': 'form-control,justify-content-center',
+        #     'placeholder': 'nombreempresa',
+        #     'id': 'nombreempresa',
+       
+        # })
         }
     def clean_password2(self):
 

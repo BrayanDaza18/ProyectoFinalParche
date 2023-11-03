@@ -35,7 +35,7 @@ class Actividad(models.Model):
 
 class Documento(models.Model):
     iddocumento = models.IntegerField(db_column='idDocumento', primary_key=True)  # Field name made lowercase.
-    documentocol = models.CharField(db_column='Documentocol', max_length=45, blank=True, null=True)  # Field name made lowercase.
+    documentocol = models.FileField(db_column='Documentocol', upload_to='imagenes/', max_length=100)  # Field name made lowercase.
     empresa_idempresa = models.ForeignKey('EmpresaPersona', db_column='empresa_idEmpresa', on_delete=models.CASCADE) # Field name made lowercase.
 
     class Meta:
@@ -87,10 +87,14 @@ class EmpresaPersona(AbstractBaseUser, PermissionsMixin):
 
     def has_module_perms(self, app_label):
         return True
+     
+    class Meta:
+         db_table = 'empresa/usuario'
 
     @property
     def is_staff(self):
         return self.usuario_administrador
+
 
 
     # class Meta:
@@ -106,9 +110,9 @@ class Persona(models.Model ):
     empresa_idEmpresa = models.ForeignKey('EmpresaPersona', db_column='empresa_idEmpresa', on_delete=models.CASCADE)
     
 
-    # class Meta:
-    #     managed = False
-    #     db_table = 'persona'
+    class Meta:
+        
+        db_table = 'persona'
         
 
 
