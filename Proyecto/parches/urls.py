@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import include, path
 
 from . import views
 
@@ -11,6 +11,8 @@ urlpatterns = [
     path('Register/Company', views.RegisterCompany, name='RegisterCompany'),
     path('profile', views.Profile, name='profile'),
     path('coverImage', views.CoverImage, name='CoverImagen'),
-    path('Report', views.ReportEvent, name='Report')
+    path('Report', views.ReportEvent, name='Report'),
+    path('select/user', views.SelectUser, name='selectUser')
+     
     
 ]

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Iniciar sesión</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
@@ -47,40 +47,57 @@
             margin-top: 15px;
         }
     </style>
+
     <div class="row">
+        {% block content %}
+        {% if form.errors %}
+        <p>Su nombre de usuario y contraseña no coinciden. Inténtalo de nuevo.</p>
+        {% endif %}
+        {% if next %}
+        {% if user.is_authenticated %}
+        <p>Su cuenta no tiene acceso a esta página. Para continuar, inicie sesión con una cuenta que tenga acceso.</p>
+        {% else %}
+        <p>Por favor inicie sesión para ver esta página.</p>
+        {% endif %}
+        {% endif %}
         <div class="col-lg-6 col-md-8 mx-auto">
             <div class="login-form">
                 <h2>Iniciar sesión</h2>
-                <form>
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
                     <div class="mb-3">
-                        <label for="email" class="form-label">Usuario</label>
-                        <input type="email" class="form-control" id="email" placeholder="ejemplo@correo.com" required>
+                        <label for="{{ form.username.id_for_label }}" class="form-label">Nombre de usuario</label>
+                        <input type="text" name="{{form.username.name}}" id="{{ form.username.id_for_label }}"
+                            class="form-control" placeholder="Nombre de usuario" required autofocus>
                     </div>
                     <div class="mb-3">
-                        <label for="password" class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" id="password" placeholder="********" required>
+                        <label for="{{ form.contrasena.id_for_label }}" class="form-label">Contraseña</label>
+                        <input type="password" name="{{form.password.name}}" id="{{ form.contrasena.id_for_label }}"
+                            class="form-control" placeholder="Contraseña" required>
                     </div>
                     <div class="mb-3 form-check">
                         <a href="#" class="forgot-link text-secondary-emphasis">¿Olvidaste tu contraseña?</a>
                     </div>
                     <div class="text-center">
-                        <button type="submit" class="btn btn-success">Iniciar sesión</button>
+                        <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+                        <input type="hidden" name="next" value="{{ next }}">
                     </div>
                     <div class="text-center mt-3">
-                        <button type="button" class="btn btn-light ">Continuar con Google</button>
+                        <button type="button" class="btn btn-light">Continuar con Google</button>
                     </div>
                     <div class="text-center mt-3">
                         <button type="button" class="btn btn-primary">Continuar con Facebook</button>
                     </div>
-
                     <!-- CLICK HACIA LA VISTA DE TIPO DE CUENTA -->
                     <div class="text-center mt-3">
-                        <a href="{% url "register" %}" class="text-secondary-emphasis">Registrate</a>
+                        <a href="{% url 'selectUser' %}" class="text-secondary-emphasis">Regístrate</a>
                     </div>
                 </form>
             </div>
         </div>
+        {% endblock %}
     </div>
+
 </body>
 
 </html>

@@ -23,7 +23,7 @@
 <body class="g-0">
   <div class="container-fluid  index1"
     style="background-image: url(/static/IMG/Fondo\ degradado\ de\ tonos\ verdes\ _\ Vector\ Premium.png)">
-   
+
 
 
     <div class="row encabezado">
@@ -37,23 +37,39 @@
           <div class="bar"></div>
         </div>
       </div>
-    
-    <div class="menu-items col-5">
-      <a href="#eventos" class="scroll">
-        <h3>Eventos</h3>
-      </a>
-      <a href="#nosotros" class="scroll">
-        <h3>Nosotros</h3>
-      </a>
-      <a href="#contactanos">
-        <h3>Contactanos</h3>
-      </a>
-      <a href="{% url "login" %}" type="button" class="btn btn-primary btnIniciarS">Iniciar Sesion</a>
+
+      <div class="menu-items col-5">
+        <a href="#eventos" class="scroll">
+          <h3>Eventos</h3>
+        </a>
+        <a href="#nosotros" class="scroll">
+          <h3>Nosotros</h3>
+        </a>
+        <a href="#contactanos">
+          <h3>Contactanos</h3>
+
+        </a>
+        {% if user.is_authenticated %}
+        <ul class="sidebar-nav btnIniciarS">
+
+          ...
+          {% if user.is_authenticated %}
+          <li>User: {{ user.get_username }}</li>
+          <li><a href="{% url 'logout'%}?next={{request.path}}">Cerrar sesión</a></li>
+          {% else %}
+          <li><a href="{% url 'login'%}">Iniciar sesión</a></li>
+          {% endif %}
+        </ul>
+        {% else %}
+        <a href="{% url "login" %}?next={{request.path}}" type="button" class="btn btn-primary btnIniciarS">Iniciar
+          Sesion</a>
+        {% endif %}
+
+      </div>
     </div>
-  </div>
-    
-    
-    
+
+
+
 
     <div class="row principal">
       <div class="col-6">
@@ -75,7 +91,7 @@
       </div>
       <div class="col-6">
         <a href="{% url "CreateEvent" %}">
-          <img class="imgP"  src="{% static "IMG/imagen_2023-05-08_220016504-removebg-preview.png" %}" alt="" >
+          <img class="imgP" src="{% static "IMG/imagen_2023-05-08_220016504-removebg-preview.png" %}" alt="">
         </a>
       </div>
     </div>
@@ -151,11 +167,11 @@
             <div class="vinculo mt-3">
               <div class="col-6">
                 <button>UNIRME <img src="{% static "img/5402377_arrow_share_export_send_direction_icon.png" %} "
-                    style="margin-left:8px ;" width="22px" height="25px" alt=""> </button>
+                    style=" margin-left:8px ;" width="22px" height="25px" alt=""> </button>
               </div>
               <div class="col-6">
-                <button>COMPARTIR <img src="{% static "img/3671856_alt_share_icon.png" %}" style="margin-left:8px ;" width="22px"
-                    height="25px" alt=""> </button>
+                <button>COMPARTIR <img src="{% static "img/3671856_alt_share_icon.png" %}" style="margin-left:8px ;"
+                    width="22px" height="25px" alt=""> </button>
               </div>
             </div>
           </div>
@@ -212,8 +228,8 @@
                     style="margin-left:8px ;" height="25px" width="22px" alt=""> </button>
               </div>
               <div class="col-6">
-                <button>COMPARTIR <img src="{% static "img/3671856_alt_share_icon.png" %}" style="margin-left:8px ;" height="25px"
-                    width="22px" alt=""> </button>
+                <button>COMPARTIR <img src="{% static "img/3671856_alt_share_icon.png" %}" style="margin-left:8px ;"
+                    height="25px" width="22px" alt=""> </button>
               </div>
             </div>
           </div>
@@ -274,8 +290,8 @@
                     style="margin-left:8px ;" height="25px" width="22px" alt=""> </button>
               </div>
               <div class="col-6">
-                <button>COMPARTIR <img src="{% static "img/3671856_alt_share_icon.png" %}" style="margin-left:8px ;" width="22px"
-                    height="25px" alt=""> </button>
+                <button>COMPARTIR <img src="{% static "img/3671856_alt_share_icon.png" %}" style="margin-left:8px ;"
+                    width="22px" height="25px" alt=""> </button>
               </div>
             </div>
           </div>
@@ -333,8 +349,8 @@
                     style="margin-left:8px ;" height="25px" width="22px" alt=""> </button>
               </div>
               <div class="col-6">
-                <button>COMPARTIR <img src="{% static "img/3671856_alt_share_icon.png" %}" style="margin-left:8px ;" height="25px"
-                    width="22px" alt=""> </button>
+                <button>COMPARTIR <img src="{% static "img/3671856_alt_share_icon.png" %}" style="margin-left:8px ;"
+                    height="25px" width="22px" alt=""> </button>
               </div>
             </div>
           </div>
@@ -344,7 +360,7 @@
   </div>
 
 
-  
+
 
 
 
@@ -355,69 +371,65 @@
 
   <!-- Tercera parte de la vista -->
   <section class="container-fluid" id="nosotros"
-  style="background-image: url('https://img.freepik.com/vector-premium/vector-linea-puntos-fondo-abstracto-blanco-negro_551880-552.jpg?w=2000');">
-  <div>
-    <div class="row announcement">
-      <div class="col-md-1"></div>
-      <div class="col-md-4 mt-4">
-        <h2>Somos un equipo conformado por aprendices del Servicio Nacional de Aprendizaje (SENA), Nuestro
-          objetivo es aplicar nuestros conocimientos para resolver problemas y mejorar procesos, siempre
-          buscando la satisfacción del cliente y la calidad de nuestros servicios.
-        </h2>
+    style="background-image: url('https://img.freepik.com/vector-premium/vector-linea-puntos-fondo-abstracto-blanco-negro_551880-552.jpg?w=2000');">
+    <div>
+      <div class="row announcement">
+        <div class="col-md-1"></div>
+        <div class="col-md-4 mt-4">
+          <h2>Somos un equipo conformado por aprendices del Servicio Nacional de Aprendizaje (SENA), Nuestro
+            objetivo es aplicar nuestros conocimientos para resolver problemas y mejorar procesos, siempre
+            buscando la satisfacción del cliente y la calidad de nuestros servicios.
+          </h2>
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-4 mt-4">
+          <h2>En nuestra formación como aprendices, hemos adquirido habilidades en el manejo de lenguajes de
+            programación, bases de datos, metodologías de desarrollo y herramientas de gestión de proyectos,
+            entre otros. Asimismo, valoramos la importancia de la comunicación y el trabajo en equipo para
+            llevar a cabo proyectos exitosos.</h2>
+        </div>
+        <div class="col-md-1"></div>
       </div>
-      <div class="col-md-2"></div>
-      <div class="col-md-4 mt-4">
-        <h2>En nuestra formación como aprendices, hemos adquirido habilidades en el manejo de lenguajes de
-          programación, bases de datos, metodologías de desarrollo y herramientas de gestión de proyectos,
-          entre otros. Asimismo, valoramos la importancia de la comunicación y el trabajo en equipo para
-          llevar a cabo proyectos exitosos.</h2>
-      </div>
-      <div class="col-md-1"></div>
-    </div>
-    <div class="row mt-2">
-      <div class="col-md-1"></div>
-      <div class="col-md-5">
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-8">
-            <img src="img/logo-sena-verde-png-sin-fondo.png" width="300" class="my-4 img-fluid">
+      <div class="row mt-2">
+        <div class="col-md-1"></div>
+        <div class="col-md-5">
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+              <img src="{%static "img/logo-sena-verde-png-sin-fondo.png" %}" width="300" class="my-4 img-fluid">
+            </div>
           </div>
         </div>
+        <div class="col-md-5 text-center mt-5">
+          <h3>“No hemos fracasado. Hemos encontrado 10000 soluciones que no funcionan”</h3>
+        </div>
+        <div class="col-md-1"></div>
       </div>
-      <div class="col-md-5 text-center mt-5">
-        <h3>“No hemos fracasado. Hemos encontrado 10000 soluciones que no funcionan”</h3>
+    </div>
+  </section>
+
+
+  <!-- Cuarta parte de la vista -->
+  <section id="contactanos" class="container-fluid" style="background-color: rgb(214, 213, 213); padding: 50px 0;">
+    <div class="d-flex">
+      <div class="col-md-1"></div>
+      <div class="col-md-5 text-center correo">
+        <img src="{% static "img/logo.png" %}" alt="" class="img-fluid" style="max-width: 100%;">
+        <h3 class="mt-3">contactoparchecorp@gmail.com</h3>
+      </div>
+      <div class="col-md-5 text-center">
+        <div class="link">
+          <h1>Contactanos</h1>
+          <div style="height: 20px;"></div>
+          <img src="{% static "img/Facebook_Logo_(2019).png" %}" alt="" style="width: 55px; margin-bottom: 30px;">
+          <img src="{% static "img/png-transparent-instagram-logo-instagram-facebook-inc-youtube-organization-instagram-removebg-preview.png"%}" alt="" style="width: 55px; margin-bottom: 30px;">
+          <img src="{% static "img/png-transparent-twitter-logo-social-media-iphone-organization-logo-twitter-computer-network-leaf-media-removebg-preview.png"%}" alt="" style="width: 55px; margin-bottom: 30px;">
+        </div>
       </div>
       <div class="col-md-1"></div>
     </div>
-  </div>
-</section>
-
-
-<!-- Cuarta parte de la vista -->
-<section id="contactanos" class="container-fluid" style="background-color: rgb(214, 213, 213); padding: 50px 0;">
-  <div class="d-flex">
-    <div class="col-md-1"></div>
-    <div class="col-md-5 text-center correo">
-      <img src="{% static "img/logo.png" %}" alt="" class="img-fluid" style="max-width: 100%;">
-      <h3 class="mt-3">contactoparchecorp@gmail.com</h3>
-    </div>
-    <div class="col-md-5 text-center">
-      <div class="link">
-        <h1>Contactanos</h1>
-        <div style="height: 20px;"></div>
-        <img src="{% static "img/Facebook_Logo_(2019).png" %}" alt="" style="width: 55px; margin-bottom: 30px;">
-        <img
-          src="{% static "img/png-transparent-instagram-logo-instagram-facebook-inc-youtube-organization-instagram-removebg-preview.png" %}"
-          alt="" style="width: 55px; margin-bottom: 30px;">
-        <img
-          src="{% static "img/png-transparent-twitter-logo-social-media-iphone-organization-logo-twitter-computer-network-leaf-media-removebg-preview.png" %}"
-          alt="" style="width: 55px; margin-bottom: 30px;">
-      </div>
-    </div>
-    <div class="col-md-1"></div>
-  </div>
-  <div class="text-center mt-2">&copy; 2023 Parche. Todos los derechos reservados </div>
-</section>
+    <div class="text-center mt-2">&copy; 2023 Parche. Todos los derechos reservados </div>
+  </section>
 
 </body>
 
@@ -429,17 +441,17 @@
 
   scrollLinks.forEach(link => {
     link.addEventListener('click', e => {
-      e.preventDefault(); 
+      e.preventDefault();
 
-      const targetId = link.getAttribute('href'); 
+      const targetId = link.getAttribute('href');
       document.querySelector(targetId).scrollIntoView({
         behavior: 'smooth'
       });
     });
   });
 
-document.getElementById('menu-toggle').addEventListener('click', function() {
-  document.querySelector('.menu-items').classList.toggle('active');
-});
+  document.getElementById('menu-toggle').addEventListener('click', function () {
+    document.querySelector('.menu-items').classList.toggle('active');
+  });
 
 </script>
