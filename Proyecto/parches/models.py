@@ -28,20 +28,19 @@ class Actividad(models.Model):
 
 
     class Meta:
-        managed = False
+       
         db_table = 'actividad'
         unique_together = (('idactividad', 'puntosdeportivos', 'empresa_idempresa'),)
 
 
+
 class Documento(models.Model):
-    iddocumento = models.IntegerField(db_column='idDocumento', primary_key=True)  # Field name made lowercase.
+    iddocumento = models.AutoField(db_column='idDocumento', primary_key=True)  # Field name made lowercase.
     documentocol = models.FileField(db_column='Documentocol', upload_to='imagenes/', max_length=100)  # Field name made lowercase.
     empresa_idempresa = models.ForeignKey('EmpresaPersona', db_column='empresa_idEmpresa', on_delete=models.CASCADE) # Field name made lowercase.
 
     class Meta:
-        managed = False
         db_table = 'documento'
-        unique_together = (('iddocumento', 'empresa_idempresa'),)
 
 
 
@@ -59,18 +58,36 @@ class EmpresaPersonaManager(BaseUserManager):
         usuario.save()
         return usuario
 
+
+
 class EmpresaPersona(AbstractBaseUser, PermissionsMixin):
+    TipoUser = [
+        ('E', 'E'),
+        ('U', 'U')
+    ]
+
+    Estado_ENUM = [
+        ('A', 'A'),
+        ('I', 'I')
+    ]
+
     idregistro = models.AutoField(db_column='idRegistro', primary_key=True)  # Field name made lowercase.
     nit = models.CharField(max_length=45, blank=True, null=True)
     usuario = models.CharField(max_length=40, db_column='usuario', unique=True)
-    password = models.CharField(max_length=128) 
-    nombreempresa = models.CharField(db_column='nombreEmpresa', unique=True, max_length=40,null=True)  # Field name made lowercase.
+    password = models.CharField(max_length=128)
+    nombreempresa = models.CharField(db_column='nombreEmpresa', unique=True, max_length=40, null=True)  # Field name made lowercase.
     direccion = models.CharField(max_length=40)
     correo = models.CharField(max_length=45)
     telefono = models.CharField(max_length=40)
-    tipousuario = models.CharField(db_column='tipoUsuario', max_length=1)  # Field name made lowercase.
-    usuario_activo = models.BooleanField(default= True)
-    usuario_administrador = models.BooleanField(default= False)
+    tipousuario = models.CharField(db_column='tipoUsuario', choices=TipoUser, max_length=1)  # Field name made lowercase.
+    fotoperfil = models.CharField(db_column='fotoPerfil', max_length=80)
+    resena = models.CharField(max_length=40)
+    usuario_activo = models.BooleanField(default=True)
+    usuario_administrador = models.BooleanField(default=False)
+    estado = models.CharField(choices=Estado_ENUM, default='I', max_length=1)
+    
+
+    
 
      
     REQUIRED_FIELDS = ['correo', 'telefono'] 
@@ -107,6 +124,8 @@ class Persona(models.Model ):
     documento = models.CharField(max_length=45)
     nombre = models.CharField(max_length=50)
     apellido = models.CharField(max_length=45)
+    correo = models.CharField(max_length=45)
+    telefono = models.CharField(max_length=40)
     empresa_idEmpresa = models.ForeignKey('EmpresaPersona', db_column='empresa_idEmpresa', on_delete=models.CASCADE)
     
 
@@ -123,31 +142,31 @@ class Puntosdeportivos(models.Model):
     direccion = models.CharField(max_length=40)
 
     class Meta:
-        managed = False
+   
         db_table = 'puntosdeportivos'
 
 
 class Realizacion(models.Model):
     actividad_idactividad = models.OneToOneField(Actividad, models.DO_NOTHING, db_column='actividad_idActividad', primary_key=True) 
-    usuario_idusuario = models.ForeignKey('Usuario', models.DO_NOTHING, db_column='usuario_idUsuario')  
+    usuario_idusuario = models.ForeignKey('EmpresaPersona', models.DO_NOTHING, db_column='usuario_idEmpresaPersona')  
     comentarios = models.CharField(max_length=45)
 
     class Meta:
-        managed = False
+        
         db_table = 'realizacion'
         unique_together = (('actividad_idactividad', 'usuario_idusuario'),)
 
 
         
-class Usuario(models.Model):
-    idusuario = models.AutoField(db_column='idUsuario', primary_key=True)
-    usuario = models.CharField(max_length=40, db_column='usuario', unique=True)
-    password = models.CharField(max_length=128) 
-    correo = models.CharField(max_length=45)
-    fotoperfil = models.CharField(db_column='fotoPerfil', max_length=80)
-    resena = models.CharField(max_length=40)
-    telefono = models.IntegerField(null=True)
+# class Usuario(models.Model):
+#     idusuario = models.AutoField(db_column='idUsuario', primary_key=True)
+#     usuario = models.CharField(max_length=40, db_column='usuario', unique=True)
+#     password = models.CharField(max_length=128) 
+#     correo = models.CharField(max_length=45)
+#     fotoperfil = models.CharField(db_column='fotoPerfil', max_length=80)
+#     resena = models.CharField(max_length=40)
+#     telefono = models.IntegerField(null=True)
     
-    class Meta:
-        managed = False
-        db_table = 'usuario'
+#     class Meta:
+#         managed = False
+#         db_table = 'usuario'
