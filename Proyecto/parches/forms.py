@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from .models import Documento, EmpresaPersona, Persona
+from .models import Actividad, Documento, EmpresaPersona, Persona
 
 
 class FormUser(forms.ModelForm):
@@ -207,4 +207,15 @@ class Document(forms.ModelForm):
           user.save()
         return user
 
-        
+
+class CreateEvent(forms.ModelForm):
+
+    class Meta:
+        models = Actividad
+        fields = ['nombreactividad', 'tipoactividad', 'lugar', 'fechainicio','fechafin', 'hora','imagen', 'contacto']
+    
+    def save(self, commit = True):
+        user = super().save(commit= False)  
+        if commit:
+          user.save()
+        return user

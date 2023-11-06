@@ -67,9 +67,7 @@
     </div>
   </div>
     
-    
-    
-
+    {% if user.is_authenticated %}
     <div class="row principal">
       <div class="col-6">
         <h1>Nos encargamos de la
@@ -94,6 +92,35 @@
         </a>
       </div>
     </div>
+    {% else %}
+    <div class="row principal">
+      <div class="col-6">
+        <h1>Nos encargamos de la
+          <br>
+          gestión de tus
+          <br>
+          eventos deportivos
+          <br>
+          para que tú te
+          <br>
+          concentres en ganar.
+        </h1>
+
+        <button type="button" class="btn btn-light me-3 btnCrear">
+          <i class="fas fa-solid fa-trophy me-3" style="color: #179631;"></i>
+          <a href="{% url "login" %}?next={{request.path}}" style="color: #179631;">Crear Un Evento</a>
+        </button>
+      </div>
+      <div class="col-6">
+        <a href="{% url "login" %}?next={{request.path}}">
+          <img class="imgP"  src="{% static "IMG/imagen_2023-05-08_220016504-removebg-preview.png" %}" alt="" >
+        </a>
+      </div>
+    </div>
+    {% endif %}
+    
+
+    
   </div>
 
 

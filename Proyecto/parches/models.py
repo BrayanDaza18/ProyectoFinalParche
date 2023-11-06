@@ -13,18 +13,40 @@ from django.db import models
 
 
 class Actividad(models.Model):
+    Futbol = "FUTBOL"
+    Baloncesto = "BALONCESTO"
+    juegoMesa = "JuegoDeMesa"
+    Voleibol = "Voleibol"
+    pasarElRato = "PasarElRato"
+    natacion = "natacion"
+    patinaje = 'patinaje'
+    tenis= 'tenis'
+    cilcismo = 'ciclismo' 
+
+    deporte = [
+        (Futbol, 'Futbol'),
+        (Baloncesto, 'Baloncesto'),
+        (juegoMesa, 'Juegos De Mesa'),
+        (Voleibol,'Voleibol'),
+        (pasarElRato,'pasar el rato '),
+        (natacion, 'Natacion'),
+        (patinaje, 'patinaje'),
+        (tenis, 'tenis'),
+        (cilcismo,'cilcismo')
+    ]
     idactividad = models.IntegerField(db_column='idActividad', primary_key=True)  # Field name made lowercase.
     nombreactividad = models.CharField(db_column='nombreActividad', max_length=30)  # Field name made lowercase.
-    tipoactividad = models.CharField(db_column='tipoActividad', max_length=10)  # Field name made lowercase.
+    tipoactividad = models.CharField(db_column='tipoActividad', choices=deporte,max_length=15)  # Field name made lowercase.
     lugar = models.CharField(max_length=40)
     ubicacion = models.CharField(max_length=80)
     fechainicio = models.DateField(db_column='fechaInicio')  # Field name made lowercase.
     fechafin = models.DateField(db_column='fechaFin')  # Field name made lowercase.
+    descripcion = models.TextField(db_column="descripcion", max_length=75, blank=True, null=True)
     hora = models.TimeField()
     imagen = models.CharField(max_length=80)
     contacto = models.CharField(max_length=30)
-    puntosdeportivos = models.ForeignKey('Puntosdeportivos', models.DO_NOTHING)
-    empresa_idempresa = models.ForeignKey('EmpresaPersona', models.DO_NOTHING, db_column='empresa_idEmpresa')  # Field name made lowercase.
+    puntosdeportivos = models.ForeignKey('Puntosdeportivos', models.DO_NOTHING, null=True)
+    empresa_idempresa = models.ForeignKey('EmpresaPersona', models.DO_NOTHING, db_column='empresa_idEmpresa', null=True)  # Field name made lowercase.
 
 
     class Meta:
