@@ -131,14 +131,12 @@ a {
 
 /* segunda vista */
 
-
-
 .fondo {
-  display: flex;
-  background-image: url(/static/IMG/Fondo\ degradado\ de\ tonos\ verdes\ _\ Vector\ Premium.png);
+  /* display: flex;
+  background-color: rgb(214, 213, 213);
   background-repeat: no-repeat;
   background-size: cover;
-  height: 1050px;
+  height: 1050px; */
 }
 
 .event {
@@ -161,10 +159,9 @@ a {
 }
 
 .tablaUno {
-  background-image: url(../IMG/Captura.PNG);
+  background-color: #efefef;
   background-size: cover;
   margin-right: 20px;
-
 
 }
 
@@ -174,7 +171,7 @@ a {
 
 
 .tablaDos {
-  background-image: url(../IMG/Captura.PNG);
+  background-color: #efefef;
   background-size: cover;
 
 }
