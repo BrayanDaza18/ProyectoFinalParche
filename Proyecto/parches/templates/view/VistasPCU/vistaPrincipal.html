@@ -59,7 +59,7 @@ style="background-color: #cbe9d7; z-index: -3; ">
           {% endif %}
         </ul>
         {% else %}
-        <a href="{% url "login" %}?next={{request.path}}" type="button" class="btn btn-success btnIniciarS">Iniciar
+        <a href="{% url "login" %}" type="button" class="btn btn-success btnIniciarS">Iniciar
           Sesion</a>
         {% endif %}
 
@@ -79,10 +79,6 @@ style="background-color: #cbe9d7; z-index: -3; ">
           concentres en ganar.
         </h2>
 
-        <button type="button" class="btn btn-light me-3 btnCrear">
-          <i class="fas fa-solid fa-trophy me-3" style="color: #179631;"></i>
-          <a href="{% url "CreateEvent" %}" style="color: #179631;">Crear Un Evento</a>
-        </button>
       </div>
       <div class="col-6">
         <a href="{% url "CreateEvent" %}">
@@ -90,10 +86,16 @@ style="background-color: #cbe9d7; z-index: -3; ">
         </a>
       </div>
     </div>
+    <div class="d-flex justify-content-center align-items-center">
+      <button type="button" class="btn btn-light btn-lg me-3">
+        <i class="fas fa-solid fa-trophy me-3" style="color: #179631; font-size: 1.5rem;"></i>
+        <a href="{% url "CreateEvent" %}" style="color: #179631; font-size: 1.5rem;">Crear Un Evento</a>
+      </button>
+    </div>
   </div>
 
   <!-- Segunda parte de la vista -->
-  <div class="" id="eventos" style="background-color: rgb(214, 213, 213);">
+  <div class="p-2" id="eventos" style="background-color: rgb(214, 213, 213);">
     <div class="row container-fluid">
       <div class="row event m-2">
         <div class="primerafila ">
@@ -103,55 +105,55 @@ style="background-color: #cbe9d7; z-index: -3; ">
               <h4 class="text-center " style="color:white ;">football-torneo</h4>
             </div>
             <div class="row  descripcion">
-              <div class="col-6 mt-4">
+              <div class="col-6 mt-4" >
 
-                <img src="{% static "img/Lighthouse.jpg" %}" class="img-fluid rounded-2 ms-4" alt="...">
+                <img src="{% static "img/Lighthouse.jpg" %}" class="img-fluid rounded-2 ms-4 " alt="..." style="width:270px; height:150px">
 
               </div>
               <div class="col-6 ">
                 <div class="d-flex mt-4 ms-3 lugar ">
-                  <input type="text" class="rounded-2" value="limonar-cra19#4-2">
-                  <div class="dropdown fecha rounded-2  ">
-                    <input type="time">
+                  <input type="text" class="rounded-2 shadow" value="limonar-cra19#4-2">
+                  <div class="dropdown rounded-2">
+                    <input type="time" class="shadow" style="border-radius: 5px;">
                   </div>
 
                 </div>
-                <div class="nombreEvento ">
-                  <input class="rounded-2 " type="text" placeholder="nombre del evento">
+                <div class="nombreEvento">
+                  <input class="rounded-2 shadow" type="text" placeholder="nombre del evento">
                 </div>
                 <div class="semanaEvento">
-                  <input type="date">
+                  <input type="date" class="shadow" style="border-radius: 5px;">
                 </div>
               </div>
             </div>
             <div class="row mt-4">
               <div class="col-6">
-                <div class="mapa  ">
+                <div class="mapa">
                   <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31876.698412363232!2d-75.32120338916013!3d2.934280800000007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3b75e5f5cf0b23%3A0xbc8b39eb18d117e2!2scentro%20de%20la%20industria%2C%20la%20empresa%20y%20los%20servicios!5e0!3m2!1ses!2sco!4v1684033861851!5m2!1ses!2sco"
-                    class="rounded-2" width="190" height="150" style="border:1px solid;" allowfullscreen=""
+                    class="rounded-2" width="270px" height="150px" style="border:1px solid;" allowfullscreen=""
                     loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
               </div>
               <div class="col-6 ">
                 <div class="form-floating comentario mb-3 ms-4">
-                  <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2Disabled"
+                  <textarea class="form-control shadow" placeholder="Leave a comment here" id="floatingTextarea2Disabled"
                     style="height: 80px ; width: 220px; 
-                      background-color: rgb(109, 203, 255);" disabled></textarea>
+                      background-color: rgb(255, 255, 255);" disabled></textarea>
                   <label for="floatingTextarea2Disabled">Comments</label>
                 </div>
                 <div class="contact me-5">
-                  <input class="rounded-2" placeholder="contacto" type="number">
+                  <input class="rounded-2 shadow" placeholder="contacto" type="number">
                 </div>
               </div>
             </div>
             <div class="vinculo mt-3">
               <div class="col-6">
-                <button>UNIRME <img src="{% static "img/5402377_arrow_share_export_send_direction_icon.png" %} "
-                    style=" margin-left:8px ;" width="22px" height="25px" alt=""> </button>
+                <button class="text-white">UNIRME <img src="{% static "img/unirme.png" %} "
+                    style=" margin:5px ;" width="20px" height="20px" alt=""> </button>
               </div>
               <div class="col-6">
-                <button>COMPARTIR <img src="{% static "img/3671856_alt_share_icon.png" %}" style="margin-left:8px ;"
+                <button class="text-white">COMPARTIR <img src="{% static "img/compartir.png" %}" style="margin:5px ;"
                     width="22px" height="25px" alt=""> </button>
               </div>
             </div>
@@ -164,22 +166,22 @@ style="background-color: #cbe9d7; z-index: -3; ">
             <div class="row  descripcion">
               <div class="col-6  mt-4">
 
-                <img src="{% static "img/Lighthouse.jpg" %}" class="img-fluid rounded-2 ms-4" alt="...">
+                <img src="{% static "img/Lighthouse.jpg" %}" class="img-fluid rounded-2 ms-4" alt="..." style="width:270px; height:150px">
 
               </div>
               <div class="col-6 ">
                 <div class="d-flex mt-4 ms-3 lugar">
-                  <input type="text" class="rounded-2" value="limonar-cra19#4-2">
+                  <input type="text" class="rounded-2 shadow" value="limonar-cra19#4-2">
                   <div class="dropdown fecha rounded-2">
-                    <input type="time">
+                    <input type="time" class="shadow" style="border-radius: 5px;">
                   </div>
 
                 </div>
                 <div class="nombreEvento ">
-                  <input class="rounded-2 " type="text" placeholder="nombre del evento">
+                  <input class="rounded-2 shadow " type="text" placeholder="nombre del evento">
                 </div>
                 <div class="semanaEvento">
-                  <input type="date">
+                  <input type="date" class="shadow" style="border-radius: 5px;">
                 </div>
               </div>
             </div>
@@ -188,28 +190,28 @@ style="background-color: #cbe9d7; z-index: -3; ">
                 <div class="mapa  ">
                   <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31876.698412363232!2d-75.32120338916013!3d2.934280800000007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3b75e5f5cf0b23%3A0xbc8b39eb18d117e2!2scentro%20de%20la%20industria%2C%20la%20empresa%20y%20los%20servicios!5e0!3m2!1ses!2sco!4v1684033861851!5m2!1ses!2sco"
-                    class="rounded-2" width="190" height="150" style="border:1px solid;" allowfullscreen=""
+                    class="rounded-2" width="270px" height="150px" style="border:1px solid;" allowfullscreen=""
                     loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
               </div>
               <div class="col-6 d-block">
                 <div class="form-floating comentario mb-3 ms-4">
-                  <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2Disabled"
-                    style="height: 90px ; width: 220px;  background-color: rgb(109, 203, 255);" disabled></textarea>
+                  <textarea class="form-control shadow" placeholder="Leave a comment here" id="floatingTextarea2Disabled"
+                    style="height: 90px ; width: 220px;  background-color: rgb(255, 255, 255);" disabled></textarea>
                   <label for="floatingTextarea2Disabled">Comments</label>
                 </div>
                 <div class="contact me-5">
-                  <input class="rounded-2" placeholder="contacto" type="number">
+                  <input class="rounded-2 shadow" placeholder="contacto" type="number">
                 </div>
               </div>
             </div>
             <div class="vinculo mt-3">
               <div class="col-6">
-                <button>UNIRME <img src="{% static "img/5402377_arrow_share_export_send_direction_icon.png" %}"
-                    style="margin-left:8px ;" height="25px" width="22px" alt=""> </button>
+                <button class="text-white">UNIRME <img src="{% static "img/unirme.png" %}"
+                    style="margin:5px ;" height="25px" width="22px" alt=""> </button>
               </div>
               <div class="col-6">
-                <button>COMPARTIR <img src="{% static "img/3671856_alt_share_icon.png" %}" style="margin-left:8px ;"
+                <button class="text-white">COMPARTIR <img src="{% static "img/compartir.png" %}" style="margin:5px ;"
                     height="25px" width="22px" alt=""> </button>
               </div>
             </div>
@@ -225,23 +227,23 @@ style="background-color: #cbe9d7; z-index: -3; ">
             <div class="row  descripcion">
               <div class="col-6  mt-4">
 
-                <img src="static/img/Lighthouse.jpg" class="img-fluid rounded-2 ms-4" alt="...">
+                <img src="static/img/Lighthouse.jpg" class="img-fluid rounded-2 ms-4" alt="..." style="width:270px; height:150px">
 
               </div>
               <div class="col-6 ">
                 <div class="d-flex mt-4 ms-3 lugar">
-                  <input type="text" class="rounded-2" value="limonar-cra19#4-2">
+                  <input type="text" class="rounded-2 shadow" value="limonar-cra19#4-2">
                   <div class="dropdown fecha rounded-2 ">
-                    <input type="time">
+                    <input type="time" class="shadow" style="border-radius: 5px;">
                   </div>
 
                 </div>
                 <div class="nombreEvento  ">
-                  <input class="rounded-2 " type="text" placeholder="nombre del evento">
+                  <input class="rounded-2 shadow" type="text" placeholder="nombre del evento">
                 </div>
                 <div class="semanaEvento">
 
-                  <input type="date">
+                  <input type="date" class="shadow" style="border-radius: 5px;">
                 </div>
               </div>
             </div>
@@ -250,28 +252,28 @@ style="background-color: #cbe9d7; z-index: -3; ">
                 <div class="mapa  ">
                   <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31876.698412363232!2d-75.32120338916013!3d2.934280800000007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3b75e5f5cf0b23%3A0xbc8b39eb18d117e2!2scentro%20de%20la%20industria%2C%20la%20empresa%20y%20los%20servicios!5e0!3m2!1ses!2sco!4v1684033861851!5m2!1ses!2sco"
-                    class="rounded-2" width="190" height="150" style="border:1px solid;" allowfullscreen=""
+                    class="rounded-2" width="270px" height="150px" style="border:1px solid;" allowfullscreen=""
                     loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
               </div>
               <div class="col-6 d-block">
                 <div class="form-floating comentario mb-3 ms-4">
-                  <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2Disabled"
-                    style="height: 90px ; width: 220px;   background-color: rgb(109, 203, 255);" disabled></textarea>
+                  <textarea class="form-control shadow" placeholder="Leave a comment here" id="floatingTextarea2Disabled"
+                    style="height: 90px ; width: 220px;   background-color: rgb(255, 255, 255);" disabled></textarea>
                   <label for="floatingTextarea2Disabled">Comments</label>
                 </div>
                 <div class="contact me-5">
-                  <input class="rounded-2" placeholder="contacto" type="number">
+                  <input class="rounded-2 shadow" placeholder="contacto" type="number">
                 </div>
               </div>
             </div>
             <div class="vinculo mt-3">
               <div class="col-6">
-                <button>UNIRME <img src="{% static "img/5402377_arrow_share_export_send_direction_icon.png" %}"
-                    style="margin-left:8px ;" height="25px" width="22px" alt=""> </button>
+                <button class="text-white">UNIRME <img src="{% static "img/unirme.png" %}"
+                    style="margin:5px ;" height="25px" width="22px" alt=""> </button>
               </div>
               <div class="col-6">
-                <button>COMPARTIR <img src="{% static "img/3671856_alt_share_icon.png" %}" style="margin-left:8px ;"
+                <button class="text-white">COMPARTIR <img src="{% static "img/compartir.png" %}" style="margin:5px ;"
                     width="22px" height="25px" alt=""> </button>
               </div>
             </div>
@@ -284,22 +286,22 @@ style="background-color: #cbe9d7; z-index: -3; ">
             <div class="row  descripcion">
               <div class="col-6  mt-4">
 
-                <img src="static/img/Lighthouse.jpg" class="img-fluid rounded-2 ms-4" alt="...">
+                <img src="static/img/Lighthouse.jpg" class="img-fluid rounded-2 ms-4" alt="..." style="width:270px; height:150px">
 
               </div>
               <div class="col-6 ">
                 <div class="d-flex mt-4 ms-3 lugar">
-                  <input type="text" class="rounded-2" value="limonar-cra19#4-2">
+                  <input type="text" class="rounded-2 shadow" value="limonar-cra19#4-2">
                   <div class="dropdown fecha rounded-2">
-                    <input type="time">
+                    <input type="time" class="shadow" style="border-radius: 5px;">
                   </div>
 
                 </div>
                 <div class="nombreEvento ">
-                  <input class="rounded-2 " type="text" placeholder="nombre del evento">
+                  <input class="rounded-2 shadow" type="text" placeholder="nombre del evento">
                 </div>
                 <div class="semanaEvento">
-                  <input type="date">
+                  <input type="date" class="shadow" style="border-radius: 5px;">
                 </div>
               </div>
             </div>
@@ -308,29 +310,29 @@ style="background-color: #cbe9d7; z-index: -3; ">
                 <div class="mapa  ">
                   <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31876.698412363232!2d-75.32120338916013!3d2.934280800000007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3b75e5f5cf0b23%3A0xbc8b39eb18d117e2!2scentro%20de%20la%20industria%2C%20la%20empresa%20y%20los%20servicios!5e0!3m2!1ses!2sco!4v1684033861851!5m2!1ses!2sco"
-                    class="rounded-2" width="190" height="150" style="border:1px solid;" allowfullscreen=""
+                    class="rounded-2" width="270px" height="150px" style="border:1px solid;" allowfullscreen=""
                     loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
               </div>
               <div class="col-6 d-block ">
                 <div class="form-floating comentario mb-3 ms-4">
-                  <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2Disabled"
-                    style="height: 90px ; width: 220px; display: flex; justify-items: center;  background-color: rgb(109, 203, 255);"
+                  <textarea class="form-control shadow" placeholder="Leave a comment here" id="floatingTextarea2Disabled"
+                    style="height: 90px ; width: 220px; display: flex; justify-items: center;  background-color: rgb(255, 255, 255);"
                     disabled></textarea>
                   <label for="floatingTextarea2Disabled">Comments</label>
                 </div>
                 <div class="contact me-5 ">
-                  <input class="rounded-2" placeholder="contacto" type="number">
+                  <input class="rounded-2 shadow" placeholder="contacto" type="number">
                 </div>
               </div>
             </div>
             <div class="vinculo mt-3">
               <div class="col-6">
-                <button>UNIRME <img src="{% static "img/5402377_arrow_share_export_send_direction_icon.png" %}"
-                    style="margin-left:8px ;" height="25px" width="22px" alt=""> </button>
+                <button class="text-white">UNIRME <img src="{% static "img/unirme.png" %}"
+                    style="margin:5px ;" height="25px" width="22px" alt=""> </button>
               </div>
               <div class="col-6">
-                <button>COMPARTIR <img src="{% static "img/3671856_alt_share_icon.png" %}" style="margin-left:8px ;"
+                <button class="text-white">COMPARTIR <img src="{% static "img/compartir.png" %}" style="margin:5px ;"
                     height="25px" width="22px" alt=""> </button>
               </div>
             </div>
@@ -341,38 +343,40 @@ style="background-color: #cbe9d7; z-index: -3; ">
   </div>
 
   <!-- Tercera parte de la vista -->
-  <section class="container-fluid" id="nosotros"
+  <section class="container-fluid p-4" id="nosotros"
     style="background-color: #cbe9d7; z-index: -3;">
     <div>
       <div class="row announcement">
         <div class="col-md-1"></div>
-        <div class="col-md-4 mt-4">
-          <h2 class="text-center">Somos un equipo conformado por aprendices del Servicio Nacional de Aprendizaje (SENA), Nuestro
-            objetivo es aplicar nuestros conocimientos para resolver problemas y mejorar procesos, siempre
-            buscando la satisfacción del cliente y la calidad de nuestros servicios.
-          </h2>
+        <div class="col-md-3 mt-3">
+          <img src="{%static "img/logo-sena-verde-png-sin-fondo.png" %}" width="300" class="m-4 mx-auto d-block">
         </div>
-        <div class="col-md-2"></div>
-        <div class="col-md-4 mt-4">
-          <h2 class="text-center">En nuestra formación como aprendices, hemos adquirido habilidades en el manejo de lenguajes de
-            programación, bases de datos, metodologías de desarrollo y herramientas de gestión de proyectos,
-            entre otros. Asimismo, valoramos la importancia de la comunicación y el trabajo en equipo para
-            llevar a cabo proyectos exitosos.</h2>
+        <div class="col-md-3 d-flex justify-content-center align-items-center">
+          <h5 class="text-center" style="color: #365C45;">Somos un equipo de aprendices del SENA enfocado en aplicar nuestros conocimientos para resolver problemas, mejorando procesos y asegurando la satisfacción del cliente y la calidad de nuestros servicios.
+          </h5>
         </div>
-        <div class="col-md-1"></div>
-      </div>
-      <div class="row">
-        <div class="col-md-1"></div>
-        <div class="col-md-5">
-          <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-8">
-              <img src="{%static "img/logo-sena-verde-png-sin-fondo.png" %}" width="300" class="my-4 img-fluid">
+        <div class="col-md-4 d-flex justify-content-center align-items-center">
+          <div id="carouselExampleRide" class="carousel slide" data-bs-ride="true">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img src="static/IMG/Lighthouse.jpg" class="d-block w-100" alt="...">
+              </div>
+              <div class="carousel-item">
+                <img src="static/IMG/Penguins.jpg" class="d-block w-100" alt="...">
+              </div>
+              <div class="carousel-item">
+                <img src="static/IMG/Captura.PNG" class="d-block w-100" alt="..." height="356rem">
+              </div>
             </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
           </div>
-        </div>
-        <div class="col-md-5 text-center mt-5">
-          <h3>“No hemos fracasado. Hemos encontrado 10000 soluciones que no funcionan”</h3>
         </div>
         <div class="col-md-1"></div>
       </div>
@@ -381,14 +385,13 @@ style="background-color: #cbe9d7; z-index: -3; ">
 
 
   <!-- Cuarta parte de la vista -->
-  <section id="contactanos" class="container-fluid" style="background-color: rgb(214, 213, 213); padding: 50px 0;">
-    <div class="d-flex">
+  <section id="contactanos" class="container-fluid" style="background-color: rgb(214, 213, 213); padding: 50px 0;"> 
+    <div class="row container-fluid">
       <div class="col-md-1"></div>
-      <div class="col-md-5 text-center correo">
-        <img src="{% static "img/logo.png" %}" alt="" class="img-fluid" style="max-width: 100%;">
-        
+      <div class="col-md-5 col-sm-12 text-center correo">
+        <img src="{% static "img/logo.png" %}" alt="" class="img-fluid" style="max-width: 70%;">
       </div>
-      <div class="col-md-5 text-center">
+      <div class="col-md-5 col-sm-12 text-center">
         <div class="link">
           <h1>Contactanos</h1>
           <div style="height: 20px;"></div>
@@ -400,8 +403,9 @@ style="background-color: #cbe9d7; z-index: -3; ">
       </div>
       <div class="col-md-1"></div>
     </div>
-    <div class="text-center mt-2">&copy; 2023 Parche. Todos los derechos reservados </div>
+    <div class="text-center mt-2">&copy; 2023 Parche. Todos los derechos reservados</div>
   </section>
+  
 
 </body>
 

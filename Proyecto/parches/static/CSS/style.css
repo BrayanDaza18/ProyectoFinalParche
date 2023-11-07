@@ -39,7 +39,7 @@ a {
   font-size: 20px;
   width: 180px;
   margin-top: 35px;
-  margin-left: 650px;
+  margin-left: 740px;
 }
 
 
@@ -204,7 +204,7 @@ a {
   width: 180px;
   height: 30px;
   border: none;
-  background-color: rgb(109, 203, 255);
+  background-color: rgb(255, 255, 255);
   color: black;
 }
 
@@ -221,7 +221,7 @@ a {
   width: 140px;
   height: 30px;
   border: none;
-  background-color: rgb(109, 203, 255);
+  background-color: rgb(255, 255, 255);
 
 }
 
@@ -239,7 +239,7 @@ a {
 
 .mapa iframe {
   display: flex;
-  margin-left: 60px;
+  margin-left: 25px;
   align-items: center;
   justify-items: center;
 
@@ -264,7 +264,7 @@ a {
   border: none;
   width: 200px;
   height: 30px;
-  background-color: rgb(109, 203, 255);
+  background-color: rgb(254, 255, 255);
 }
 
 .vinculo {
@@ -284,34 +284,30 @@ a {
 }
 
 .vinculo button {
-  border: none;
-  background-color: rgb(250, 191, 22);
+  border-radius: 10px;
+  background-color: #198754;
   font-weight: bold;
 }
 
-.fecha {
-  background-color: rgb(109, 203, 255);
+/* .fecha {
+  border-radius: 10px;
   justify-content: center;
   display: grid;
 
-
-}
+} */
 
 .lugar input {
   margin-right: 15px;
   width: 100px;
   height: 30px;
   border: none;
-  background-color: rgb(109, 203, 255);
+  background-color: rgb(253, 253, 253);
 }
 
-
-
-
-
-
-
-
+/* Borde circular de imagenes del carrusel de la vista principal */
+.carousel-item img {
+  border-radius: 20px; 
+}
 
 
 
@@ -417,14 +413,14 @@ a {
     font-size: 10px;
   }
 
-  .btnCrear a {
-    font-size: 25px;
-  }
+  /* .btnCrear a {
+    font-size: 10rem;
+  } */
 
-  .btnCrear {
+  /* .btnCrear {
     height: 90px;
     width: 265px;
-  }
+  } */
 
   .principal {
     color: white;
