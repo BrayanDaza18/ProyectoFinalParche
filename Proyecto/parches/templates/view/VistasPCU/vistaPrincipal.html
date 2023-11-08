@@ -56,6 +56,10 @@
        {% if user.is_authenticated %}
          <li>User: {{ user.get_username }}</li>
          <li><a href="{% url 'logout'%}?next={{request.path}}">Cerrar sesión</a></li>
+        
+         <li><a href="{% url 'profile'%}?next={{request.path}}">perfil</a></li>
+       
+        
        {% else %}
          <li><a href="{% url 'login'%}">Iniciar sesión</a></li>
        {% endif %}
@@ -138,6 +142,72 @@
 
 
   <!-- Segunda parte de la vista -->
+  {% if user.is_authenticated %}
+  {% for element in data %}
+  {% block content  %}
+  <div class="col-6 tablaDos  rounded-2">
+    <div class="nombretorneo">
+      <h4 class="text-center" style="color:white ;">{{element.tipoactividad}}</h4>
+    </div>
+    <div class="row  descripcion">
+      <div class="col-6  mt-4">
+
+        <img src="{{element.imagen.url}}" class="img-fluid rounded-2 ms-4" alt="...">
+
+      </div>
+      <div class="col-6 ">
+        <div class="d-flex mt-4 ms-3 lugar">
+          <input type="text" class="rounded-2" value="{{element.lugar}}">
+          <div class="dropdown fecha rounded-2">
+            <input type="text" value="{{element.hora}}">
+          </div>
+
+        </div>
+        <div class="nombreEvento ">
+          <input class="rounded-2 " value="{{element.nombreactividad}}" type="text" placeholder="nombre del evento">
+        </div>
+        <div class="semanaEvento">
+          <input type="text"  value="{{element.fechainicio}}">
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-6">
+        <div class="mapa  ">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31876.698412363232!2d-75.32120338916013!3d2.934280800000007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3b75e5f5cf0b23%3A0xbc8b39eb18d117e2!2scentro%20de%20la%20industria%2C%20la%20empresa%20y%20los%20servicios!5e0!3m2!1ses!2sco!4v1684033861851!5m2!1ses!2sco"
+            class="rounded-2" width="190" height="150" style="border:1px solid;" allowfullscreen=""
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+      <div class="col-6 d-block">
+        <div class="form-floating comentario mb-3 ms-4">
+          <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2Disabled"
+            style="height: 90px ; width: 220px;  background-color: rgb(109, 203, 255);" disabled></textarea>
+          <label for="floatingTextarea2Disabled">{{element.descripcion}}</label>
+        </div>
+        <div class="contact me-5">
+          <input class="rounded-2" value="{{element.contacto}}"  type="text">
+        </div>
+      </div>
+    </div>
+    <div class="vinculo mt-3">
+      <div class="col-6">
+        <button>UNIRME <img src="{% static "img/5402377_arrow_share_export_send_direction_icon.png" %}"
+            style="margin-left:8px ;" height="25px" width="22px" alt=""> </button>
+      </div>
+      <div class="col-6">
+        <button>COMPARTIR <img src="{% static "img/3671856_alt_share_icon.png" %}" style="margin-left:8px ;" height="25px"
+            width="22px" alt=""> </button>
+      </div>
+    </div>
+  </div>
+  
+  {% endblock  %}
+  
+  {% endfor %}
+  
+  {% else %}
   <div class=" fondo " id="eventos">
     <div class="row container-fluid mt-3">
       <div class="row event">
@@ -386,6 +456,8 @@
   </div>
 
 
+  {% endif %}
+  
   
 
 

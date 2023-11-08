@@ -34,7 +34,7 @@ class Actividad(models.Model):
         (tenis, 'tenis'),
         (cilcismo,'cilcismo')
     ]
-    idactividad = models.IntegerField(db_column='idActividad', primary_key=True)  # Field name made lowercase.
+    idactividad = models.AutoField(db_column='idActividad', primary_key=True)  # Field name made lowercase.
     nombreactividad = models.CharField(db_column='nombreActividad', max_length=30)  # Field name made lowercase.
     tipoactividad = models.CharField(db_column='tipoActividad', choices=deporte,max_length=15)  # Field name made lowercase.
     lugar = models.CharField(max_length=40)
@@ -43,7 +43,7 @@ class Actividad(models.Model):
     fechafin = models.DateField(db_column='fechaFin')  # Field name made lowercase.
     descripcion = models.TextField(db_column="descripcion", max_length=75, blank=True, null=True)
     hora = models.TimeField()
-    imagen = models.CharField(max_length=80)
+    imagen = models.ImageField(upload_to='actividad/', max_length=80)
     contacto = models.CharField(max_length=30)
     puntosdeportivos = models.ForeignKey('Puntosdeportivos', models.DO_NOTHING, null=True)
     empresa_idempresa = models.ForeignKey('EmpresaPersona', models.DO_NOTHING, db_column='empresa_idEmpresa', null=True)  # Field name made lowercase.
@@ -53,16 +53,26 @@ class Actividad(models.Model):
        
         db_table = 'actividad'
         unique_together = (('idactividad', 'puntosdeportivos', 'empresa_idempresa'),)
+    
+    def delete(self, using: None, keep_parents=False):
+        self.imagen.storage.delete(self.imagen.name)
+        super().delete()
 
 
 
 class Documento(models.Model):
     iddocumento = models.AutoField(db_column='idDocumento', primary_key=True)  # Field name made lowercase.
-    documentocol = models.FileField(db_column='Documentocol', upload_to='imagenes/', max_length=100)  # Field name made lowercase.
+    documentocol = models.FileField(db_column='Documentocol', upload_to='documentos/', max_length=100)  # Field name made lowercase.
     empresa_idempresa = models.ForeignKey('EmpresaPersona', db_column='empresa_idEmpresa', on_delete=models.CASCADE) # Field name made lowercase.
 
     class Meta:
         db_table = 'documento'
+    
+    def delete(self, using: None , keep_parents= False):
+        self.documentocol.storage.delete(self.documentocol.name)
+        super().delete()
+    
+
 
 
 

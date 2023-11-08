@@ -135,3 +135,7 @@ AUTH_USER_MODEL = 'parches.EmpresaPersona'
 AUTH_PASSWORD_FIELD = 'contrasena'
 
 LOGIN_REDIRECT_URL = '/'
+
+
+
+MEDIA_ROOT = os.path.join(BASE_DIR, '')
