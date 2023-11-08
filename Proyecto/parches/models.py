@@ -13,127 +13,110 @@ from django.db import models
 
 
 class Actividad(models.Model):
+    Futbol = "FUTBOL"
+    Baloncesto = "BALONCESTO"
+    juegoMesa = "JuegoDeMesa"
+    Voleibol = "Voleibol"
+    pasarElRato = "PasarElRato"
+    natacion = "natacion"
+    patinaje = 'patinaje'
+    tenis= 'tenis'
+    cilcismo = 'ciclismo' 
+
+    deporte = [
+        (Futbol, 'Futbol'),
+        (Baloncesto, 'Baloncesto'),
+        (juegoMesa, 'Juegos De Mesa'),
+        (Voleibol,'Voleibol'),
+        (pasarElRato,'pasar el rato '),
+        (natacion, 'Natacion'),
+        (patinaje, 'patinaje'),
+        (tenis, 'tenis'),
+        (cilcismo,'cilcismo')
+    ]
     idactividad = models.IntegerField(db_column='idActividad', primary_key=True)  # Field name made lowercase.
     nombreactividad = models.CharField(db_column='nombreActividad', max_length=30)  # Field name made lowercase.
-    tipoactividad = models.CharField(db_column='tipoActividad', max_length=10)  # Field name made lowercase.
+    tipoactividad = models.CharField(db_column='tipoActividad', choices=deporte,max_length=15)  # Field name made lowercase.
     lugar = models.CharField(max_length=40)
     ubicacion = models.CharField(max_length=80)
     fechainicio = models.DateField(db_column='fechaInicio')  # Field name made lowercase.
     fechafin = models.DateField(db_column='fechaFin')  # Field name made lowercase.
+    descripcion = models.TextField(db_column="descripcion", max_length=75, blank=True, null=True)
     hora = models.TimeField()
     imagen = models.CharField(max_length=80)
     contacto = models.CharField(max_length=30)
-    puntosdeportivos = models.ForeignKey('Puntosdeportivos', models.DO_NOTHING)
-    empresa_idempresa = models.ForeignKey('EmpresaPersona', models.DO_NOTHING, db_column='empresa_idEmpresa')  # Field name made lowercase.
+    puntosdeportivos = models.ForeignKey('Puntosdeportivos', models.DO_NOTHING, null=True)
+    empresa_idempresa = models.ForeignKey('EmpresaPersona', models.DO_NOTHING, db_column='empresa_idEmpresa', null=True)  # Field name made lowercase.
 
 
     class Meta:
-        managed = False
+       
         db_table = 'actividad'
         unique_together = (('idactividad', 'puntosdeportivos', 'empresa_idempresa'),)
 
 
+
 class Documento(models.Model):
-    iddocumento = models.IntegerField(db_column='idDocumento', primary_key=True)  # Field name made lowercase.
-    documentocol = models.CharField(db_column='Documentocol', max_length=45, blank=True, null=True)  # Field name made lowercase.
-    empresa_idempresa = models.ForeignKey('EmpresaPersona', models.DO_NOTHING, db_column='empresa_idEmpresa')  # Field name made lowercase.
+    iddocumento = models.AutoField(db_column='idDocumento', primary_key=True)  # Field name made lowercase.
+    documentocol = models.FileField(db_column='Documentocol', upload_to='imagenes/', max_length=100)  # Field name made lowercase.
+    empresa_idempresa = models.ForeignKey('EmpresaPersona', db_column='empresa_idEmpresa', on_delete=models.CASCADE) # Field name made lowercase.
 
     class Meta:
-        managed = False
         db_table = 'documento'
-        unique_together = (('iddocumento', 'empresa_idempresa'),)
-
-
-class EmpresaPersona(models.Model):
-    idregistro = models.AutoField(db_column='idRegistro', primary_key=True)  # Field name made lowercase.
-    nit = models.CharField(max_length=45, blank=True, null=True)
-    nombreempresa = models.CharField(db_column='nombreEmpresa', unique=True, max_length=40)  # Field name made lowercase.
-    direccion = models.CharField(max_length=40)
-    correo = models.CharField(max_length=40)
-    contrasena = models.CharField(max_length=45)
-    telefono = models.CharField(max_length=40)
-    tipousuario = models.CharField(db_column='tipoUsuario', max_length=1)  # Field name made lowercase.
-
-   
-    class Meta:
-        managed = False
-        db_table = 'empresa/persona'
-
-
-class Persona(models.Model ):
-    idpersona = models.AutoField(db_column='idPersona', primary_key=True)
-    documento = models.CharField(max_length=45)
-    nombre = models.CharField(max_length=50)
-    apellido = models.CharField(max_length=45)
-    correo = models.CharField(max_length=45)
-    telefono = models.IntegerField()
-    
- 
-
-    # Puedes agregar métodos personalizados y lógica de autenticación aquí
-
-    class Meta:
-        managed = False
-        db_table = 'persona'
-
-
-class Puntosdeportivos(models.Model):
-    nombre = models.CharField(max_length=50)
-    id = models.IntegerField(primary_key=True)
-    logo = models.CharField(max_length=80)
-    direccion = models.CharField(max_length=40)
-
-    class Meta:
-        managed = False
-        db_table = 'puntosdeportivos'
-
-
-class Realizacion(models.Model):
-    actividad_idactividad = models.OneToOneField(Actividad, models.DO_NOTHING, db_column='actividad_idActividad', primary_key=True)  # Field name made lowercase.
-    usuario_idusuario = models.ForeignKey('Usuario', models.DO_NOTHING, db_column='usuario_idUsuario')  # Field name made lowercase.
-    comentarios = models.CharField(max_length=45)
-
-    class Meta:
-        managed = False
-        db_table = 'realizacion'
-        unique_together = (('actividad_idactividad', 'usuario_idusuario'),)
 
 
 
-class UsuarioManager(BaseUserManager):
-    def create_user(self, usuario,correo, telefono, password=None):
-        if not usuario:
-            raise ValueError("El nombre de usuario es obligatorio")
+class EmpresaPersonaManager(BaseUserManager):
+    def create_user(self, usuario, correo, telefono, password):
         usuario = self.model(usuario=usuario, correo=correo, telefono=telefono)
-        usuario.set_password(password)
+        usuario.usuario_activo = True
+        usuario.set_password(password)  
         usuario.save()
         return usuario
 
-    def create_superuser(self, usuario, password ):
-        usuario = self.create_user( usuario=usuario, password=password)
+    def create_superuser(self, usuario, password):
+        usuario = self.create_user(usuario=usuario, correo="", telefono=0, password=password)
         usuario.usuario_administrador = True
         usuario.save()
         return usuario
 
-class Usuario(AbstractBaseUser, PermissionsMixin):
-    idusuario = models.AutoField(db_column='idUsuario', primary_key=True)
+
+
+class EmpresaPersona(AbstractBaseUser, PermissionsMixin):
+    TipoUser = [
+        ('E', 'E'),
+        ('U', 'U')
+    ]
+
+    Estado_ENUM = [
+        ('A', 'A'),
+        ('I', 'I')
+    ]
+
+    idregistro = models.AutoField(db_column='idRegistro', primary_key=True)  # Field name made lowercase.
+    nit = models.CharField(max_length=45, blank=True, null=True)
     usuario = models.CharField(max_length=40, db_column='usuario', unique=True)
-    password = models.CharField(max_length=128) 
+    password = models.CharField(max_length=128)
+    nombreempresa = models.CharField(db_column='nombreEmpresa', unique=True, max_length=40, null=True)  # Field name made lowercase.
+    direccion = models.CharField(max_length=40)
     correo = models.CharField(max_length=45)
+    telefono = models.CharField(max_length=40)
+    tipousuario = models.CharField(db_column='tipoUsuario', choices=TipoUser, max_length=1)  # Field name made lowercase.
     fotoperfil = models.CharField(db_column='fotoPerfil', max_length=80)
     resena = models.CharField(max_length=40)
-    telefono = models.IntegerField(null=True)
-    usuario_activo = models.BooleanField(default= True)
-    usuario_administrador = models.BooleanField(default= False)
+    usuario_activo = models.BooleanField(default=True)
+    usuario_administrador = models.BooleanField(default=False)
+    estado = models.CharField(choices=Estado_ENUM, default='I', max_length=1)
     
 
+    
 
-    # Configura los campos requeridos al crear un usuario
-    REQUIRED_FIELDS = ['correo', 'telefono']  # Agrega aquí los campos adicionales requeridos
+     
+    REQUIRED_FIELDS = ['correo', 'telefono'] 
     USERNAME_FIELD = 'usuario'
-    # PASSWORD_FIELD = 'contrasena'  # No necesitas especificar esto, se utiliza el campo "password" por defecto
+    # PASSWORD_FIELD = 'contrasena'  
 
-    objects = UsuarioManager()
+    objects = EmpresaPersonaManager()
 
     def __str__(self):
         return self.usuario
@@ -143,11 +126,69 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
 
     def has_module_perms(self, app_label):
         return True
+     
+    class Meta:
+         db_table = 'empresa/usuario'
 
     @property
     def is_staff(self):
         return self.usuario_administrador
 
+
+
     # class Meta:
-    #     managed = False
-    #     db_table = 'usuario'
+    #     managed = Fals
+    #     db_table = 'empresa/persona'
+
+
+class Persona(models.Model ):
+    idpersona = models.AutoField(db_column='idPersona', primary_key=True)
+    documento = models.CharField(max_length=45)
+    nombre = models.CharField(max_length=50)
+    apellido = models.CharField(max_length=45)
+    correo = models.CharField(max_length=45)
+    telefono = models.CharField(max_length=40)
+    empresa_idEmpresa = models.ForeignKey('EmpresaPersona', db_column='empresa_idEmpresa', on_delete=models.CASCADE)
+    
+
+    class Meta:
+        
+        db_table = 'persona'
+        
+
+
+class Puntosdeportivos(models.Model):
+    nombre = models.CharField(max_length=50)
+    id = models.IntegerField(primary_key=True)
+    logo = models.CharField(max_length=80)
+    direccion = models.CharField(max_length=40)
+
+    class Meta:
+   
+        db_table = 'puntosdeportivos'
+
+
+class Realizacion(models.Model):
+    actividad_idactividad = models.OneToOneField(Actividad, models.DO_NOTHING, db_column='actividad_idActividad', primary_key=True) 
+    usuario_idusuario = models.ForeignKey('EmpresaPersona', models.DO_NOTHING, db_column='usuario_idEmpresaPersona')  
+    comentarios = models.CharField(max_length=45)
+
+    class Meta:
+        
+        db_table = 'realizacion'
+        unique_together = (('actividad_idactividad', 'usuario_idusuario'),)
+
+
+        
+# class Usuario(models.Model):
+#     idusuario = models.AutoField(db_column='idUsuario', primary_key=True)
+#     usuario = models.CharField(max_length=40, db_column='usuario', unique=True)
+#     password = models.CharField(max_length=128) 
+#     correo = models.CharField(max_length=45)
+#     fotoperfil = models.CharField(db_column='fotoPerfil', max_length=80)
+#     resena = models.CharField(max_length=40)
+#     telefono = models.IntegerField(null=True)
+    
+#     class Meta:
+#         managed = False
+#         db_table = 'usuario'

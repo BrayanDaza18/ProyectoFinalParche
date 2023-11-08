@@ -1,9 +1,8 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render
-from django.views.generic import CreateView
 
-from .forms import USERFORM, FormUser
-from .models import Usuario
+from .forms import Document, FormUser, FormUserCompany, UserRegister
+from .models import EmpresaPersona, Persona
 
 # Create your views here.
 
@@ -11,14 +10,25 @@ def HomepageProject(request):
      return render(request, 'view/VistasPCU/vistaPrincipal.html' )
 
 def registerUser(request):
+    form = FormUser()
+    usuario = UserRegister()  
+    
     if request.method == 'POST':
         form = FormUser(request.POST)
+        # usuario = UserRegister(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('login')
-    else:
-        form = FormUser()
-    return render(request, 'registration/register.html', {'form': form})
+           data = form.save()
+           data.tipousuario = 'U' 
+           data.save()
+        #    data = form.save() 
+        #    datos =usuario.save(commit = False)
+        #    datos.empresa_idEmpresa = data
+        #    datos.save()
+     
+        return redirect('login')
+
+    
+    return render(request, 'registration/register.html', {'form': form, 'usuario': usuario})
 
 
 def login(request):
@@ -41,7 +51,28 @@ def CreateEvent(request):
      return render(request, 'view/VistasPCU/crearEvento.html')
 
 def RegisterCompany(request):
-     return render(request, 'view/VistasPCU/registroEmpresa.html')
+    document_form = Document()  
+    form = FormUserCompany()
+  
+
+    if request.method == 'POST':
+        form = FormUserCompany(request.POST)
+        document_form = Document(request.POST, request.FILES) 
+
+        if form.is_valid() and document_form.is_valid():
+            data = form.save() 
+            data.tipousuario = 'E' 
+            data.save()
+            datos = document_form.save(commit=False)
+            datos.empresa_idempresa = data
+            datos.save()
+
+        else:
+          print("Errores en el formulario FormUserCompany:", form.errors)
+          print("Errores en el formulario Document:", document_form.errors)
+        return redirect('login')
+
+    return render(request, 'registration/registroEmpresa.html', {'document': document_form, 'form': form})
 
 def Profile(request):
      return render(request, 'view/VistasPCU/perfil.html')

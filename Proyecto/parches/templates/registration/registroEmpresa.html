@@ -15,9 +15,12 @@
 <div class="palabraRegistro">
 <h1 class="pregistro">registro</h1>
 </div>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
 <div class="inputRegistro">
     <div class="nombreRegistro">
-        <input type="text" placeholder="Nombre de la entidad">
+        
+        {{ form.usuario }}
     </div>
     
     <!-- <div class="usuarioRegistro">
@@ -25,52 +28,62 @@
     </div> -->
 
     <div class="correoRegistro">
-        <input type="text" placeholder="Correo">
+        {{ form.correo }}
     </div>
 
     <div class="contraseñaRegistro">
-        <input type="text" placeholder="Contraseña">
+      {{form.direccion}}
     </div>
 
     <div class="contraseñaRegistro">
-        <input type="text" placeholder="Direccion">
+        {{ form.password2 }}
+    </div>
+    <div class="contraseñaRegistro">
+        {{ form.password1 }}
     </div>
    
    
     <div class="numeroRegistro">
-        <input type="text" placeholder="Numero de telefono">
+        {{ form.telefono }}
     </div>
+    
+    <div class="numeroRegistro">
+        {{ form.nombreempresa }}
+    </div>
+    
  
 
     
 
 </div>
 
-<input type="file" name="" id="input-file" style="display: none;">
- <button id="mi-boton">Cargar Documento de Identidad</button>
+{{ document.documentocol }}
+<button id="mi-boton" type="button">Cargar Documento de Identidad</button>
 
- <script>
-    let $miBoton = document.getElementById('mi-boton')
+<input type="file" id="input-file" style="display: none">
+<script>
+  let $miBoton = document.getElementById('mi-boton');
+  let $inputFile = document.getElementById('input-file');
 
-$miBoton.addEventListener('click', (e) => {
- e.target.previousElementSibling.click()
-})
+  $miBoton.addEventListener('click', (e) => {
+    $inputFile.click();
+  });
 
-let $inputFile = document.getElementById('input-file') //debajo del $miBoton
-
-$inputFile.addEventListener('change', (e) => {
-   console.log(e.target.files[0].name);
-   $miBoton.innerHTML = e.target.files[0].name
-  })
- </script>
+  $inputFile.addEventListener('change', (e) => {
+    console.log(e.target.files[0].name);
+    $miBoton.innerHTML = e.target.files[0].name;
+  });
+</script>
 
 <div class="botonRegistrarse">
     
-<button>Registrate</button>
+<button  type="submit">Registrate</button>
 </div>
+
 <div class="cuentaExistente">
 <a href="{% url "login" %}">¿Ya tienes una cuenta creada?</a>
 </div>
+</form>
 </div>
    </div> 
 </body>

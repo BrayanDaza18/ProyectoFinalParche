@@ -65,7 +65,9 @@ style="background-color: #cbe9d7; z-index: -3; ">
 
       </div>
     </div>
-
+  </div>
+    
+    {% if user.is_authenticated %}
     <div class="row principal">
       <div class="col-6">
         <h2 style="color: #365C45;">Nos encargamos de la
@@ -83,6 +85,36 @@ style="background-color: #cbe9d7; z-index: -3; ">
       <div class="col-6">
         <a href="{% url "CreateEvent" %}">
           <img class="imgP" src="{% static "IMG/CorredorSaliendo.png" %}" alt="">
+        </a>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center">
+      <button type="button" class="btn btn-light btn-lg me-3">
+        <i class="fas fa-solid fa-trophy me-3" style="color: #179631; font-size: 1.5rem;"></i>
+        <a href="{% url "CreateEvent" %}" style="color: #179631; font-size: 1.5rem;">Crear Un Evento</a>
+      </button>
+    </div>
+    
+    {% else %}
+    <div class="row principal">
+      <div class="col-6">
+        <h2 style="color: #365C45;">Nos encargamos de la
+          <br>
+          gestión de tus
+          <br>
+          eventos deportivos
+          <br>
+          para que tú te
+          <br>
+          concentres en ganar.
+        </h2>
+
+        
+      </div>
+      <div class="col-6">
+        <a href="{% url "login" %}?next={{request.path}}">
+          <img class="imgP"  src="{% static "IMG/imagen_2023-05-08_220016504-removebg-preview.png" %}" alt="" >
         </a>
       </div>
     </div>
