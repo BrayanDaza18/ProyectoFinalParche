@@ -1,0 +1,26 @@
+.login-form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 35px;
+    box-shadow: 50px 50px 50px rgba(0, 0, 0, 0.1);
+}
+
+.login-form h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login-form .form-control {
+    border-color: #365C45;
+}
+
+
+.login-form .forgot-link {
+    float: right;
+}
+
+.login-form .text-center {
+    margin-top: 15px;
+}

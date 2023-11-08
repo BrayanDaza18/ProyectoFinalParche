@@ -2,9 +2,9 @@ html {
   scroll-behavior: smooth;
 }
 
-.encabezado {
+/* .encabezado {
   flex-direction: row;
-}
+} */
 
 .index1 {
   height: 665px;
@@ -66,39 +66,35 @@ a {
 }
 
 
-.encabezado button {
+/* .encabezado button {
   height: 80px;
   background-color: 0092FC;
   color: rgb(27, 207, 36);
   margin-top: 40px;
   font-size: 911px;
-}
+} */
 
 .principal {
-  margin-top: 65px;
+  margin-top: 75px;
   color: white;
   text-align: center;
 }
 
-.principal h1 {
-  font-size: 45px;
-}
-
-.principal button {
+/* .principal button {
   font-weight: bold;
   height: 60px;
   font-size: 30px;
   margin-top: 70px;
   color: green;
-}
+} */
 
-.principal button:hover {
+/* .principal button:hover {
   font-weight: bold;
   height: 60px;
   font-size: 30px;
   margin-top: 70px;
   color: green;
-}
+} */
 
 .eventos {
   margin-top: 250px;
@@ -117,7 +113,7 @@ a {
 
 .imgP {
   height: 400px;
-  width: 500px;
+  width: 600px;
 }
 
 #logo {

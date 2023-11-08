@@ -11,12 +11,11 @@
     <link rel="stylesheet" href="{% static "CSS/registro.css" %}">
 </head>
 
-<body style=" background-color: rgb(4, 179, 75)">
-
-<div class="paginaR container-fluid">
+<body>
+<div class="container-fluid d-flex justify-content-center align-items-center" style="height: 44.8rem;  background-color: rgb(214, 213, 213);">
         <div class="row cartaR">
             <div class="palabraRegistro">
-                <h1>Registro</h1>
+                <h1 style="color: #365C45;">Registro</h1>
             </div>
             <form method="post">
                 {% csrf_token %}
@@ -43,15 +42,16 @@
                     </div>
                      
                 </div>
-                <div class="botonRegistrarse    ">
-                    <button type="submit" class="btn btn-primary">Registrarse</button>
+                <div class="botonRegistrarse">
+                    <button type="submit" class="btn btn-success">Registrarse</button>
                 </div>
-                <div class="cuentaExistente  d-block">
+                <div class="cuentaExistente d-block text-center">
                     <a href="{% url 'login' %}">¿Ya tienes una cuenta creada?</a>
                 </div>
             </form>
         </div>
-    </div>
+</div>
+
 
 </body>
 
