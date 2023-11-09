@@ -111,7 +111,7 @@ style="background-color: #cbe9d7; z-index: -3; ">
         
       </div>
       <div class="col-6">
-        <a href="{% url "login" %}?next={{request.path}}">
+        <a href="{% url "login" %}?">
           <img class="imgP"  src="{% static "IMG/corredorIniciando.png" %}" alt="" >
         </a>
       </div>
@@ -121,260 +121,18 @@ style="background-color: #cbe9d7; z-index: -3; ">
         <i class="fas fa-solid fa-trophy me-3" style="color: #179631; font-size: 1.5rem;"></i>
         <a href="{% url "CreateEvent" %}" style="color: #179631; font-size: 1.5rem;">Crear Un Evento</a>
       </button>
+      <button type="button" class="btn btn-success btn-lg me-3">
+        <!-- <i class="fa-solid fa-eye me-3" style="color: #ffffff; font-size: 1.5rem;"></i> -->
+        <a href="{% url 'mostrarEventos'%}" style="color: #ffffff; font-size: 1.5rem;">Ver Eventos</a>
+      </button>
     </div>
     {% endif %}
   </div>
   </div>
     
-    
-
-
   <!-- Segunda parte de la vista -->
-  <div class="p-2" id="eventos" style="background-color: rgb(214, 213, 213);">
-    <div class="row container-fluid">
-      <div class="row event m-2">
-        <div class="primerafila ">
-          <div class=" col-6 tablaUno rounded-2 ">
-
-            <div class="nombretorneo">
-              <h4 class="text-center " style="color:white ;">football-torneo</h4>
-            </div>
-            <div class="row  descripcion">
-              <div class="col-6 mt-4" >
-
-                <img src="{% static "img/Lighthouse.jpg" %}" class="img-fluid rounded-2 ms-4 " alt="..." style="width:270px; height:150px">
-
-              </div>
-              <div class="col-6 ">
-                <div class="d-flex mt-4 ms-3 lugar ">
-                  <input type="text" class="rounded-2 shadow" value="limonar-cra19#4-2">
-                  <div class="dropdown rounded-2">
-                    <input type="time" class="shadow" style="border-radius: 5px;">
-                  </div>
-
-                </div>
-                <div class="nombreEvento">
-                  <input class="rounded-2 shadow" type="text" placeholder="nombre del evento">
-                </div>
-                <div class="semanaEvento">
-                  <input type="date" class="shadow" style="border-radius: 5px;">
-                </div>
-              </div>
-            </div>
-            <div class="row mt-4">
-              <div class="col-6">
-                <div class="mapa">
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31876.698412363232!2d-75.32120338916013!3d2.934280800000007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3b75e5f5cf0b23%3A0xbc8b39eb18d117e2!2scentro%20de%20la%20industria%2C%20la%20empresa%20y%20los%20servicios!5e0!3m2!1ses!2sco!4v1684033861851!5m2!1ses!2sco"
-                    class="rounded-2" width="270px" height="150px" style="border:1px solid;" allowfullscreen=""
-                    loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                </div>
-              </div>
-              <div class="col-6 ">
-                <div class="form-floating comentario mb-3 ms-4">
-                  <textarea class="form-control shadow" placeholder="Leave a comment here" id="floatingTextarea2Disabled"
-                    style="height: 80px ; width: 220px; 
-                      background-color: rgb(255, 255, 255);" disabled></textarea>
-                  <label for="floatingTextarea2Disabled">Comments</label>
-                </div>
-                <div class="contact me-5">
-                  <input class="rounded-2 shadow" placeholder="contacto" type="number">
-                </div>
-              </div>
-            </div>
-            <div class="vinculo mt-3">
-              <div class="col-6">
-                <button class="text-white">UNIRME <img src="{% static "img/unirme.png" %} "
-                    style=" margin:5px ;" width="20px" height="20px" alt=""> </button>
-              </div>
-              <div class="col-6">
-                <button class="text-white">COMPARTIR <img src="{% static "img/compartir.png" %}" style="margin:5px ;"
-                    width="22px" height="25px" alt=""> </button>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-6 tablaDos  rounded-2">
-            <div class="nombretorneo">
-              <h4 class="text-center" style="color:white ;">basquetball-torneo</h4>
-            </div>
-            <div class="row  descripcion">
-              <div class="col-6  mt-4">
-
-                <img src="{% static "img/Lighthouse.jpg" %}" class="img-fluid rounded-2 ms-4" alt="..." style="width:270px; height:150px">
-
-              </div>
-              <div class="col-6 ">
-                <div class="d-flex mt-4 ms-3 lugar">
-                  <input type="text" class="rounded-2 shadow" value="limonar-cra19#4-2">
-                  <div class="dropdown fecha rounded-2">
-                    <input type="time" class="shadow" style="border-radius: 5px;">
-                  </div>
-
-                </div>
-                <div class="nombreEvento ">
-                  <input class="rounded-2 shadow " type="text" placeholder="nombre del evento">
-                </div>
-                <div class="semanaEvento">
-                  <input type="date" class="shadow" style="border-radius: 5px;">
-                </div>
-              </div>
-            </div>
-            <div class="row mt-4">
-              <div class="col-6">
-                <div class="mapa  ">
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31876.698412363232!2d-75.32120338916013!3d2.934280800000007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3b75e5f5cf0b23%3A0xbc8b39eb18d117e2!2scentro%20de%20la%20industria%2C%20la%20empresa%20y%20los%20servicios!5e0!3m2!1ses!2sco!4v1684033861851!5m2!1ses!2sco"
-                    class="rounded-2" width="270px" height="150px" style="border:1px solid;" allowfullscreen=""
-                    loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                </div>
-              </div>
-              <div class="col-6 d-block">
-                <div class="form-floating comentario mb-3 ms-4">
-                  <textarea class="form-control shadow" placeholder="Leave a comment here" id="floatingTextarea2Disabled"
-                    style="height: 90px ; width: 220px;  background-color: rgb(255, 255, 255);" disabled></textarea>
-                  <label for="floatingTextarea2Disabled">Comments</label>
-                </div>
-                <div class="contact me-5">
-                  <input class="rounded-2 shadow" placeholder="contacto" type="number">
-                </div>
-              </div>
-            </div>
-            <div class="vinculo mt-3">
-              <div class="col-6">
-                <button class="text-white">UNIRME <img src="{% static "img/unirme.png" %}"
-                    style="margin:5px ;" height="25px" width="22px" alt=""> </button>
-              </div>
-              <div class="col-6">
-                <button class="text-white">COMPARTIR <img src="{% static "img/compartir.png" %}" style="margin:5px ;"
-                    height="25px" width="22px" alt=""> </button>
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <div class="segundafila ">
-          <div class=" col-6 tablaUno rounded-2 ">
-
-            <div class="nombretorneo">
-              <h4 class="text-center " style="color:white ;">football-torneo</h4>
-            </div>
-            <div class="row  descripcion">
-              <div class="col-6  mt-4">
-
-                <img src="static/img/Lighthouse.jpg" class="img-fluid rounded-2 ms-4" alt="..." style="width:270px; height:150px">
-
-              </div>
-              <div class="col-6 ">
-                <div class="d-flex mt-4 ms-3 lugar">
-                  <input type="text" class="rounded-2 shadow" value="limonar-cra19#4-2">
-                  <div class="dropdown fecha rounded-2 ">
-                    <input type="time" class="shadow" style="border-radius: 5px;">
-                  </div>
-
-                </div>
-                <div class="nombreEvento  ">
-                  <input class="rounded-2 shadow" type="text" placeholder="nombre del evento">
-                </div>
-                <div class="semanaEvento">
-
-                  <input type="date" class="shadow" style="border-radius: 5px;">
-                </div>
-              </div>
-            </div>
-            <div class="row mt-4">
-              <div class="col-6">
-                <div class="mapa  ">
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31876.698412363232!2d-75.32120338916013!3d2.934280800000007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3b75e5f5cf0b23%3A0xbc8b39eb18d117e2!2scentro%20de%20la%20industria%2C%20la%20empresa%20y%20los%20servicios!5e0!3m2!1ses!2sco!4v1684033861851!5m2!1ses!2sco"
-                    class="rounded-2" width="270px" height="150px" style="border:1px solid;" allowfullscreen=""
-                    loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                </div>
-              </div>
-              <div class="col-6 d-block">
-                <div class="form-floating comentario mb-3 ms-4">
-                  <textarea class="form-control shadow" placeholder="Leave a comment here" id="floatingTextarea2Disabled"
-                    style="height: 90px ; width: 220px;   background-color: rgb(255, 255, 255);" disabled></textarea>
-                  <label for="floatingTextarea2Disabled">Comments</label>
-                </div>
-                <div class="contact me-5">
-                  <input class="rounded-2 shadow" placeholder="contacto" type="number">
-                </div>
-              </div>
-            </div>
-            <div class="vinculo mt-3">
-              <div class="col-6">
-                <button class="text-white">UNIRME <img src="{% static "img/unirme.png" %}"
-                    style="margin:5px ;" height="25px" width="22px" alt=""> </button>
-              </div>
-              <div class="col-6">
-                <button class="text-white">COMPARTIR <img src="{% static "img/compartir.png" %}" style="margin:5px ;"
-                    width="22px" height="25px" alt=""> </button>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-6 tablaDos  rounded-2 ">
-            <div class="nombretorneo ">
-              <h4 class="text-center" style="color:white ;">basquetball-torneo</h4>
-            </div>
-            <div class="row  descripcion">
-              <div class="col-6  mt-4">
-
-                <img src="static/img/Lighthouse.jpg" class="img-fluid rounded-2 ms-4" alt="..." style="width:270px; height:150px">
-
-              </div>
-              <div class="col-6 ">
-                <div class="d-flex mt-4 ms-3 lugar">
-                  <input type="text" class="rounded-2 shadow" value="limonar-cra19#4-2">
-                  <div class="dropdown fecha rounded-2">
-                    <input type="time" class="shadow" style="border-radius: 5px;">
-                  </div>
-
-                </div>
-                <div class="nombreEvento ">
-                  <input class="rounded-2 shadow" type="text" placeholder="nombre del evento">
-                </div>
-                <div class="semanaEvento">
-                  <input type="date" class="shadow" style="border-radius: 5px;">
-                </div>
-              </div>
-            </div>
-            <div class="row mt-4">
-              <div class="col-6">
-                <div class="mapa  ">
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31876.698412363232!2d-75.32120338916013!3d2.934280800000007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3b75e5f5cf0b23%3A0xbc8b39eb18d117e2!2scentro%20de%20la%20industria%2C%20la%20empresa%20y%20los%20servicios!5e0!3m2!1ses!2sco!4v1684033861851!5m2!1ses!2sco"
-                    class="rounded-2" width="270px" height="150px" style="border:1px solid;" allowfullscreen=""
-                    loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                </div>
-              </div>
-              <div class="col-6 d-block ">
-                <div class="form-floating comentario mb-3 ms-4">
-                  <textarea class="form-control shadow" placeholder="Leave a comment here" id="floatingTextarea2Disabled"
-                    style="height: 90px ; width: 220px; display: flex; justify-items: center;  background-color: rgb(255, 255, 255);"
-                    disabled></textarea>
-                  <label for="floatingTextarea2Disabled">Comments</label>
-                </div>
-                <div class="contact me-5 ">
-                  <input class="rounded-2 shadow" placeholder="contacto" type="number">
-                </div>
-              </div>
-            </div>
-            <div class="vinculo mt-3">
-              <div class="col-6">
-                <button class="text-white">UNIRME <img src="{% static "img/unirme.png" %}"
-                    style="margin:5px ;" height="25px" width="22px" alt=""> </button>
-              </div>
-              <div class="col-6">
-                <button class="text-white">COMPARTIR <img src="{% static "img/compartir.png" %}" style="margin:5px ;"
-                    height="25px" width="22px" alt=""> </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="p-3 d-flex justify-content-center align-items-center" id="eventos" style="background-color: rgb(214, 213, 213);">
+    <a class="btn btn-success" href="{% url 'mostrarEventos'%}">VER EVENTOS</a>
   </div>
 
   <!-- Tercera parte de la vista -->
@@ -420,27 +178,52 @@ style="background-color: #cbe9d7; z-index: -3; ">
 
 
   <!-- Cuarta parte de la vista -->
-  <section id="contactanos" class="container-fluid" style="background-color: rgb(214, 213, 213); padding: 50px 0;"> 
+  <section id="contactanos" class="container-fluid" style="background-color: rgb(214, 213, 213); padding: 5px;">
     <div class="row container-fluid">
+      <div class="col-lg-5">
+        <h3 style="color: #365C45;">___________________________________________________</h3>
+      </div>
+      <div class="col-lg-2 col-md-12 p-2 d-flex justify-content-center align-items-center">
+          <img src="{% static "img/Facebook_Logo_(2019).png" %}" alt="" style="width: 30px; margin: 4px;">
+          <img src="{% static "img/png-transparent-instagram-logo-instagram-facebook-inc-youtube-organization-instagram-removebg-preview.png"%}" alt="" style="width: 35px; margin: 4px; margin-left: 50px;">
+          <img src="{% static "img/png-transparent-twitter-logo-social-media-iphone-organization-logo-twitter-computer-network-leaf-media-removebg-preview.png"%}" alt="" style="width: 30px; margin: 4px; margin-left: 50px;">
+        </div>
+      <div class="col-lg-5">
+        <h3 style="color: #365C45;">_____________________________________________________</h3>
+      </div>
+    </div> 
+    <div class="row container-fluid p-2">
+      <div class="col-md-5 d-flex justify-content-center align-items-center">
+        <h5 style="color: #365C45;">contactoparchecorpgmail.com</h5>
+      </div>
+      <div class="col-md-2 d-flex justify-content-center align-items-center">
+        <img src="{% static "img/logo.png" %}" alt="" class="img-fluid" style="max-width: 55%;">
+      </div>
+      <div class="col-md-5 d-flex justify-content-center align-items-center">
+        <h5 style="color: #365C45;">&copy; 2023 Parche. Todos los derechos reservados</h5>
+      </div>
+    </div>
+  </section>
+  
+ <!-- <div class="row container-fluid">
       <div class="col-md-1"></div>
-      <div class="col-md-5 col-sm-12 text-center correo">
-        <img src="{% static "img/logo.png" %}" alt="" class="img-fluid" style="max-width: 70%;">
+      <div class="col-md-5 col-sm-12 text-center">
+        <img src="{% static "img/logo.png" %}" alt="" class="img-fluid" style="max-width: 40%;">
       </div>
       <div class="col-md-5 col-sm-12 text-center">
-        <div class="link">
-          <h1>Contactanos</h1>
-          <div style="height: 20px;"></div>
-          <img src="{% static "img/Facebook_Logo_(2019).png" %}" alt="" style="width: 55px; margin-bottom: 30px;">
-          <img src="{% static "img/png-transparent-instagram-logo-instagram-facebook-inc-youtube-organization-instagram-removebg-preview.png"%}" alt="" style="width: 55px; margin-bottom: 30px;">
-          <img src="{% static "img/png-transparent-twitter-logo-social-media-iphone-organization-logo-twitter-computer-network-leaf-media-removebg-preview.png"%}" alt="" style="width: 55px; margin-bottom: 30px;">
+        <div class="">
+          <h5>Contactanos</h5>
+          <img src="{% static "img/Facebook_Logo_(2019).png" %}" alt="" style="width: 30px; margin: 4px;">
+          <img src="{% static "img/png-transparent-instagram-logo-instagram-facebook-inc-youtube-organization-instagram-removebg-preview.png"%}" alt="" style="width: 30px; margin: 4px;">
+          <img src="{% static "img/png-transparent-twitter-logo-social-media-iphone-organization-logo-twitter-computer-network-leaf-media-removebg-preview.png"%}" alt="" style="width: 30px; margin: 4px;">
         </div>
-        <h3 class="mt-3">contactoparchecorp@gmail.com</h3>
+        <h5 class="mt-2">contactoparchecorpgmail.com</h5>
       </div>
       <div class="col-md-1"></div>
     </div>
-    <div class="text-center mt-2">&copy; 2023 Parche. Todos los derechos reservados</div>
-  </section>
-  
+    <div class="text-center">&copy; 2023 Parche. Todos los derechos reservados</div> -->
+
+
 
 </body>
 

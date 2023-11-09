@@ -74,6 +74,9 @@ def RegisterCompany(request):
 
     return render(request, 'registration/registroEmpresa.html', {'document': document_form, 'form': form})
 
+def MostrarEvento(request):
+    return render(request, 'view/VistasPCU/mostrarEventos.html')
+
 def Profile(request):
      return render(request, 'view/VistasPCU/perfil.html')
 
