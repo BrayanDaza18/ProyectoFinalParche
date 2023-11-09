@@ -53,7 +53,18 @@ style="background-color: #cbe9d7; z-index: -3; ">
           ...
           {% if user.is_authenticated %}
           <li>User: {{ user.get_username }}</li>
-          <li><a href="{% url 'logout'%}?next={{request.path}}">Cerrar sesión</a></li>
+          <li>
+            <div class="d-flex justify-content-center align-items-center">
+              <button type="button" class="btn btn-success m-1">
+                <a href="{% url 'logout'%}?next={{request.path}}" style="font-size: 1rem;">Cerrar sesión</a>
+              </button>
+              <button type="button" class="btn btn-success m-1">
+                <!-- <i class="fa-solid fa-eye me-3" style="color: #ffffff; font-size: 1.5rem;"></i> -->
+                <a href="{% url 'agregarRepresentante'%}" style="font-size: 1rem;">Agregar Representante</a>
+              </button>
+            </div>
+          </li>
+          
           {% else %}
           <li><a href="{% url 'login'%}">Iniciar sesión</a></li>
           {% endif %}
@@ -92,6 +103,10 @@ style="background-color: #cbe9d7; z-index: -3; ">
         <i class="fas fa-solid fa-trophy me-3" style="color: #179631; font-size: 1.5rem;"></i>
         <a href="{% url "CreateEvent" %}" style="color: #179631; font-size: 1.5rem;">Crear Un Evento</a>
       </button>
+      <button type="button" class="btn btn-success btn-lg me-3">
+        <!-- <i class="fa-solid fa-eye me-3" style="color: #ffffff; font-size: 1.5rem;"></i> -->
+        <a href="{% url 'mostrarEventos'%}" style="color: #ffffff; font-size: 1.5rem;">Ver Eventos</a>
+      </button>
     </div>
     
     {% else %}
@@ -119,7 +134,7 @@ style="background-color: #cbe9d7; z-index: -3; ">
     <div class="d-flex justify-content-center align-items-center">
       <button type="button" class="btn btn-light btn-lg me-3">
         <i class="fas fa-solid fa-trophy me-3" style="color: #179631; font-size: 1.5rem;"></i>
-        <a href="{% url "CreateEvent" %}" style="color: #179631; font-size: 1.5rem;">Crear Un Evento</a>
+        <a href="{% url "login" %}" style="color: #179631; font-size: 1.5rem;">Crear Un Evento</a>
       </button>
       <button type="button" class="btn btn-success btn-lg me-3">
         <!-- <i class="fa-solid fa-eye me-3" style="color: #ffffff; font-size: 1.5rem;"></i> -->

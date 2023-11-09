@@ -13,7 +13,8 @@ urlpatterns = [
     path('coverImage', views.CoverImage, name='CoverImagen'),
     path('Report', views.ReportEvent, name='Report'),
     path('select/user', views.SelectUser, name='selectUser'),
-    path('eventos', views.MostrarEvento, name='mostrarEventos')
+    path('eventos', views.MostrarEvento, name='mostrarEventos'),
+    path('representanteEmpresa', views.AgregarRepre, name='agregarRepresentante')
      
     
 ]
