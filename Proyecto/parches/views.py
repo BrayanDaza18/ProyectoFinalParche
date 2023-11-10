@@ -1,8 +1,8 @@
 from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import (CreateEventos, Document, FormUser, FormUserCompany,
-                    FormUserUpdate, UserRegister)
+from .forms import (CreateEventos, Document, FormCompanyUpdate, FormUser,
+                    FormUserCompany, FormUserUpdate, UserRegister)
 from .models import Actividad, EmpresaPersona, Persona
 
 # Create your views here.
@@ -137,11 +137,28 @@ def UpdateEvent(request, idactividad):
     return render(request, 'view/VistasPCU/UpdateEvent.html', {'form': form})
 
 
-def UpdateUser(request, idregistro):
+def UpdateUser(request, idregistro,tipousuario):
     # usuario = request.user
-    activity = EmpresaPersona.objects.get(idregistro=idregistro)
+    activity = EmpresaPersona.objects.get(idregistro=idregistro, tipousuario=tipousuario)
     # post = get_object_or_404(activity, pk=idregistro)
     form = FormUserUpdate(request.POST or None, request.FILES or None, instance= activity )
+ 
+   
+    if form.is_valid() and request.method == 'POST':
+        form.save()
+        update_session_auth_hash(request, form)
+        return redirect('profile')
+    else:
+        print(form.errors)
+
+    return render(request, 'view/VistasPCU/UpdateUser.html',  {'form': form})
+
+    
+def UpdateUserCompany(request, idregistro, tipousuario):
+    # usuario = request.user
+    activity = EmpresaPersona.objects.get(idregistro=idregistro, tipousuario=tipousuario)
+    # post = get_object_or_404(activity, pk=idregistro)
+    form = FormCompanyUpdate(request.POST or None, request.FILES or None, instance= activity )
  
    
     if form.is_valid() and request.method == 'POST':

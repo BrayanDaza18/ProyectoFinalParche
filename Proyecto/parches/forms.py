@@ -285,7 +285,7 @@ class FormUserUpdate(forms.ModelForm):
 
     class Meta:
         model = EmpresaPersona
-        fields = ('usuario', 'correo', 'telefono','password')
+        fields = ('usuario', 'correo', 'telefono')
         widgets = {
             'usuario': forms.TextInput(
                  attrs= {
@@ -323,4 +323,32 @@ class FormUserUpdate(forms.ModelForm):
         #     'id': 'nombreempresa',
        
         # })
+        }
+class FormCompanyUpdate(forms.ModelForm):
+
+     class Meta:
+        model = EmpresaPersona
+        fields = ('usuario', 'correo', 'telefono', 'nombreempresa','direccion')
+        widgets = {
+            'usuario': forms.TextInput(
+                 attrs= {
+            'class': 'form-control,justify-content-center',
+            'placeholder': 'usuario',
+            'id': 'usuario',
+            'required': 'required'
+        }),
+            'correo': forms.EmailInput( 
+                attrs= {
+            'class': 'form-control,justify-content-center',
+            'placeholder': 'correo',
+            'id': 'email',
+            'required': 'required'
+        }),
+        'telefono': forms.NumberInput(
+            attrs= {
+             'class': 'form-control,justify-content-center',
+            'placeholder': 'telefono',
+            'id': 'telefono',
+            'required': 'required'
+        }),
         }

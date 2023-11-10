@@ -107,13 +107,13 @@
                 <br><br><br>
 
                 <h4>Contacto: 3165438453</h4>
-                {% for elements  in  actividad %}
-                {% if  request.user.is_authenticated and request.user == elements %}
-                <div><a href="{% url "UpdateUser" elements.idregistro %}"><h1>actualizar informacion</h1>  </div>
-             
-                {% endif %}
-                {% endfor %}
-           
+                {% for element in actividad %}
+    {% if request.user.is_authenticated and request.user == element and element.tipousuario == 'U' %}
+        <div><a href="{% url 'UpdateUser' element.idregistro element.tipousuario %}"><h1>Actualizar información</h1></a></div>
+    {% elif request.user.is_authenticated and request.user == element and element.tipousuario == 'E' %}
+        <div><a href="{% url 'UpdateUserCompany' element.idregistro element.tipousuario %}"><h1>Cambiar información de la empresa</h1></a></div>
+    {% endif %}
+{% endfor %}
                 
 
 

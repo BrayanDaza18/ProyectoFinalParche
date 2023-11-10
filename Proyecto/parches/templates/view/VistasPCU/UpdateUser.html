@@ -16,7 +16,13 @@
             {{ form.telefono }}
         </div>
         <div class="contraseñaRegistro   ">
-          
+            {% if form.nombreempresa.value %}
+            {{ form.nombreempresa }}
+        {% endif %}
+        
+        {% if form.direccion.value %}
+            {{ form.direccion }}
+        {% endif %}
             {% comment %} {{ form.password }} {% endcomment %}
         </div>
       
