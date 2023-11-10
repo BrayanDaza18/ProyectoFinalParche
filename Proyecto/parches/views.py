@@ -1,8 +1,8 @@
-from django.contrib.auth import authenticate, login
-from django.shortcuts import redirect, render
+from django.contrib.auth import authenticate, login, update_session_auth_hash
+from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import (CreateEventos, Document, FormUser, FormUserCompany,
-                    UserRegister)
+                    FormUserUpdate, UserRegister)
 from .models import Actividad, EmpresaPersona, Persona
 
 # Create your views here.
@@ -89,10 +89,13 @@ def RegisterCompany(request):
     return render(request, 'registration/registroEmpresa.html', {'document': document_form, 'form': form})
 
 def Profile(request):
-     usuario = request.user
-     form = Actividad.objects.filter(empresa_idempresa = usuario)
-     print(form)
-     return render(request, 'view/VistasPCU/perfil.html', {'data': form})
+    usuario = request.user
+    form = Actividad.objects.filter(empresa_idempresa=usuario)
+    actividad = EmpresaPersona.objects.all()
+    print(form)
+      
+    return render(request, 'view/VistasPCU/perfil.html', {'data': form, 'actividad': actividad})
+
 
 def CoverImage(request):
      return render(request, 'view/VistasPCU/PantallaDeCarga.html')
@@ -104,5 +107,48 @@ def ReportEvent(request):
 def SelectUser(request):
     return render(request, 'view/VistasPCU/seleccionDeUsuario.html')
 
-def viewEventoELI(request):
-    return render(request, 'view/VistasPCU/pestanaDeEvento.html')
+
+def eventForUser(request):
+    users = request.user
+    data = Actividad.objects.filter(empresa_idempresa = users)
+    print(data)
+    return render(request, 'view/VistasPCU/viewCreateEventForUser.html',{'data': data})
+
+
+def viewEventoELI(request, idactividad):
+    data = Actividad.objects.get(idactividad=idactividad)
+    data.delete()
+
+    return redirect('eventUser')
+
+def UpdateEvent(request, idactividad):
+    event = Actividad.objects.get(idactividad=idactividad)
+
+    form = CreateEventos(request.POST  or None, request.FILES  or None, instance=event)
+
+    if form.is_valid() and request.method == 'POST':
+        form.save()
+        return redirect('eventUser')
+    
+    else:
+        print(form.errors)
+
+        
+    return render(request, 'view/VistasPCU/UpdateEvent.html', {'form': form})
+
+
+def UpdateUser(request, idregistro):
+    # usuario = request.user
+    activity = EmpresaPersona.objects.get(idregistro=idregistro)
+    # post = get_object_or_404(activity, pk=idregistro)
+    form = FormUserUpdate(request.POST or None, request.FILES or None, instance= activity )
+ 
+   
+    if form.is_valid() and request.method == 'POST':
+        form.save()
+        update_session_auth_hash(request, form)
+        return redirect('profile')
+    else:
+        print(form.errors)
+
+    return render(request, 'view/VistasPCU/UpdateUser.html',  {'form': form})

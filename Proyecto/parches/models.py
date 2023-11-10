@@ -39,14 +39,14 @@ class Actividad(models.Model):
     tipoactividad = models.CharField(db_column='tipoActividad', choices=deporte,max_length=15)  # Field name made lowercase.
     lugar = models.CharField(max_length=40)
     ubicacion = models.CharField(max_length=80)
-    fechainicio = models.DateField(db_column='fechaInicio')  # Field name made lowercase.
-    fechafin = models.DateField(db_column='fechaFin')  # Field name made lowercase.
+    fechainicio = models.CharField(db_column='fechaInicio', max_length=40)  # Field name made lowercase.
+    fechafin = models.CharField(db_column='fechaFin', max_length=40)  # Field name made lowercase.
     descripcion = models.TextField(db_column="descripcion", max_length=75, blank=True, null=True)
-    hora = models.TimeField()
+    hora = models.CharField(max_length=40)
     imagen = models.ImageField(upload_to='actividad/', max_length=80)
     contacto = models.CharField(max_length=30)
     puntosdeportivos = models.ForeignKey('Puntosdeportivos', models.DO_NOTHING, null=True)
-    empresa_idempresa = models.ForeignKey('EmpresaPersona', models.DO_NOTHING, db_column='empresa_idEmpresa', null=True)  # Field name made lowercase.
+    empresa_idempresa = models.ForeignKey('EmpresaPersona', on_delete=models.CASCADE, db_column='empresa_idEmpresa', null=True) # Field name made lowercase.
 
 
     class Meta:
@@ -54,7 +54,7 @@ class Actividad(models.Model):
         db_table = 'actividad'
         unique_together = (('idactividad', 'puntosdeportivos', 'empresa_idempresa'),)
     
-    def delete(self, using: None, keep_parents=False):
+    def delete(self, using= None, keep_parents=False):
         self.imagen.storage.delete(self.imagen.name)
         super().delete()
 

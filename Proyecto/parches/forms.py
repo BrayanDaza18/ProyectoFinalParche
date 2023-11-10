@@ -11,7 +11,8 @@ class FormUser(forms.ModelForm):
             'class': 'form-control, justify-content-center',
             'placeholder': 'ingrese la contraseña',
             'id': 'password',
-            'required': 'required'
+            'required': 'required',
+             'type': 'password'
         }
     ))
     password2 = forms.CharField(label='contreseña de validacion', widget= forms.PasswordInput(
@@ -19,7 +20,8 @@ class FormUser(forms.ModelForm):
              'class': 'form-control,justify-content-center',
             'placeholder': 'verifique la contraseña',
             'id': 'password2',
-            'required': 'required'
+            'required': 'required',
+             'type': 'password'
         }
     ))
     class Meta:
@@ -213,10 +215,112 @@ class CreateEventos(forms.ModelForm):
     class Meta:
         model = Actividad
         fields = ['nombreactividad', 'tipoactividad', 'lugar', 'fechainicio','fechafin','hora','imagen', 'contacto','descripcion']
-        
+        widgets = {
+            'nombreactividad': forms.TextInput(
+            attrs= {
+            'class': 'form-control,justify-content-center',
+            'placeholder': 'nombreactividad',
+            'id': 'nombreactividad',
+            'required': 'required'
+        }),
+           
+        'lugar': forms.TextInput(
+            attrs= {
+             'class': 'form-control,justify-content-center',
+            'placeholder': 'lugar',
+            'id': 'lugar',
+            'required': 'required'
+        }), 
+        'fechainicio': forms.DateInput(
+                 attrs= {
+            'class': 'form-control, justify-content-center',
+            'placeholder': 'fechainicio',
+            'id': 'fechainicio',
+            'required': 'required'
+        }),
+        'fechafin': forms.DateInput(
+            attrs= {
+             'class': 'form-control,justify-content-center',
+            'placeholder': 'fechafin',
+            'id': 'fechafin',
+       
+        }),
+         'hora': forms.TimeInput(
+            attrs= {
+             'class': 'form-control,justify-content-center',
+            'placeholder': 'hora',
+            'id': 'hora',
+       
+        }),
+          'imagen': forms.FileInput(
+            attrs= {
+             'class': 'form-control,justify-content-center',
+            'placeholder': 'imagen',
+            'id': 'imagen',
+       
+        }),
+          'contacto': forms.NumberInput(
+            attrs= {
+             'class': 'form-control,justify-content-center',
+            'placeholder': 'contacto',
+            'id': 'contacto',
+       
+        }),
+        'descripcion': forms.Textarea(
+            attrs= {
+             'class': 'form-control,justify-content-center',
+            'placeholder': 'descripcion',
+            'id': 'descripcion',
+       
+        }),
+        }
     
     def save(self, commit = True):
         user = super().save(commit= False)  
         if commit:
           user.save()
         return user
+
+class FormUserUpdate(forms.ModelForm):
+
+    class Meta:
+        model = EmpresaPersona
+        fields = ('usuario', 'correo', 'telefono','password')
+        widgets = {
+            'usuario': forms.TextInput(
+                 attrs= {
+            'class': 'form-control,justify-content-center',
+            'placeholder': 'usuario',
+            'id': 'usuario',
+            'required': 'required'
+        }),
+            'correo': forms.EmailInput( 
+                attrs= {
+            'class': 'form-control,justify-content-center',
+            'placeholder': 'correo',
+            'id': 'email',
+            'required': 'required'
+        }),
+        'telefono': forms.NumberInput(
+            attrs= {
+             'class': 'form-control,justify-content-center',
+            'placeholder': 'telefono',
+            'id': 'email',
+            'required': 'required'
+        }),
+        #   'password': forms.PasswordInput(
+        #     attrs= {
+        #      'class': 'justify-content-center',
+        #     'placeholder': 'password',
+        #     'id': 'password',
+        #     'required': 'required',
+        #     'type': 'password'
+        # })
+        # 'nombreempresa': forms.NumberInput(
+        #     attrs= {
+        #      'class': 'form-control,justify-content-center',
+        #     'placeholder': 'nombreempresa',
+        #     'id': 'nombreempresa',
+       
+        # })
+        }

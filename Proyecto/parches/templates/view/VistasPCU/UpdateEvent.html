@@ -20,46 +20,45 @@
             </div>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-
+              
                 <div class="row parteUno">
                     <div class="col-6 seleccion">
-                        <input type="text" name="nombreactividad" placeholder="Título del Evento">
-                        <select name="tipoactividad">
-                            {% for value, label in activity.fields.tipoactividad.choices %}
-                                <option value="{{ value }}">{{ label }}</option>
-                            {% endfor %}
-                        </select>
+                        {{ form.nombreactividad }}
+                        {{ form.tipoactividad }}
                     </div>
                     <div class="col-6 cargarImagen">
                         <div class="bloque">
                             <img style="background-color:rgb(209, 203, 203);" width="70px" height="90px" src="{% static "img/5097978-removebg-preview.png" %}" alt="">
-                            <input type="file" name="imagen" placeholder="Cargar imagen de portada">
+                            {{ form.imagen }}
                         </div>
                     </div>
                 </div>
+                
                 <div class="row parteDos">
                     <div class="col-6 fecha">
                         <div class="tiempo">
-                            <input type="date" name="fechainicio">
-                            <input type="date" name="fechafin">
+                            {{ form.fechainicio }}
+                            {{ form.fechafin }}
                         </div>
                         <div class="hora">
-                            <input type="time" name="hora">
+                            {{ form.hora }}
                         </div>
                     </div>
                     <div class="col-6 descripcion">
-                        <textarea placeholder="Descripción" name="descripcion" id="" cols="30" rows="10"></textarea>
+                        {{ form.descripcion }}
                     </div>
                 </div>
+                
                 <div class="parteTres">
                     <div class="col-6 lugar">
-                        <input type="text" placeholder="Lugar-Dirrección" name="lugar">
+                        {{ form.lugar }}
                         <button>Seleccionar ubicación</button>
                     </div>
                     <div class="col-6 contacto">
-                        <input type="number" placeholder="Contacto" name="contacto">
+                        {{ form.contacto }}
                     </div>
                 </div>
+            
                 <div class="parteCuatro">
                     <div class="col-6 mapa">
                         <p>Marca el mapa</p>
@@ -69,6 +68,7 @@
                         <img src="{% static "img/Penguins.jpg" %}" alt="">
                     </div>
                 </div>
+            
                 <div class="crearEvento">
                     <button type="submit">Crear Evento</button>
                 </div>
