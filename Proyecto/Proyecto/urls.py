@@ -15,11 +15,26 @@ Including another URLconf
 """
 from django.conf import settings
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 from django.contrib.staticfiles.urls import static
 from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',  include('parches.urls')),
-    path('accounts/', include('django.contrib.auth.urls'))
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('reset_password/', auth_views.PasswordResetView.as_view(
+        template_name='view/VistasPCU/custom_reset_password_form.html',
+        email_template_name='view/VistasPCU/custom_reset_password_email.html',
+        success_url='/reset_password_send/'), name='password_reset'),
+
+    path('reset_password_send/', auth_views.PasswordResetDoneView.as_view(
+        template_name='view/VistasPCU/custom_reset_password_done.html'), name='password_reset_done'),
+
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(
+        template_name='view/VistasPCU/custom_reset_password_confirm.html',
+        success_url='/reset_password_complete/'), name='password_reset_confirm'),
+
+    path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(
+        template_name='view/VistasPCU/custom_reset_password_complete.html'), name='password_reset_complete'),
 ]+ static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)

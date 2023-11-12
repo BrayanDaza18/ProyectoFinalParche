@@ -1,5 +1,12 @@
+from datetime import datetime
+from smtplib import SMTPException
+
+from django.conf import settings
 from django.contrib.auth import authenticate, login, update_session_auth_hash
+from django.core.exceptions import ValidationError
+from django.core.mail import EmailMultiAlternatives
 from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import get_template
 
 from .forms import (CreateEventos, Document, FormCompanyUpdate, FormUser,
                     FormUserCompany, FormUserUpdate, UserRegister)
@@ -22,6 +29,12 @@ def registerUser(request):
            data = form.save()
            data.tipousuario = 'U' 
            data.save()
+        correo = request.POST.get('correo')
+        usuario = request.POST.get('usuario')
+        now = datetime.now()
+        fecha_hora_actual = now.strftime("%Y-%m-%d %H:%M:%S")
+
+        send_email(correo, usuario, fecha_hora_actual)
         #    data = form.save() 
         #    datos =usuario.save(commit = False)
         #    datos.empresa_idEmpresa = data
@@ -80,6 +93,14 @@ def RegisterCompany(request):
             datos = document_form.save(commit=False)
             datos.empresa_idempresa = data
             datos.save()
+       
+            usuario = request.POST.get('usuario')
+            correo = request.POST.get('correo')
+            nombreempresa = request.POST.get('nombreempresa')
+            now = datetime.now()
+            fecha_hora_actual = now.strftime("%Y-%m-%d %H:%M:%S")
+            
+            send_email_empresa(usuario, correo, nombreempresa, fecha_hora_actual)
 
         else:
           print("Errores en el formulario FormUserCompany:", form.errors)
@@ -169,3 +190,49 @@ def UpdateUserCompany(request, idregistro, tipousuario):
         print(form.errors)
 
     return render(request, 'view/VistasPCU/UpdateUser.html',  {'form': form})
+
+
+
+def send_email(correo, usuario, fecha_hora_actual):
+    try:
+        context = {'correo': correo, 'usuario': usuario, 'current_datetime': fecha_hora_actual}
+        template = get_template('correo.html')
+        content = template.render(context)
+        print(correo)
+        print(usuario)
+
+        email = EmailMultiAlternatives(
+            'Registro exitoso en Parche',  # Título
+            'Probando app parche',  # Descripción
+            settings.EMAIL_HOST_USER,  # Quién envía el correo
+            [correo]
+        )
+
+        email.attach_alternative(content, 'text/html')
+        email.send()
+
+    except (ValidationError, SMTPException) as e:
+        print(f"Error al enviar correo: {e}")
+
+
+def send_email_empresa(usuario, correo, nombreempresa, fecha_hora_actual):
+    try:
+        context = {'usuario': usuario, 'correo': correo, 'nombreempresa': nombreempresa, 'current_datetime': fecha_hora_actual}
+        template = get_template('correo_empresa.html')
+        content = template.render(context)
+        print(usuario)
+        print(correo)
+        print(nombreempresa)
+
+        email = EmailMultiAlternatives(
+            'Registro exitoso en Parche',  # Título
+            'Probando app parche',  # Descripción
+            settings.EMAIL_HOST_USER,  # Quién envía el correo
+            [correo]
+        )
+
+        email.attach_alternative(content, 'text/html')
+        email.send()
+
+    except (ValidationError, SMTPException) as e:
+        print(f"Error al enviar correo: {e}")

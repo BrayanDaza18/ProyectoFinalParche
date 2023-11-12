@@ -109,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-co'
 
 TIME_ZONE = 'UTC'
 
@@ -139,3 +139,10 @@ LOGIN_REDIRECT_URL = '/'
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, '')
+
+
+EMAIL_HOST = 'smtp.googlemail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'contactoparchecorp@gmail.com'
+EMAIL_HOST_PASSWORD = 'vtbgclcmjwyzdghr'
+EMAIL_USE_TLS = True

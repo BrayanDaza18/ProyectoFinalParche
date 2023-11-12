@@ -117,6 +117,7 @@ class EmpresaPersona(AbstractBaseUser, PermissionsMixin):
     usuario_activo = models.BooleanField(default=True)
     usuario_administrador = models.BooleanField(default=False)
     estado = models.CharField(choices=Estado_ENUM, default='I', max_length=1)
+    is_active = models.BooleanField(default=True)
     
 
     
@@ -124,6 +125,7 @@ class EmpresaPersona(AbstractBaseUser, PermissionsMixin):
      
     REQUIRED_FIELDS = ['correo', 'telefono'] 
     USERNAME_FIELD = 'usuario'
+    EMAIL_FIELD = 'correo'
     # PASSWORD_FIELD = 'contrasena'  
 
     objects = EmpresaPersonaManager()
