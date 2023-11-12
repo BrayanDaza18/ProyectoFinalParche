@@ -88,8 +88,6 @@ def RegisterCompany(request):
 
     return render(request, 'registration/registroEmpresa.html', {'document': document_form, 'form': form})
 
-def AgregarRepre(request):
-    return render(request, 'view/vistasPCU/agregarRepresentante.html')
 
 def MostrarEvento(request):
     return render(request, 'view/VistasPCU/mostrarEventos.html')
