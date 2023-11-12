@@ -11,7 +11,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </head>
-<<<<<<< HEAD
 <body>
     <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 44.8rem;  background-color: rgb(214, 213, 213);">
         <div class="pagina container-fluid">
@@ -19,133 +18,64 @@
                 <div class="titulo bg-success">
                     <h1>Nuevo Evento</h1>
                 </div>
-                <div class="row parteUno">
-                    <div class="col-6 seleccion">
-                        <div class="d-flex justify-content-center align-items-center">
-                            <input type="text" placeholder="Titulo del Evento">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+    
+                    <div class="parteUno d-flex justify-content-center align-items-center">
+                        <div class="col-6 seleccion">
+                                <input class="col-6" type="text" name="nombreactividad" placeholder="Título del Evento">
+                                <select name="tipoactividad">
+                                    {% for value, label in activity.fields.tipoactividad.choices %}
+                                        <option value="{{ value }}">{{ label }}</option>
+                                    {% endfor %}
+                                </select>
                         </div>
-                        
-                        <div class="dropdown d-flex justify-content-center align-items-center">
-                            <button class=" selec dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            seleccionar actividad
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-6 d-flex justify-content-center align-items-center">
-                        <div class="bloque d-flex justify-content-center align-items-center">
-                            <input type="file" placeholder="cargar imagen de portada">
+                        <div class="col-6 cargarImagen d-flex justify-content-center align-items-center">
+                            <div class="bloque d-flex justify-content-center align-items-center">
+                                <input type="file" name="imagen" placeholder="Cargar imagen de portada">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="parteDos" style="margin-top: 20px;">
-                    <div class="col-6 fecha">
-                        <div class="tiempo">
-                            <input type="date">
+                    <div class="parteDos">
+                        <div class="col-6 fecha">
+                            <div class="tiempo">
+                                <input type="date" name="fechainicio">
+                                <input type="date" name="fechafin">
+                            </div>
+                            <div class="hora">
+                                <input type="time" name="hora">
+                            </div>
                         </div>
-                        <div class="hora">
-                            <input type="time">
+                        <div class="col-6 descripcion d-flex justify-content-center align-items-center">
+                            <textarea placeholder="Descripción" name="descripcion" id="" cols="30" rows="10"></textarea>
                         </div>
                     </div>
-                    <div class="col-6 descripcion d-flex justify-content-center align-items-center">
-                        <textarea placeholder="descripcion" name="" id="" cols="3" rows="10"></textarea>
+                    <div class="parteTres">
+                        <div class="col-6 lugar d-flex justify-content-center align-items-center">
+                            <input type="text" placeholder="Lugar-Dirrección" name="lugar">
+                            <button class="btn btn-success">Seleccionar ubicación</button>
+                        </div>
+                        <div class="col-6 contacto">
+                            <input type="number" placeholder="Contacto" name="contacto">
+                        </div>
                     </div>
-                </div>
-                <div class="parteTres">
-                    <div class="col-6 lugar d-flex justify-content-center align-items-center">
-                        <input type="text" placeholder="Direccion">
-                        <button class="btn btn-success">seleccionar ubicacion</button>
+                    <div class="parteCuatro">
+                        <div class="col-6 mapa">
+                            <p>Marca el mapa</p>
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d63753.20144883489!2d-75.31358855859074!3d2.937704362500845!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2s!5e0!3m2!1ses!2sco!4v1685319200172!5m2!1ses!2sco" width="240" height="140" style="border:solid 1px; border-radius: 20px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                        <div class="col-6 publicidad">
+                            <img src="{% static "img/Penguins.jpg" %}" alt="">
+                        </div>
                     </div>
-                    <div class="col-6 contacto">
-                        <input type="number" placeholder="Contacto">
-=======
-<body style="background-color: rgb(4, 179, 75)">
-    <div class="pagina container-fluid">
-        <div class="carta">
-            <div class="titulo">
-                <h1>Nuevo Evento</h1>
+                    <div class="crearEvento d-flex justify-content-center align-items-center"">
+                        <button class="btn btn-success" type="submit">Crear Evento</button>
+                    </div>
+                </form>
             </div>
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-
-                <div class="row parteUno">
-                    <div class="col-6 seleccion">
-                        <input type="text" name="nombreactividad" placeholder="Título del Evento">
-                        <select name="tipoactividad">
-                            {% for value, label in activity.fields.tipoactividad.choices %}
-                                <option value="{{ value }}">{{ label }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="col-6 cargarImagen">
-                        <div class="bloque">
-                            <img style="background-color:rgb(209, 203, 203);" width="70px" height="90px" src="{% static "img/5097978-removebg-preview.png" %}" alt="">
-                            <input type="file" name="imagen" placeholder="Cargar imagen de portada">
-                        </div>
-                    </div>
-                </div>
-                <div class="row parteDos">
-                    <div class="col-6 fecha">
-                        <div class="tiempo">
-                            <input type="date" name="fechainicio">
-                            <input type="date" name="fechafin">
-                        </div>
-                        <div class="hora">
-                            <input type="time" name="hora">
-                        </div>
-                    </div>
-                    <div class="col-6 descripcion">
-                        <textarea placeholder="Descripción" name="descripcion" id="" cols="30" rows="10"></textarea>
-                    </div>
-                </div>
-                <div class="parteTres">
-                    <div class="col-6 lugar">
-                        <input type="text" placeholder="Lugar-Dirrección" name="lugar">
-                        <button>Seleccionar ubicación</button>
-                    </div>
-                    <div class="col-6 contacto">
-                        <input type="number" placeholder="Contacto" name="contacto">
->>>>>>> antonio
-                    </div>
-                </div>
-                <div class="parteCuatro">
-                    <div class="col-6 mapa">
-<<<<<<< HEAD
-            
-                        <p>Marca el mapa </p>
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31876.698412363232!2d-75.32120338916013!3d2.934280800000007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3b75e5f5cf0b23%3A0xbc8b39eb18d117e2!2scentro%20de%20la%20industria%2C%20la%20empresa%20y%20los%20servicios!5e0!3m2!1ses!2sco!4v1684033861851!5m2!1ses!2sco"
-                            class="rounded-2" width="320px" height="150px" style="border:1px solid;" allowfullscreen=""
-                            loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                                
-                    </div>
-                    <div class="col-6 publicidad">
-                        <img src="{% static "img/Penguins.jpg" %}"  alt="">
-                    </div>
-                </div>
-                <div class="crearEvento d-flex justify-content-center align-items-center">
-                    <button class="btn btn-success">Crear Evento</button>
-                </div>
-            </div>
-=======
-                        <p>Marca el mapa</p>
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d63753.20144883489!2d-75.31358855859074!3d2.937704362500845!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2s!5e0!3m2!1ses!2sco!4v1685319200172!5m2!1ses!2sco" width="240" height="140" style="border:solid 1px; border-radius: 20px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                    </div>
-                    <div class="col-6 publicidad">
-                        <img src="{% static "img/Penguins.jpg" %}" alt="">
-                    </div>
-                </div>
-                <div class="crearEvento">
-                    <button type="submit">Crear Evento</button>
-                </div>
-            </form>
->>>>>>> antonio
         </div>
     </div>
+    
     
 </body>
 </html>
