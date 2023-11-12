@@ -53,8 +53,17 @@ a {
   /* Espaciado entre elementos */
 }
 
+#miDiv {
+  width: 94.95rem;
+  height: 4rem;
+  background: linear-gradient(to bottom, #cbe9d7, rgb(214, 213, 213), #cbe9d7);
+}
 
-
+#miDiv2 {
+  width: 94.95rem;
+  height: 4rem;
+  background: linear-gradient(to bottom, #cbe9d7, rgb(214, 213, 213));
+}
 
 .menu-items h3 {
   color: white;

@@ -208,11 +208,12 @@ class Document(forms.ModelForm):
         return user
 
 
-class CreateEvent(forms.ModelForm):
+class CreateEventos(forms.ModelForm):
 
     class Meta:
-        models = Actividad
-        fields = ['nombreactividad', 'tipoactividad', 'lugar', 'fechainicio','fechafin', 'hora','imagen', 'contacto']
+        model = Actividad
+        fields = ['nombreactividad', 'tipoactividad', 'lugar', 'fechainicio','fechafin','hora','imagen', 'contacto','descripcion']
+        
     
     def save(self, commit = True):
         user = super().save(commit= False)  

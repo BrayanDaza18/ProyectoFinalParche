@@ -1,13 +1,15 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render
 
-from .forms import Document, FormUser, FormUserCompany, UserRegister
-from .models import EmpresaPersona, Persona
+from .forms import (CreateEventos, Document, FormUser, FormUserCompany,
+                    UserRegister)
+from .models import Actividad, EmpresaPersona, Persona
 
 # Create your views here.
 
 def HomepageProject(request):
-     return render(request, 'view/VistasPCU/vistaPrincipal.html' )
+     data = Actividad.objects.all()
+     return render(request, 'view/VistasPCU/vistaPrincipal.html', {'data': data} )
 
 def registerUser(request):
     form = FormUser()
@@ -48,7 +50,19 @@ def login(request):
     return render(request, 'view/VistasPCU/registration/login.html')
 
 def CreateEvent(request):
-     return render(request, 'view/VistasPCU/crearEvento.html')
+    activity = CreateEventos()
+    if request.method == 'POST':
+        activity = CreateEventos(request.POST, request.FILES)
+        if activity.is_valid():
+            usuario = activity.save(commit=False)
+            usuario.empresa_idempresa = request.user
+            usuario.save()
+        else:
+            print("Errores en el formulario CreateEventos:", activity.errors)
+
+        return redirect('vistaPrincipal')
+    
+    return render(request, 'view/VistasPCU/crearEvento.html', {'activity': activity})
 
 def RegisterCompany(request):
     document_form = Document()  
@@ -81,7 +95,10 @@ def MostrarEvento(request):
     return render(request, 'view/VistasPCU/mostrarEventos.html')
 
 def Profile(request):
-     return render(request, 'view/VistasPCU/perfil.html')
+     usuario = request.user
+     form = Actividad.objects.filter(empresa_idempresa = usuario)
+     print(form)
+     return render(request, 'view/VistasPCU/perfil.html', {'data': form})
 
 def CoverImage(request):
      return render(request, 'view/VistasPCU/PantallaDeCarga.html')
@@ -92,3 +109,6 @@ def ReportEvent(request):
 
 def SelectUser(request):
     return render(request, 'view/VistasPCU/seleccionDeUsuario.html')
+
+def viewEventoELI(request):
+    return render(request, 'view/VistasPCU/pestanaDeEvento.html')
