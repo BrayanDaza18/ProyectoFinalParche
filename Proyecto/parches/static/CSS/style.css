@@ -198,11 +198,8 @@ a {
 
 .nombreEvento {
   display: flex;
-  margin-top: 20px;
+  margin-top: 15px;
   justify-content: center;
-  margin-right: 55px;
-
-
 }
 
 .nombreEvento input {
@@ -217,9 +214,6 @@ a {
   display: flex;
   justify-content: center;
   margin-top: 15px;
-  margin-right: 55px;
-
-
 }
 
 .semanaEvento input {
@@ -250,14 +244,6 @@ a {
 
 
 }
-
-.comentario {
-  display: flex;
-
-
-
-}
-
 
 .contact {
   display: flex;
@@ -294,12 +280,12 @@ a {
   font-weight: bold;
 }
 
-/* .fecha {
+.fecha {
   border-radius: 10px;
   justify-content: center;
   display: grid;
 
-} */
+}
 
 .lugar input {
   margin-right: 15px;

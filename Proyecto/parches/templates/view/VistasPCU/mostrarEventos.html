@@ -17,7 +17,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </head>
 <body>
-    <div style="background-color: rgb(214, 213, 213);;">
+    <!-- <div style="background-color: rgb(214, 213, 213);;">
         <div class="row container-fluid">
             <div class="row event m-2">
               <div class="primerafila ">
@@ -262,6 +262,80 @@
               </div>
             </div>
           </div>
+    </div> -->
+    {% for element in data %}
+
+  <div class=" fondo " id="eventos">
+    <div class="row container-fluid mt-3">
+      <div class="row event">
+        <div class="primerafila ">
+          <div class=" col-6 tablaUno rounded-2 ">
+
+            <div class="nombretorneo">
+              <h4 class="text-center " style="color:white ;">{{element.tipoactividad}}</h4>
+            </div>
+            <div class="descripcion">
+              <div class="col-6 fondodegradado mt-3">
+
+                <img src="{{element.imagen.url}}" class="img-fluid rounded-2 ms-4" alt="...">
+
+              </div>
+              <div class="col-6">
+                <div class="mt-3 lugar">
+                  <div class="d-flex justify-content-center align-items-center">
+                    <input type="text" class="rounded-2 shadow" value="{{element.lugar}}">
+                    <input type="time" value="{{element.hora}}" class="shadow" style="border-radius: 5px;">
+                  </div>
+                </div>
+                <div class="nombreEvento">
+                  <input class="rounded-2 shadow" type="text" value="{{element.nombreactividad}}" placeholder="nombre del evento">
+                </div>
+                <div class="semanaEvento">
+                  <input type="date" value="{{element.fechainicio}}" class="shadow" style="border-radius: 5px;">
+                </div>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-6">
+                <div class="mapa  ">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31876.698412363232!2d-75.32120338916013!3d2.934280800000007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3b75e5f5cf0b23%3A0xbc8b39eb18d117e2!2scentro%20de%20la%20industria%2C%20la%20empresa%20y%20los%20servicios!5e0!3m2!1ses!2sco!4v1684033861851!5m2!1ses!2sco"
+                    class="rounded-2" width="270px" height="150px" style="border:1px solid;" allowfullscreen=""
+                    loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="d-flex justify-content-center">
+                  <div class="form-floating mb-3 m-1">
+                    <textarea class="form-control shadow" placeholder="Leave a comment here" id="floatingTextarea2Disabled"
+                      style="height: 80px ; width: 230px; 
+                        background-color: rgb(255, 255, 255);" disabled></textarea>
+                    <label for="floatingTextarea2Disabled">{{element.descripcion}}</label>
+                  </div>
+                </div>
+                <div class="contact">
+                  <input class="rounded-2 shadow" value="{{element.contacto}}" placeholder="contacto" type="number">
+                </div>
+              </div>
+            </div>
+            <div class="vinculo mt-3">
+              <div class="col-6">
+                <button class="text-white">UNIRME <img src="{% static "img/unirme.png" %} "
+                  style=" margin:5px ;" width="20px" height="20px" alt=""> </button>
+              </div>
+              <div class="col-6">
+                <button class="text-white">COMPARTIR <img src="{% static "img/compartir.png" %}" style="margin:5px ;"
+                  width="22px" height="25px" alt=""> </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="segundafila ">
+
+        </div>
+      </div>
     </div>
+  </div>
+  {% endfor %} 
 </body>
 </html>
