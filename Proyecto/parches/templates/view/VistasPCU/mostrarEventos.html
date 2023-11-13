@@ -5,337 +5,157 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eventos</title>
-      <!-- <link rel="stylesheet" href="CSS/bootstrap(1).css"/> -->
     <link rel="stylesheet" href="{% static "CSS/bootstrap.css" %}" />
     <link rel="stylesheet" href="{% static "CSS/style.css" %}">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- <link rel="stylesheet" href="CSS/stilos.css"> -->
+    <style>
+        body {
+            padding: 20px;
+        }
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"],
+        select,
+        button,
+        textarea {
+            padding: 10px;
+            margin: 5px;
+            width: 200px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .row span {
+            margin-right: 10px;
+        }
+
+        .rounded-2[disabled] {
+            background-color: #f8f9fa !important; /* Fondo gris claro para elementos deshabilitados */
+            color: #6c757d !important; /* Texto oscuro para elementos deshabilitados */
+        }
+
+        .img-fluid {
+            max-width: 100%; /* Hacer que la imagen sea completamente visible */
+            height: auto; /* Mantener la relación de aspecto original */
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    </head>
+</head>
 <body>
-    <!-- <div style="background-color: rgb(214, 213, 213);;">
-        <div class="row container-fluid">
-            <div class="row event m-2">
-              <div class="primerafila ">
-                <div class=" col-6 tablaUno rounded-2 ">
-      
-                  <div class="nombretorneo">
-                    <h4 class="text-center " style="color:white ;">football-torneo</h4>
-                  </div>
-                  <div class="row  descripcion">
-                    <div class="col-6 mt-4" >
-      
-                      <img src="{% static "img/Lighthouse.jpg" %}" class="img-fluid rounded-2 ms-4 " alt="..." style="width:270px; height:150px">
-      
-                    </div>
-                    <div class="col-6 ">
-                      <div class="d-flex mt-4 ms-3 lugar ">
-                        <input type="text" class="rounded-2 shadow" value="limonar-cra19#4-2">
-                        <div class="dropdown rounded-2">
-                          <input type="time" class="shadow" style="border-radius: 5px;">
-                        </div>
-      
-                      </div>
-                      <div class="nombreEvento">
-                        <input class="rounded-2 shadow" type="text" placeholder="nombre del evento">
-                      </div>
-                      <div class="semanaEvento">
-                        <input type="date" class="shadow" style="border-radius: 5px;">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row mt-4">
-                    <div class="col-6">
-                      <div class="mapa">
-                        <iframe
-                          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31876.698412363232!2d-75.32120338916013!3d2.934280800000007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3b75e5f5cf0b23%3A0xbc8b39eb18d117e2!2scentro%20de%20la%20industria%2C%20la%20empresa%20y%20los%20servicios!5e0!3m2!1ses!2sco!4v1684033861851!5m2!1ses!2sco"
-                          class="rounded-2" width="270px" height="150px" style="border:1px solid;" allowfullscreen=""
-                          loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                      </div>
-                    </div>
-                    <div class="col-6 ">
-                      <div class="form-floating comentario mb-3 ms-4">
-                        <textarea class="form-control shadow" placeholder="Leave a comment here" id="floatingTextarea2Disabled"
-                          style="height: 80px ; width: 220px; 
-                            background-color: rgb(255, 255, 255);" disabled></textarea>
-                        <label for="floatingTextarea2Disabled">Comments</label>
-                      </div>
-                      <div class="contact me-5">
-                        <input class="rounded-2 shadow" placeholder="contacto" type="number">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="vinculo mt-3">
-                    <div class="col-6">
-                      <button class="text-white">UNIRME <img src="{% static "img/unirme.png" %} "
-                          style=" margin:5px ;" width="20px" height="20px" alt=""> </button>
-                    </div>
-                    <div class="col-6">
-                      <button class="text-white">COMPARTIR <img src="{% static "img/compartir.png" %}" style="margin:5px ;"
-                          width="22px" height="25px" alt=""> </button>
-                    </div>
-                  </div>
-                </div>
-      
-                <div class="col-6 tablaDos  rounded-2">
-                  <div class="nombretorneo">
-                    <h4 class="text-center" style="color:white ;">basquetball-torneo</h4>
-                  </div>
-                  <div class="row  descripcion">
-                    <div class="col-6  mt-4">
-      
-                      <img src="{% static "img/Lighthouse.jpg" %}" class="img-fluid rounded-2 ms-4" alt="..." style="width:270px; height:150px">
-      
-                    </div>
-                    <div class="col-6 ">
-                      <div class="d-flex mt-4 ms-3 lugar">
-                        <input type="text" class="rounded-2 shadow" value="limonar-cra19#4-2">
-                        <div class="dropdown fecha rounded-2">
-                          <input type="time" class="shadow" style="border-radius: 5px;">
-                        </div>
-      
-                      </div>
-                      <div class="nombreEvento ">
-                        <input class="rounded-2 shadow " type="text" placeholder="nombre del evento">
-                      </div>
-                      <div class="semanaEvento">
-                        <input type="date" class="shadow" style="border-radius: 5px;">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row mt-4">
-                    <div class="col-6">
-                      <div class="mapa  ">
-                        <iframe
-                          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31876.698412363232!2d-75.32120338916013!3d2.934280800000007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3b75e5f5cf0b23%3A0xbc8b39eb18d117e2!2scentro%20de%20la%20industria%2C%20la%20empresa%20y%20los%20servicios!5e0!3m2!1ses!2sco!4v1684033861851!5m2!1ses!2sco"
-                          class="rounded-2" width="270px" height="150px" style="border:1px solid;" allowfullscreen=""
-                          loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                      </div>
-                    </div>
-                    <div class="col-6 d-block">
-                      <div class="form-floating comentario mb-3 ms-4">
-                        <textarea class="form-control shadow" placeholder="Leave a comment here" id="floatingTextarea2Disabled"
-                          style="height: 90px ; width: 220px;  background-color: rgb(255, 255, 255);" disabled></textarea>
-                        <label for="floatingTextarea2Disabled">Comments</label>
-                      </div>
-                      <div class="contact me-5">
-                        <input class="rounded-2 shadow" placeholder="contacto" type="number">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="vinculo mt-3">
-                    <div class="col-6">
-                      <button class="text-white">UNIRME <img src="{% static "img/unirme.png" %}"
-                          style="margin:5px ;" height="25px" width="22px" alt=""> </button>
-                    </div>
-                    <div class="col-6">
-                      <button class="text-white">COMPARTIR <img src="{% static "img/compartir.png" %}" style="margin:5px ;"
-                          height="25px" width="22px" alt=""> </button>
-                    </div>
-                  </div>
-                </div>
-      
-              </div>
-              <div class="segundafila ">
-                <div class=" col-6 tablaUno rounded-2 ">
-      
-                  <div class="nombretorneo">
-                    <h4 class="text-center " style="color:white ;">football-torneo</h4>
-                  </div>
-                  <div class="row  descripcion">
-                    <div class="col-6  mt-4">
-      
-                      <img src="static/img/Lighthouse.jpg" class="img-fluid rounded-2 ms-4" alt="..." style="width:270px; height:150px">
-      
-                    </div>
-                    <div class="col-6 ">
-                      <div class="d-flex mt-4 ms-3 lugar">
-                        <input type="text" class="rounded-2 shadow" value="limonar-cra19#4-2">
-                        <div class="dropdown fecha rounded-2 ">
-                          <input type="time" class="shadow" style="border-radius: 5px;">
-                        </div>
-      
-                      </div>
-                      <div class="nombreEvento  ">
-                        <input class="rounded-2 shadow" type="text" placeholder="nombre del evento">
-                      </div>
-                      <div class="semanaEvento">
-      
-                        <input type="date" class="shadow" style="border-radius: 5px;">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row mt-4">
-                    <div class="col-6">
-                      <div class="mapa  ">
-                        <iframe
-                          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31876.698412363232!2d-75.32120338916013!3d2.934280800000007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3b75e5f5cf0b23%3A0xbc8b39eb18d117e2!2scentro%20de%20la%20industria%2C%20la%20empresa%20y%20los%20servicios!5e0!3m2!1ses!2sco!4v1684033861851!5m2!1ses!2sco"
-                          class="rounded-2" width="270px" height="150px" style="border:1px solid;" allowfullscreen=""
-                          loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                      </div>
-                    </div>
-                    <div class="col-6 d-block">
-                      <div class="form-floating comentario mb-3 ms-4">
-                        <textarea class="form-control shadow" placeholder="Leave a comment here" id="floatingTextarea2Disabled"
-                          style="height: 90px ; width: 220px;   background-color: rgb(255, 255, 255);" disabled></textarea>
-                        <label for="floatingTextarea2Disabled">Comments</label>
-                      </div>
-                      <div class="contact me-5">
-                        <input class="rounded-2 shadow" placeholder="contacto" type="number">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="vinculo mt-3">
-                    <div class="col-6">
-                      <button class="text-white">UNIRME <img src="{% static "img/unirme.png" %}"
-                          style="margin:5px ;" height="25px" width="22px" alt=""> </button>
-                    </div>
-                    <div class="col-6">
-                      <button class="text-white">COMPARTIR <img src="{% static "img/compartir.png" %}" style="margin:5px ;"
-                          width="22px" height="25px" alt=""> </button>
-                    </div>
-                  </div>
-                </div>
-      
-                <div class="col-6 tablaDos  rounded-2 ">
-                  <div class="nombretorneo ">
-                    <h4 class="text-center" style="color:white ;">basquetball-torneo</h4>
-                  </div>
-                  <div class="row  descripcion">
-                    <div class="col-6  mt-4">
-      
-                      <img src="static/img/Lighthouse.jpg" class="img-fluid rounded-2 ms-4" alt="..." style="width:270px; height:150px">
-      
-                    </div>
-                    <div class="col-6 ">
-                      <div class="d-flex mt-4 ms-3 lugar">
-                        <input type="text" class="rounded-2 shadow" value="limonar-cra19#4-2">
-                        <div class="dropdown fecha rounded-2">
-                          <input type="time" class="shadow" style="border-radius: 5px;">
-                        </div>
-      
-                      </div>
-                      <div class="nombreEvento ">
-                        <input class="rounded-2 shadow" type="text" placeholder="nombre del evento">
-                      </div>
-                      <div class="semanaEvento">
-                        <input type="date" class="shadow" style="border-radius: 5px;">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row mt-4">
-                    <div class="col-6">
-                      <div class="mapa  ">
-                        <iframe
-                          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31876.698412363232!2d-75.32120338916013!3d2.934280800000007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3b75e5f5cf0b23%3A0xbc8b39eb18d117e2!2scentro%20de%20la%20industria%2C%20la%20empresa%20y%20los%20servicios!5e0!3m2!1ses!2sco!4v1684033861851!5m2!1ses!2sco"
-                          class="rounded-2" width="270px" height="150px" style="border:1px solid;" allowfullscreen=""
-                          loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                      </div>
-                    </div>
-                    <div class="col-6 d-block ">
-                      <div class="form-floating comentario mb-3 ms-4">
-                        <textarea class="form-control shadow" placeholder="Leave a comment here" id="floatingTextarea2Disabled"
-                          style="height: 90px ; width: 220px; display: flex; justify-items: center;  background-color: rgb(255, 255, 255);"
-                          disabled></textarea>
-                        <label for="floatingTextarea2Disabled">Comments</label>
-                      </div>
-                      <div class="contact me-5 ">
-                        <input class="rounded-2 shadow" placeholder="contacto" type="number">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="vinculo mt-3">
-                    <div class="col-6">
-                      <button class="text-white">UNIRME <img src="{% static "img/unirme.png" %}"
-                          style="margin:5px ;" height="25px" width="22px" alt=""> </button>
-                    </div>
-                    <div class="col-6">
-                      <button class="text-white">COMPARTIR <img src="{% static "img/compartir.png" %}" style="margin:5px ;"
-                          height="25px" width="22px" alt=""> </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-    </div> -->
-    {% for element in data %}
 
-  <div class=" fondo " id="eventos">
-    <div class="row container-fluid mt-3">
-      <div class="row event">
-        <div class="primerafila ">
-          <div class=" col-6 tablaUno rounded-2 ">
+    <!-- Formulario de búsqueda -->
+    <form method="get" action="{% url 'mostrarEventos' %}">
+        <input type="text" name="q" placeholder="Buscar por nombre de actividad">
+        <select name="tipo_actividad">
+            <option value="" selected>Tipo de Actividad</option>
+            {% for choice in tipo_actividad_choices %}
+                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Buscar</button>
+    </form>
 
-            <div class="nombretorneo">
-              <h4 class="text-center " style="color:white ;">{{element.tipoactividad}}</h4>
-            </div>
-            <div class="descripcion">
-              <div class="col-6 fondodegradado mt-3">
+    <!-- Mostrar los eventos -->
+    <div class="container">
+        <div class="row">
+            {% for element in data %}
+                <div class="col-md-12">
+                    <div class="fondo" id="eventos">
+                        <div class="row container-fluid mt-3">
+                            <div class="row event">
+                                <div class="primerafila">
+                                    <div class=" col-12 tablaUno rounded-2 ">
+                                        <div class="nombretorneo">
+                                            <h4 class="text-center" style="color:white ;">{{element.nombreactividad}}</h4>
+                                        </div>
+                                        <div class="descripcion row mt-3">
+                                            <div class="col-6 fondodegradado">
+                                                <img src="{{element.imagen.url}}" class="img-fluid rounded-2 ms-4 mb-3" alt="..." style="height: 186px; width: 330px;">
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="row">
+                                                    <span>Lugar:   </span><input type="text" class="rounded-2 shadow" value="{{element.lugar}}" disabled>
+                                                </div>
+                                                <div class="row">
+                                                    <span>Hora:   </span><input type="time" value="{{element.hora}}" class="rounded-2 shadow ms-1" style="border-radius: 5px; width: 300px;" disabled>
+                                                </div>
+                                                <div class="row">
+                                                    <span>Tipo de Actividad: </span><input class="rounded-2 shadow" type="text" value="{{element.tipoactividad}}" placeholder="nombre del evento" disabled>
+                                                </div>
+                                                <div class="row">
+                                                    <span>Fecha de Inicio: </span><input type="date" value="{{element.fechainicio}}" class="rounded-2 shadow ms-1" style="border-radius: 5px;  width: 300px;" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-4">
+                                            <div class="col-6">
+                                                <div class="mapa">
+                                                    <iframe
+                                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31876.698412363232!2d-75.32120338916013!3d2.934280800000007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3b75e5f5cf0b23%3A0xbc8b39eb18d117e2!2scentro%20de%20la%20industria%2C%20la%20empresa%20y%20los%20servicios!5e0!3m2!1ses!2sco!4v1684033861851!5m2!1ses!2sco"
+                                                        class="rounded-2" width="270px" height="150px" style="border:1px solid;" allowfullscreen=""
+                                                        loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="row">
+                                                    <span>Descripcion: </span><textarea class="row shadow ms-2"
+                                                        style="height: 80px ; width: 230px; 
+                                                        background-color: rgb(255, 255, 255);" disabled>{{element.descripcion}}</textarea>
+                                                </div>
+                                                <div class="row">
+                                                    <span>Contacto: </span><input class="rounded-2 shadow ms-1" value="{{element.contacto}}" placeholder="contacto" type="number" style=" width: 300px;" disabled>
+                                                    <input style="display: none;" class="rounded-2 shadow" value="{{element.latitud}}" placeholder="contacto" type="float" disabled>
+                                                    <input style="display: none;" class="rounded-2 shadow" value="{{element.longitud}}" placeholder="contacto" type="float" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="vinculo mt-3">
+                                            <div class="col-6">
+                                                <button class="text-white" disabled>UNIRME <img src="{% static "img/unirme.png" %} "
+                                                        style=" margin:5px ;" width="20px" height="20px" alt=""> </button>
+                                            </div>
+                                            <div class="col-6">
+                                                <button class="text-white" disabled>COMPARTIR <img src="{% static "img/compartir.png" %}" style="margin:5px ;"
+                                                        width="22px" height="25px" alt=""> </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="segundafila ">
 
-                <img src="{{element.imagen.url}}" class="img-fluid rounded-2 ms-4" alt="...">
-
-              </div>
-              <div class="col-6">
-                <div class="mt-3 lugar">
-                  <div class="d-flex justify-content-center align-items-center">
-                    <input type="text" class="rounded-2 shadow" value="{{element.lugar}}">
-                    <input type="time" value="{{element.hora}}" class="shadow" style="border-radius: 5px;">
-                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="nombreEvento">
-                  <input class="rounded-2 shadow" type="text" value="{{element.nombreactividad}}" placeholder="nombre del evento">
-                </div>
-                <div class="semanaEvento">
-                  <input type="date" value="{{element.fechainicio}}" class="shadow" style="border-radius: 5px;">
-                </div>
-              </div>
-            </div>
-            <div class="row mt-4">
-              <div class="col-6">
-                <div class="mapa  ">
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31876.698412363232!2d-75.32120338916013!3d2.934280800000007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3b75e5f5cf0b23%3A0xbc8b39eb18d117e2!2scentro%20de%20la%20industria%2C%20la%20empresa%20y%20los%20servicios!5e0!3m2!1ses!2sco!4v1684033861851!5m2!1ses!2sco"
-                    class="rounded-2" width="270px" height="150px" style="border:1px solid;" allowfullscreen=""
-                    loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="d-flex justify-content-center">
-                  <div class="form-floating mb-3 m-1">
-                    <textarea class="form-control shadow" placeholder="Leave a comment here" id="floatingTextarea2Disabled"
-                      style="height: 80px ; width: 230px; 
-                        background-color: rgb(255, 255, 255);" disabled></textarea>
-                    <label for="floatingTextarea2Disabled">{{element.descripcion}}</label>
-                  </div>
-                </div>
-                <div class="contact">
-                  <input class="rounded-2 shadow" value="{{element.contacto}}" placeholder="contacto" type="number">
-                </div>
-              </div>
-            </div>
-            <div class="vinculo mt-3">
-              <div class="col-6">
-                <button class="text-white">UNIRME <img src="{% static "img/unirme.png" %} "
-                  style=" margin:5px ;" width="20px" height="20px" alt=""> </button>
-              </div>
-              <div class="col-6">
-                <button class="text-white">COMPARTIR <img src="{% static "img/compartir.png" %}" style="margin:5px ;"
-                  width="22px" height="25px" alt=""> </button>
-              </div>
-            </div>
-          </div>
+            {% endfor %}
         </div>
-        <div class="segundafila ">
-
-        </div>
-      </div>
     </div>
-  </div>
-  {% endfor %} 
+
+    <!-- Mostrar mensaje si no se encuentran eventos -->
+    {% if data.count == 0 %}
+        <p style="text-align: center;">No se encontraron eventos.</p>
+    {% endif %}
+
 </body>
 </html>

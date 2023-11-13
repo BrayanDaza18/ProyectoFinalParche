@@ -1,10 +1,12 @@
 from datetime import datetime
+from pyexpat.errors import messages
 from smtplib import SMTPException
-
+import folium
 from django.conf import settings
 from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.core.exceptions import ValidationError
 from django.core.mail import EmailMultiAlternatives
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import get_template
 
@@ -76,6 +78,8 @@ def CreateEvent(request):
     
     return render(request, 'view/VistasPCU/crearEvento.html', {'activity': activity})
 
+
+
 def RegisterCompany(request):
     document_form = Document()  
     form = FormUserCompany()
@@ -110,8 +114,22 @@ def RegisterCompany(request):
 
 
 def MostrarEvento(request):
-    data = Actividad.objects.all()
-    return render(request, 'view/VistasPCU/mostrarEventos.html', {'data': data})
+    query = request.GET.get('q', '')  # Obtén el parámetro de búsqueda del nombre de la actividad
+    tipo_actividad = request.GET.get('tipo_actividad', '')  # Corrige el nombre del parámetro
+
+    # Filtra los eventos según los parámetros de búsqueda
+    eventos = Actividad.objects.all()
+    if query:
+        eventos = eventos.filter(nombreactividad__icontains=query)
+    if tipo_actividad:
+        eventos = eventos.filter(tipoactividad=tipo_actividad)
+
+    # Obtén las opciones de tipo de actividad del modelo
+    tipo_actividad_choices = Actividad.deporte
+
+    context = {'data': eventos, 'tipo_actividad_choices': tipo_actividad_choices}
+    return render(request, 'view/VistasPCU/mostrarEventos.html', context)
+
 
 def Profile(request):
     usuario = request.user
