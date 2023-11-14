@@ -21,5 +21,7 @@ urlpatterns = [
     path('updateUser/<int:idregistro>/<str:tipousuario>', views.UpdateUser, name='UpdateUser'),
     path('updateUserCompany/<int:idregistro>/<str:tipousuario>', views.UpdateUserCompany, name='UpdateUserCompany'),
     path('eventos', views.MostrarEvento, name='mostrarEventos'),
-    path('eliminar', views.viewEventoELI, name='eliminar')
+    path('eliminar', views.viewEventoELI, name='eliminar'),
+    
+    # path('home', views.home, name='home')
 ]

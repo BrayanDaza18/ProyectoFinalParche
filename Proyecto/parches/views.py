@@ -2,6 +2,7 @@ from datetime import datetime
 from pyexpat.errors import messages
 from smtplib import SMTPException
 import folium
+from folium import Marker
 from django.conf import settings
 from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.core.exceptions import ValidationError
@@ -15,6 +16,14 @@ from .forms import (CreateEventos, Document, FormCompanyUpdate, FormUser,
 from .models import Actividad, EmpresaPersona, Persona
 
 # Create your views here.
+
+
+# def home(request):
+#     initialMap = folium.Map(location=[2.9349676,-75.2914166], zoom_start= 13)
+#     context = {'map': initialMap._repr_html_()}
+#     return render (request, 'view/folium.html', context)
+
+
 
 def HomepageProject(request):
      return render(request, 'view/VistasPCU/vistaPrincipal.html')
@@ -113,22 +122,36 @@ def RegisterCompany(request):
     return render(request, 'registration/registroEmpresa.html', {'document': document_form, 'form': form})
 
 
-def MostrarEvento(request):
-    query = request.GET.get('q', '')  # Obtén el parámetro de búsqueda del nombre de la actividad
-    tipo_actividad = request.GET.get('tipo_actividad', '')  # Corrige el nombre del parámetro
 
-    # Filtra los eventos según los parámetros de búsqueda
+def MostrarEvento(request):
+    query = request.GET.get('q', '')
+    tipo_actividad = request.GET.get('tipo_actividad', '') 
+
     eventos = Actividad.objects.all()
     if query:
         eventos = eventos.filter(nombreactividad__icontains=query)
     if tipo_actividad:
         eventos = eventos.filter(tipoactividad=tipo_actividad)
 
-    # Obtén las opciones de tipo de actividad del modelo
     tipo_actividad_choices = Actividad.deporte
 
-    context = {'data': eventos, 'tipo_actividad_choices': tipo_actividad_choices}
+    # Crear un mapa de Folium
+    initial_map = folium.Map(location=[2.9349676, -75.2914166], zoom_start=13)
+
+    # Agregar un marcador para cada evento en el mapa
+    for evento in eventos:
+        folium.Marker(
+            location=[evento.latitud, evento.longitud],
+            popup=f"{evento.nombreactividad} - Coordenadas: {evento.latitud}, {evento.longitud}"
+        ).add_to(initial_map)
+
+    # Obtener el HTML del mapa de Folium
+    map_html = initial_map._repr_html_()
+
+    context = {'data': eventos, 'tipo_actividad_choices': tipo_actividad_choices, 'map': map_html}
     return render(request, 'view/VistasPCU/mostrarEventos.html', context)
+
+
 
 
 def Profile(request):
