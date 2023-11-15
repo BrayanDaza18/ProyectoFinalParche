@@ -123,6 +123,7 @@ def RegisterCompany(request):
 
 
 
+
 def MostrarEvento(request):
     query = request.GET.get('q', '')
     tipo_actividad = request.GET.get('tipo_actividad', '') 
@@ -135,21 +136,18 @@ def MostrarEvento(request):
 
     tipo_actividad_choices = Actividad.deporte
 
-    # Crear un mapa de Folium
-    initial_map = folium.Map(location=[2.9349676, -75.2914166], zoom_start=13)
-
-    # Agregar un marcador para cada evento en el mapa
+    maps = []
     for evento in eventos:
+        map = folium.Map(location=[evento.latitud, evento.longitud], zoom_start=13)
         folium.Marker(
             location=[evento.latitud, evento.longitud],
             popup=f"{evento.nombreactividad} - Coordenadas: {evento.latitud}, {evento.longitud}"
-        ).add_to(initial_map)
+        ).add_to(map)
+        maps.append(map._repr_html_())
 
-    # Obtener el HTML del mapa de Folium
-    map_html = initial_map._repr_html_()
-
-    context = {'data': eventos, 'tipo_actividad_choices': tipo_actividad_choices, 'map': map_html}
+    context = {'data': eventos, 'tipo_actividad_choices': tipo_actividad_choices, 'maps': maps}
     return render(request, 'view/VistasPCU/mostrarEventos.html', context)
+
 
 
 

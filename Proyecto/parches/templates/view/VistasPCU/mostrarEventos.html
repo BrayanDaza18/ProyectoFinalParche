@@ -123,10 +123,10 @@
                                     </div>
                                     <div class="row mt-4">
                                         <div class="col-6">
-                                            <div class="mapa">
-                                                {{ element.latitud }} {{ element.longitud }}
-                                                {{ map|safe }}
-                                            </div>
+                                            {% for map in maps %}
+                                            {{ map|safe }}
+                                            {% endfor %}
+
                                         </div>
                                         <div class="col-6">
                                             <div class="row">
