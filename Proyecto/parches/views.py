@@ -5,12 +5,13 @@ from django.conf import settings
 from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.core.exceptions import ValidationError
 from django.core.mail import EmailMultiAlternatives
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import get_template
 
 from .forms import (CreateEventos, Document, FormCompanyUpdate, FormUser,
                     FormUserCompany, FormUserUpdate, UserRegister)
-from .models import Actividad, EmpresaPersona, Persona
+from .models import Actividad, EmpresaPersona, Persona, Realizacion
 
 # Create your views here.
 
@@ -111,11 +112,13 @@ def RegisterCompany(request):
 
 def MostrarEvento(request):
     data = Actividad.objects.all()
-    return render(request, 'view/VistasPCU/mostrarEventos.html', {'data': data})
+    form = EmpresaPersona.objects.all()
+    return render(request, 'view/VistasPCU/mostrarEventos.html', {'data': data, 'form': form})
 
 def Profile(request):
     usuario = request.user
     form = Actividad.objects.filter(empresa_idempresa=usuario)
+  
     actividad = EmpresaPersona.objects.all()
     print(form)
       
@@ -240,3 +243,61 @@ def send_email_empresa(usuario, correo, nombreempresa, fecha_hora_actual):
 
     except (ValidationError, SMTPException) as e:
         print(f"Error al enviar correo: {e}")
+
+
+def addLikes(request, pk):
+    post = EmpresaPersona.objects.get(pk=pk)
+
+    is_dislikes = False
+
+    for dislikes in post.dislikes.all():
+        if dislikes == request.user:
+            is_dislikes = True
+            break
+
+    if is_dislikes:
+        post.dislikes.remove(request.user)
+
+    is_likes = False
+    for likes in post.likes.all():
+        if likes == request.user:
+            is_likes = True
+            break
+
+    if not is_likes:
+        post.likes.add(request.user)
+    else:
+        post.likes.remove(request.user)
+
+    next = request.POST.get('next', '/')
+    return HttpResponseRedirect(next)
+
+def adddislike(request, pk):
+    post = EmpresaPersona.objects.get(pk=pk)
+
+    is_likes = False
+    for likes in post.likes.all():
+        if likes == request.user:
+            is_likes = True
+            break
+
+    if is_likes:
+        post.likes.remove(request.user)
+
+    is_dislikes = False
+    for dislikes in post.dislikes.all():
+        if dislikes == request.user:
+            is_dislikes = True
+            break
+
+    if not is_dislikes:
+        post.dislikes.add(request.user)
+    else:
+        post.dislikes.remove(request.user)
+
+    next = request.POST.get('next', '')
+    return HttpResponseRedirect(next)
+
+def interfazUser(request, pk ):
+  form = EmpresaPersona.objects.get(pk=pk)
+  return render(request,'view/VistasPCU/interfazdelosUsuarios', {'form':form})

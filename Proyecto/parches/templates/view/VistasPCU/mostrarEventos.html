@@ -264,7 +264,8 @@
           </div>
     </div> -->
     {% for element in data %}
-
+    {% for elements in form %}
+    {% if element.pk == elements.pk %}
   <div class=" fondo " id="eventos">
     <div class="row container-fluid mt-3">
       <div class="row event">
@@ -272,7 +273,7 @@
           <div class=" col-6 tablaUno rounded-2 ">
 
             <div class="nombretorneo">
-              <h4 class="text-center " style="color:white ;">{{element.tipoactividad}}</h4>
+              <h4 class="text-center " style="color:white ;"><a href="{% url "interfaz" element.pk %}">{{elements.usuario}}</a>{{element.tipoactividad}}</h4>
             </div>
             <div class="descripcion">
               <div class="col-6 fondodegradado mt-3">
@@ -336,6 +337,8 @@
       </div>
     </div>
   </div>
+  {% endif %}
+  {% endfor %} 
   {% endfor %} 
 </body>
 </html>

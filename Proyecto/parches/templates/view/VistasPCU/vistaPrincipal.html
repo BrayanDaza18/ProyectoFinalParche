@@ -53,11 +53,13 @@ style="background-color: #cbe9d7; z-index: -3; ">
           ...
           {% if user.is_authenticated %}
           <li>User: {{ user.get_username }}</li>
+          <li><a href="{% url "profile" %}">perfil</a></li>
           <li>
             <div class="d-flex justify-content-center align-items-center">
               <button type="button" class="btn btn-success m-1">
                 <a href="{% url 'logout'%}?next={{request.path}}" style="font-size: 1rem;">Cerrar sesión</a>
               </button>
+             
             </div>
           </li>
           

@@ -118,6 +118,8 @@ class EmpresaPersona(AbstractBaseUser, PermissionsMixin):
     usuario_administrador = models.BooleanField(default=False)
     estado = models.CharField(choices=Estado_ENUM, default='I', max_length=1)
     is_active = models.BooleanField(default=True)
+    likes = models.ManyToManyField('self', blank=True, related_name='likes')
+    dislikes = models.ManyToManyField('self', blank=True, related_name='dislikes')
     
 
     
@@ -184,6 +186,7 @@ class Realizacion(models.Model):
     actividad_idactividad = models.OneToOneField(Actividad, models.DO_NOTHING, db_column='actividad_idActividad', primary_key=True) 
     usuario_idusuario = models.ForeignKey('EmpresaPersona', models.DO_NOTHING, db_column='usuario_idEmpresaPersona')  
     comentarios = models.CharField(max_length=45)
+  
 
     class Meta:
         

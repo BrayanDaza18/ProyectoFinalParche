@@ -17,6 +17,7 @@
 </head>
 
 <body>
+    {% block content %}
     <div class="container-fluid">
 
         <div class="row titulos">
@@ -34,16 +35,62 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
         <div class="row">
+            
             <div class="col-7 left">
                 <br>
-                <div class="rating">
-                    <span class="star">&#9734;</span>
-                    <span class="star">&#9734;</span>
-                    <span class="star">&#9734;</span>
-                    <span class="star">&#9734;</span>
-                    <span class="star">&#9734;</span>
-                </div>
-
+               {% if actividad  %}
+                {% for element in actividad %}
+    {% if request.user.is_authenticated and request.user == element  %}
+    <span>{{ element.dislikes.all.count }}</span>   
+    <h1>{{ element.likes.all.count }}likes</h1>
+               <div class="d-flex justify-content-center ">
+                
+                <form method="POST" action="{% url 'likes' element.pk %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{request.path}}">
+                    <button type="submit">
+                        <h1><i class="fas fa-regular fa-thumbs-up me-5"></i></h1>
+                    </button>
+                </form>   
+               
+         
+                <form method="POST" action="{% url "dislike" element.pk %}">
+                    {% csrf_token %}
+                    <button  type="submit">
+                    <input type="hidden" name="next" value="{{request.path}}">
+                    <h1><i class="fas fa-regular fa-thumbs-down"></i></h1>
+                </button>
+                </form>   
+               
+               </div>
+               {% endif %}
+               {% endfor %}
+               {% else %}
+               {% if form.pk %}
+               <h1>{{ form.dislikes.all.count }}dislikes</h1>   
+                <h1>{{ form.likes.all.count }}likes</h1>
+               <div class="d-flex justify-content-center ">
+                
+                <form method="POST" action="{% url 'likes' form.pk %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{request.path}}">
+                    <button type="submit">
+                        <h1><i class="fas fa-regular fa-thumbs-up me-5"></i></h1>
+                    </button>
+                </form>   
+               
+         
+                <form method="POST" action="{% url "dislike" form.pk %}">
+                    {% csrf_token %}
+                    <button  type="submit">
+                    <input type="hidden" name="next" value="{{request.path}}">
+                    <h1><i class="fas fa-regular fa-thumbs-down"></i></h1>
+                </button>
+                </form>   
+            </div>
+            {% endif %}
+               {% endif %}        
+               
                 <br>
                 <h2>Comentarios</h2>
 
@@ -98,7 +145,11 @@
                     alt="">
                 <br>
                 {% if user.is_authenticated %}
-                <span class="name">{{user.get_username}}</span>
+                <span class="name" >{% if form %}
+                    {{form.usuario}}
+                    {% else %}
+                    {{user.get_username }}
+                    {% endif %}</span>
                
                 <br><br>
                 <span>Soy una persona apasionada por el deporte y la actividad física que
@@ -106,7 +157,22 @@
                 
                 <br><br><br>
 
-                <h4>Contacto: 3165438453</h4>
+
+                {% if actividad  %}
+                {% for element in actividad %}
+    {% if request.user.is_authenticated and request.user == element  %}
+    <h4>{{element.telefono}}</h4>
+    <a href="{% url 'logout'%}?next={{request.path}}" class="btn btn-success mt-5 cerrarSesion">Cerrar Sesion</a>
+    
+               {% endif %}
+               {% endfor %}
+                {% else %}
+                <h4>{{form.telefono}}</h4>  
+               
+                {% endif %}
+
+
+
                 {% for element in actividad %}
     {% if request.user.is_authenticated and request.user == element and element.tipousuario == 'U' %}
         <div><a href="{% url 'UpdateUser' element.idregistro element.tipousuario %}"><h1>Actualizar información</h1></a></div>
@@ -117,7 +183,7 @@
                 
 
 
-                <a href="{% url 'logout'%}?next={{request.path}}" class="btn btn-success mt-5 cerrarSesion">Cerrar Sesion</a>
+            
 
                 
                 {% else %}
@@ -132,7 +198,7 @@
 
 
 
-                <a class="btn btn-success mt-5 cerrarSesion">Cerrar Sesion</a>
+          
                 {% endif %}
 
 
@@ -146,7 +212,7 @@
 
 
 
-    
+    {% endblock  %}
 </body>
 
 </html>
