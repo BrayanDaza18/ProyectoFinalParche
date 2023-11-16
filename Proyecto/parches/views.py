@@ -150,6 +150,18 @@ def MostrarEvento(request):
 
 
 
+def DetallesEvento(request, idactividad):
+    evento = get_object_or_404(Actividad, idactividad=idactividad)
+
+    mapa = folium.Map(location=[evento.latitud, evento.longitud], zoom_start=13)
+    folium.Marker(
+        location=[evento.latitud, evento.longitud],
+        popup=f"{evento.nombreactividad} - Coordenadas: {evento.latitud}, {evento.longitud}"
+    ).add_to(mapa)
+
+    mapa_html = mapa._repr_html_()
+
+    return render(request, 'view/VistasPCU/detalles_evento.html', {'evento': evento, 'mapa_html': mapa_html})
 
 
 def Profile(request):

@@ -10,7 +10,7 @@ from django.conf import settings
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         PermissionsMixin)
 from django.db import models
-
+import uuid
 
 class Actividad(models.Model):
     Futbol = "FUTBOL"
@@ -50,6 +50,7 @@ class Actividad(models.Model):
 
     latitud = models.FloatField(blank=True, null=True)
     longitud = models.FloatField(blank=True, null=True)
+    identificador_unico = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
 
     class Meta:
         db_table = 'actividad'

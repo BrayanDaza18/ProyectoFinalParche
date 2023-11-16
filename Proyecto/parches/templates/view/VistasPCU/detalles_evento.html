@@ -69,22 +69,11 @@
 
 <body>
 
-    <!-- Formulario de búsqueda -->
-    <form method="get" action="{% url 'mostrarEventos' %}">
-        <input type="text" name="q" placeholder="Buscar por nombre de actividad">
-        <select name="tipo_actividad">
-            <option value="" selected>Tipo de Actividad</option>
-            {% for choice in tipo_actividad_choices %}
-            <option value="{{ choice.0 }}">{{ choice.1 }}</option>
-            {% endfor %}
-        </select>
-        <button type="submit">Buscar</button>
-    </form>
+
 
     <!-- Mostrar los eventos -->
     <div class="container">
         <div class="row">
-            {% for element in data %}
             <div class="col-md-12">
                 <div class="fondo" id="eventos">
                     <div class="row container-fluid mt-3">
@@ -92,70 +81,66 @@
                             <div class="primerafila">
                                 <div class=" col-12 tablaUno rounded-2 ">
                                     <div class="nombretorneo">
-                                        <h4 class="text-center" style="color:white ;">{{element.nombreactividad}}</h4>
+                                        <h4 class="text-center" style="color:white ;">{{evento.nombreactividad}}</h4>
                                     </div>
                                     <div class="descripcion row mt-3">
                                         <div class="col-6 fondodegradado">
-                                            <img src="{{element.imagen.url}}" class="img-fluid rounded-2 ms-4 mb-3"
+                                            <img src="{{evento.imagen.url}}" class="img-fluid rounded-2 ms-4 mb-3"
                                                 alt="..." style="height: 186px; width: 330px;">
                                         </div>
                                         <div class="col-6">
                                             <div class="row">
                                                 <span>Lugar: </span><input type="text" class="rounded-2 shadow"
-                                                    value="{{element.lugar}}" disabled>
+                                                    value="{{evento.lugar}}" disabled>
                                             </div>
                                             <div class="row">
-                                                <span>Hora: </span><input type="time" value="{{element.hora}}"
+                                                <span>Hora: </span><input type="time" value="{{evento.hora}}"
                                                     class="rounded-2 shadow ms-1"
                                                     style="border-radius: 5px; width: 300px;" disabled>
                                             </div>
                                             <div class="row">
                                                 <span>Tipo de Actividad: </span><input class="rounded-2 shadow"
-                                                    type="text" value="{{element.tipoactividad}}"
+                                                    type="text" value="{{evento.tipoactividad}}"
                                                     placeholder="nombre del evento" disabled>
                                             </div>
                                             <div class="row">
                                                 <span>Fecha de Inicio: </span><input type="date"
-                                                    value="{{element.fechainicio}}" class="rounded-2 shadow ms-1"
+                                                    value="{{evento.fechainicio}}" class="rounded-2 shadow ms-1"
                                                     style="border-radius: 5px;  width: 300px;" disabled>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mt-4">
                                         <div class="col-6">
-                                            {% for map in maps %}
-                                            {{ map|safe }}
-                                            {% endfor %}
+
+                                            {{ mapa_html|safe }}
 
                                         </div>
                                         <div class="col-6">
                                             <div class="row">
                                                 <span>Descripcion: </span><textarea class="row shadow ms-2" style="height: 80px ; width: 230px; 
                                                         background-color: rgb(255, 255, 255);"
-                                                    disabled>{{element.descripcion}}</textarea>
+                                                    disabled>{{evento.descripcion}}</textarea>
                                             </div>
                                             <div class="row">
                                                 <span>Contacto: </span><input class="rounded-2 shadow ms-1"
-                                                    value="{{element.contacto}}" placeholder="contacto" type="number"
+                                                    value="{{evento.contacto}}" placeholder="contacto" type="number"
                                                     style=" width: 300px;" disabled>
                                                 <input style="display: none;" class="rounded-2 shadow"
-                                                    value="{{element.latitud}}" placeholder="contacto" type="float"
+                                                    value="{{evento.latitud}}" placeholder="contacto" type="float"
                                                     disabled>
                                                 <input style="display: none;" class="rounded-2 shadow"
-                                                    value="{{element.longitud}}" placeholder="contacto" type="float"
+                                                    value="{{evento.longitud}}" placeholder="contacto" type="float"
                                                     disabled>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="vinculo mt-3">
-                                        <div class="col-6">
+                                        <div class="col-6" style="margin-left: 220px;">
                                             <button class="text-white" disabled>UNIRME <img src="{% static "img/unirme.png" %} "style=" margin:5px ;" width="20px" height="20px"alt="">
                                             </button>
                                         </div>
-                                        <div class="col-6">
-                                            <button class="compartir" data-id="{{ element.idactividad }}" data-nombre="{{ element.nombreactividad }}">Compartir <img src="{% static "img/compartir.png" %}" style="margin:5px ;" width="22px"height="25px" alt=""></button>
 
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -166,36 +151,9 @@
                     </div>
                 </div>
             </div>
-            {% endfor %}
         </div>
     </div>
-
-    <!-- Mostrar mensaje si no se encuentran eventos -->
-    {% if data.count == 0 %}
-    <p style="text-align: center;">No se encontraron eventos.</p>
-    {% endif %}
 
 </body>
 
 </html>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var botonesCompartir = document.querySelectorAll('.compartir');
-        botonesCompartir.forEach(function(boton) {
-            boton.addEventListener('click', function() {
-                var idactividad = this.getAttribute('data-id');
-                var nombreactividad = this.getAttribute('data-nombre');
-                
-                var enlace = window.location.origin + '/detalles/' + idactividad + '/';
-                
-                var mensaje = 'texto copiado en portapapeles';
-                navigator.clipboard.writeText(enlace).then(function() {
-                    alert(mensaje);
-                }).catch(function(err) {
-                    console.error('Error al copiar enlace: ', err);
-                });
-            });
-        });
-    });
-</script>

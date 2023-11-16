@@ -23,5 +23,5 @@ urlpatterns = [
     path('eventos', views.MostrarEvento, name='mostrarEventos'),
     path('eliminar', views.viewEventoELI, name='eliminar'),
     
-    # path('home', views.home, name='home')
+    path('detalles/<int:idactividad>/', views.DetallesEvento, name='detalles_evento'),
 ]
