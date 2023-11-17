@@ -5,12 +5,17 @@ from django.conf import settings
 from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.core.exceptions import ValidationError
 from django.core.mail import EmailMultiAlternatives
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import get_template
 
 from .forms import (CreateEventos, Document, FormCompanyUpdate, FormUser,
                     FormUserCompany, FormUserUpdate, UserRegister)
 from .models import Actividad, EmpresaPersona, Persona
+
+from django.contrib import messages
+from .forms import UserReportForm
+from django.core.mail import send_mail
 
 # Create your views here.
 
@@ -240,3 +245,51 @@ def send_email_empresa(usuario, correo, nombreempresa, fecha_hora_actual):
 
     except (ValidationError, SMTPException) as e:
         print(f"Error al enviar correo: {e}")
+
+
+def report_user(request):
+    if request.method == 'POST':
+        report_type = request.POST['report_type']
+        reported_user_id = request.POST['reported_user']
+        reported_user = User.objects.get(id=reported_user_id)
+
+        if request.user == reported_user:
+            return render(request, 'reports/report_user.html', {'error': 'No puedes reportarte a ti mismo.'})
+
+        Report.objects.create(
+            user=request.user,
+            report_type=report_type,
+            reported_user=reported_user
+        )
+
+        send_report_email(Report.objects.latest('reported_at'))
+
+        return redirect('index')
+
+    return render(request, 'view/VistasPCU/ReportEvent.html')
+
+# def ReportEvent(request, reported_user_id):
+#     if request.method == 'POST':
+#         form = UserReportForm(request.POST)
+#         if form.is_valid():
+#             report = form.save(commit=False)
+#             report.reporter = request.user
+#             report.reported_user_id = reported_user_id
+#             report.save()
+
+#             # Enviar notificación por correo electrónico
+#             send_mail(
+#                 'Nuevo informe de usuario',
+#                 f'Has recibido un nuevo informe por {report.category}. Revisa el panel de administración para más detalles.',
+#                 settings.DEFAULT_FROM_EMAIL,
+#                 [reported_user.email],
+#                 fail_silently=False,
+#             )
+
+#             messages.success(request, '¡Gracias por tu informe! Hemos recibido tu reporte y lo revisaremos pronto.')
+#             return redirect('perfil_del_usuario')  # Reemplaza 'perfil_del_usuario' con la URL adecuada
+
+#     else:
+#         form = UserReportForm()
+
+#     return render(request, 'view/VistasPCU/ReportEvent.html', {'form': form})

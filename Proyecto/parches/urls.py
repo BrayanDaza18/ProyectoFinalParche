@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.contrib.staticfiles.urls import static
 from django.urls import include, path
-
 from . import views
 
 urlpatterns = [
@@ -13,7 +12,7 @@ urlpatterns = [
     path('Register/Company', views.RegisterCompany, name='RegisterCompany'),
     path('profile', views.Profile, name='profile'),
     path('coverImage', views.CoverImage, name='CoverImagen'),
-    path('Report', views.ReportEvent, name='Report'),
+    # path('Report', views.ReportEvent, name='Report'),
     path('select/user', views.SelectUser, name='selectUser'),
     path('eventCreate',views.eventForUser, name='eventUser' ),
     path('eliminar/<int:idactividad>', views.viewEventoELI, name='eliminar'),
@@ -21,5 +20,7 @@ urlpatterns = [
     path('updateUser/<int:idregistro>/<str:tipousuario>', views.UpdateUser, name='UpdateUser'),
     path('updateUserCompany/<int:idregistro>/<str:tipousuario>', views.UpdateUserCompany, name='UpdateUserCompany'),
     path('eventos', views.MostrarEvento, name='mostrarEventos'),
-    path('eliminar', views.viewEventoELI, name='eliminar')
+    path('eliminar', views.viewEventoELI, name='eliminar'),
+    # path('Report/<int:reported_user_id>/', views.ReportEvent, name='reportar_usuario'),
+    path('Report/', views.report_user, name='report_user')
 ]

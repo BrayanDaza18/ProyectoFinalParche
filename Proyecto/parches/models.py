@@ -10,7 +10,7 @@ from django.conf import settings
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         PermissionsMixin)
 from django.db import models
-
+from django.contrib.auth.models import User
 
 class Actividad(models.Model):
     Futbol = "FUTBOL"
@@ -204,3 +204,36 @@ class Realizacion(models.Model):
 #     class Meta:
 #         managed = False
 #         db_table = 'usuario'
+
+
+class UserReport(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reports')
+    report_type = models.CharField(max_length=50, choices=[
+        ('Perfil falso', 'Perfil falso'),
+        ('Contenido explícito', 'Contenido explícito'),
+        ('Lenguaje ofensivo', 'Lenguaje ofensivo'),
+        ('Acoso', 'Acoso'),
+        ('Evento sospechoso', 'Evento sospechoso'),
+    ])
+    reported_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reported_by')
+    reported_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user} reported {self.reported_user} for {self.report_type}"
+# class UserReport(models.Model):
+#     CATEGORIES = [
+#         ('Perfil falso', 'Perfil falso'),
+#         ('Contenido explícito', 'Contenido explícito'),
+#         ('Lenguaje ofensivo', 'Lenguaje ofensivo'),
+#         ('Acoso', 'Acoso'),
+#         ('Evento sospechoso', 'Evento sospechoso'),
+#     ]
+
+#     reporter = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+#     reported_user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='reported_user', on_delete=models.CASCADE)
+#     category = models.CharField(max_length=20, choices=CATEGORIES)
+#     description = models.TextField()
+#     timestamp = models.DateTimeField(auto_now_add=True)
+
+#     def __str__(self):
+#         return f"{self.reporter.username} reportó a {self.reported_user.username} por {self.category}"

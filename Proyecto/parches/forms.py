@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-
+from .models import UserReport
+from django.db import models
 from .models import Actividad, Documento, EmpresaPersona, Persona
 
 
@@ -352,3 +353,8 @@ class FormCompanyUpdate(forms.ModelForm):
             'required': 'required'
         }),
         }
+
+class UserReportForm(forms.ModelForm):
+    class Meta:
+        model = UserReport
+        fields = ['category', 'description']
