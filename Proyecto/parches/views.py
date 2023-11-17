@@ -10,8 +10,10 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import get_template
 
 from .forms import (CreateEventos, Document, FormCompanyUpdate, FormUser,
-                    FormUserCompany, FormUserUpdate, UserRegister)
-from .models import Actividad, EmpresaPersona, Persona, Realizacion
+                    FormUserCompany, FormUserUpdate, UserRegister,
+                    comentarioUserform)
+from .models import (Actividad, EmpresaPersona, Persona, Realizacion,
+                     comentarioUSer)
 
 # Create your views here.
 
@@ -118,11 +120,20 @@ def MostrarEvento(request):
 def Profile(request):
     usuario = request.user
     form = Actividad.objects.filter(empresa_idempresa=usuario)
-  
+    comment = comentarioUSer.objects.filter(author = usuario).order_by('created_on')
     actividad = EmpresaPersona.objects.all()
-    print(form)
+
+    if request.method == 'POST':
+       comment = comentarioUserform(request.POST)
+
+       if comment.is_valid():
+            commentUser = comment.save(commit=False)
+            commentUser.author = request.user
+            commentUser.receptor = request.user
+            commentUser.save()
+            return redirect('profile')
       
-    return render(request, 'view/VistasPCU/perfil.html', {'data': form, 'actividad': actividad})
+    return render(request, 'view/VistasPCU/perfil.html', {'data': form, 'actividad': actividad, 'comment': comment})
 
 
 def CoverImage(request):
@@ -300,4 +311,77 @@ def adddislike(request, pk):
 
 def interfazUser(request, pk ):
   form = EmpresaPersona.objects.get(pk=pk)
-  return render(request,'view/VistasPCU/interfazdelosUsuarios', {'form':form})
+  comment = comentarioUSer.objects.filter(receptor=pk).order_by('created_on')
+
+  if request.method == 'POST':
+    comment = comentarioUserform(request.POST)
+    if comment.is_valid():
+        newcomment = comment.save(commit=False)
+        newcomment.author = request.user
+        newcomment.receptor = EmpresaPersona.objects.get(pk=pk)
+        newcomment.save()
+        return redirect('interfaz', pk=pk)
+    else:
+        comment.errors
+  return render(request,'view/VistasPCU/interfazdelosUsuarios.html', {'form':form, 'commentUser':comment})
+
+# def Comment(request):
+def addCommentLikes(request, id):
+    commentUser = comentarioUSer.objects.get(id=id)
+
+
+    is_dislikes = False
+
+    for dislikes in commentUser.dislikes.all():
+        if dislikes == request.user:
+            is_dislikes = True
+            break
+
+    if is_dislikes:
+        commentUser.dislikes.remove(request.user)
+
+    is_likes = False
+    for likes in commentUser.likes.all():
+        if likes == request.user:
+            is_likes = True
+            break
+
+    if not is_likes:
+        commentUser.likes.add(request.user)
+    else:
+        commentUser.likes.remove(request.user)
+
+    next = request.POST.get('next', '/')
+    return HttpResponseRedirect(next)
+
+def addCommentDislike(request, id):
+    commentUser = comentarioUSer.objects.get(id=id)
+
+
+    is_likes = False
+    for likes in commentUser.likes.all():
+        if likes == request.user:
+            is_likes = True
+            break
+
+    if is_likes:
+        commentUser.likes.remove(request.user)
+
+    is_dislikes = False
+    for dislikes in commentUser.dislikes.all():
+        if dislikes == request.user:
+            is_dislikes = True
+            break
+
+    if not is_dislikes:
+        commentUser.dislikes.add(request.user)
+    else:
+        commentUser.dislikes.remove(request.user)
+
+    next = request.POST.get('next', '')
+    return HttpResponseRedirect(next)
+
+def deleteComment(request, id):
+    form = comentarioUSer.objects.get(id=id)
+    form.delete()
+    return redirect('interfaz', pk = form.receptor.idregistro)

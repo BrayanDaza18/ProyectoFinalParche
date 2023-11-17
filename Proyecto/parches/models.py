@@ -6,10 +6,13 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 # from django.contrib.auth.models import User
+
+
 from django.conf import settings
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
-                                        PermissionsMixin)
+                                        PermissionsMixin, User)
 from django.db import models
+from django.utils import timezone
 
 
 class Actividad(models.Model):
@@ -153,6 +156,16 @@ class EmpresaPersona(AbstractBaseUser, PermissionsMixin):
     # class Meta:
     #     managed = Fals
     #     db_table = 'empresa/persona'
+
+class comentarioUSer(models.Model):
+    comment = models.TextField(db_column='comentario')
+    created_on = models.DateTimeField(default=timezone.now)
+    author = models.ForeignKey(EmpresaPersona, on_delete=models.CASCADE, related_name='comment_author')
+    receptor = models.ForeignKey(EmpresaPersona, on_delete=models.CASCADE, db_column='usuario')
+    likes = models.ManyToManyField(EmpresaPersona, blank=True, related_name='comment_likes')
+    dislikes = models.ManyToManyField(EmpresaPersona, blank=True, related_name='comment_dislikes')
+
+
 
 
 class Persona(models.Model ):

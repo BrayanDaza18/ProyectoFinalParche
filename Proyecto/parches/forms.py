@@ -2,7 +2,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from .models import Actividad, Documento, EmpresaPersona, Persona
+from .models import (Actividad, Documento, EmpresaPersona, Persona,
+                     comentarioUSer)
 
 
 class FormUser(forms.ModelForm):
@@ -349,6 +350,20 @@ class FormCompanyUpdate(forms.ModelForm):
              'class': 'form-control,justify-content-center',
             'placeholder': 'telefono',
             'id': 'telefono',
+            'required': 'required'
+        }),
+        }
+
+class comentarioUserform(forms.ModelForm):
+     class Meta:
+        model = comentarioUSer
+        fields = ['comment']
+        widgets = {
+            'comment': forms.TextInput(
+                 attrs= {
+            'class': 'form-control,justify-content-center',
+            'placeholder': 'comment',
+            'id': 'comment',
             'required': 'required'
         }),
         }

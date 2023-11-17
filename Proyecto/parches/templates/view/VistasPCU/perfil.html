@@ -66,7 +66,7 @@
                {% endif %}
                {% endfor %}
                {% else %}
-               {% if form.pk %}
+               {% if form.pk == form.pk %}
                <h1>{{ form.dislikes.all.count }}dislikes</h1>   
                 <h1>{{ form.likes.all.count }}likes</h1>
                <div class="d-flex justify-content-center ">
@@ -93,11 +93,124 @@
                
                 <br>
                 <h2>Comentarios</h2>
+                    <form method="POST"  >
+                        {% csrf_token %}
+                        <input name="comment">
+                        <button type="submit">comentar</button>
+                    </form>
+                    <div class="row comentarios">
+                        {% if form and commentUser %}
+                            {% for comments in commentUser %}
+                                <div class="com mt-2">
+                                    <span>{{ comments.author }}</span>
+                                    <span>{{ comments.comment }}</span>
+                                    <span>{{ comments.created_on }}</span>
+                    
+                                    <span>{{ comments.dislikes.all.count }} dislike</span>
+                                    <span>{{ comments.likes.all.count }} likes</span>
+                                    <a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalId">
+                                        eliminar Comentario
+                                      </a>
+                    
+                                    <div class="d-flex justify-content-center">
+                                        <form method="POST" action="{% url "likescomment" comments.id %}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="next" value="{{ request.path }}">
+                                            <button type="submit">
+                                                <i class="fas fa-regular fa-thumbs-up me-5"></i>
+                                            </button>
+                                        </form>
+                    
+                                        <form method="POST" action="{% url 'dislikecomment' comments.id %}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="next" value="{{ request.path }}">
+                                            <button type="submit">
+                                                <i class="fas fa-regular fa-thumbs-down"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <!-- Modal trigger button -->
+                                    
+                                    
+                                    <!-- Modal Body -->
+                                    <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+                                    <div class="modal fade" id="modalId" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="modalTitleId">Modal title</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                   Estas seguro de eliminar este comentario
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <a type="button"  href="{% url "deleteComment" comments.id %}" class="btn btn-primary">eliminar</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    <!-- Optional: Place to the bottom of scripts -->
+                                    <script>
+                                        const myModal = new bootstrap.Modal(document.getElementById('modalId'), options)
+                                    
+                                    </script>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            {% for comments in comment %}
+                                <div class="com mt-2">
+                                    <span>{{ comments.author }}</span>
+                                    <span>{{ comments.comment }}</span>
+                                    <span>{{ comments.created_on }}</span>
+                                    <span>{{ comments.dislikes.all.count }} dislike</span>
+                                    <span>{{ comments.likes.all.count }} likes</span>
+                                </div>
+                                   <a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalId">
+                                        eliminar Comentario
+                                      </a>
+                    
+                                    <div class="d-flex justify-content-center">
+                                        <form method="POST" action="{% url "likescomment" comments.id %}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="next" value="{{ request.path }}">
+                                            <button type="submit">
+                                                <i class="fas fa-regular fa-thumbs-up me-5"></i>
+                                            </button>
+                                        </form>
+                    
+                                        <form method="POST" action="{% url 'dislikecomment' comments.id %}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="next" value="{{ request.path }}">
+                                            <button type="submit">
+                                                <i class="fas fa-regular fa-thumbs-down"></i>
+                                            </button>
+                                        </form>
+                                    </div>
 
-                <div class="row comentarios">
-                    <span class="com mt-2">Hola, mi nombre es fabian, estoy muy satisfecho con los eventos de esta
-                        persona</span>
-                </div>
+                                    <div class="modal fade" id="modalId" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="modalTitleId">Modal title</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                   Estas seguro de eliminar este comentario
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <a type="button"  href="{% url "deleteComment" comments.id %}" class="btn btn-primary">eliminar</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
 
                 <div class="row misEventos mt-5 mb-4 ">
                     <h2>Mis Eventos</h2>
@@ -145,7 +258,8 @@
                     alt="">
                 <br>
                 {% if user.is_authenticated %}
-                <span class="name" >{% if form %}
+                <span class="name" >{% if form and commentUser%}
+                    
                     {{form.usuario}}
                     {% else %}
                     {{user.get_username }}
