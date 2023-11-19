@@ -14,10 +14,10 @@ import uuid
 
 class Actividad(models.Model):
     Futbol = "FUTBOL"
-    Baloncesto = "BALONCESTO"
-    juegoMesa = "JuegoDeMesa"
+    Baloncesto = "Baloncesto"
+    juegoMesa = "Juego de mesa"
     Voleibol = "Voleibol"
-    pasarElRato = "PasarElRato"
+    pasarElRato = "Pasar el rato"
     natacion = "natacion"
     patinaje = 'patinaje'
     tenis= 'tenis'
@@ -28,11 +28,11 @@ class Actividad(models.Model):
         (Baloncesto, 'Baloncesto'),
         (juegoMesa, 'Juegos De Mesa'),
         (Voleibol,'Voleibol'),
-        (pasarElRato,'pasar el rato '),
+        (pasarElRato,'Pasar el rato'),
         (natacion, 'Natacion'),
-        (patinaje, 'patinaje'),
-        (tenis, 'tenis'),
-        (cilcismo,'cilcismo')
+        (patinaje, 'Patinaje'),
+        (tenis, 'Tenis'),
+        (cilcismo,'Cilcismo')
     ]
     idactividad = models.AutoField(db_column='idActividad', primary_key=True)
     nombreactividad = models.CharField(db_column='nombreActividad', max_length=30)
@@ -50,7 +50,6 @@ class Actividad(models.Model):
 
     latitud = models.FloatField(blank=True, null=True)
     longitud = models.FloatField(blank=True, null=True)
-    identificador_unico = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
 
     class Meta:
         db_table = 'actividad'

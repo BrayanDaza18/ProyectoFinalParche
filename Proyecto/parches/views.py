@@ -141,7 +141,7 @@ def MostrarEvento(request):
         map = folium.Map(location=[evento.latitud, evento.longitud], zoom_start=13)
         folium.Marker(
             location=[evento.latitud, evento.longitud],
-            popup=f"{evento.nombreactividad} - Coordenadas: {evento.latitud}, {evento.longitud}"
+            popup=f"{evento.nombreactividad}"
         ).add_to(map)
         maps.append(map._repr_html_())
 

@@ -84,7 +84,9 @@
     <!-- Mostrar los eventos -->
     <div class="container">
         <div class="row">
+           
             {% for element in data %}
+            {% for map in maps %}
             <div class="col-md-12">
                 <div class="fondo" id="eventos">
                     <div class="row container-fluid mt-3">
@@ -123,9 +125,15 @@
                                     </div>
                                     <div class="row mt-4">
                                         <div class="col-6">
-                                            {% for map in maps %}
+                                          
+                                         
+                                            
+                                        
                                             {{ map|safe }}
-                                            {% endfor %}
+                                            
+                                          
+                                         
+                                          
 
                                         </div>
                                         <div class="col-6">
@@ -166,6 +174,7 @@
                     </div>
                 </div>
             </div>
+            {% endfor %}
             {% endfor %}
         </div>
     </div>
