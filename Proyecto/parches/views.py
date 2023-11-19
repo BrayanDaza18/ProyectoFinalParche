@@ -5,17 +5,27 @@ from django.conf import settings
 from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.core.exceptions import ValidationError
 from django.core.mail import EmailMultiAlternatives
+from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import get_template
 
 from .forms import (CreateEventos, Document, FormCompanyUpdate, FormUser,
-                    FormUserCompany, FormUserUpdate, UserRegister)
-from .models import Actividad, EmpresaPersona, Persona
+                    FormUserCompany, FormUserUpdate, UserRegister,
+                    comentarioUserform)
+from .models import (Actividad, EmpresaPersona, Persona, Realizacion,
+                     comentarioUSer)
 
 from django.contrib import messages
-from .forms import UserReportForm
+# from .forms import UserReportForm
 from django.core.mail import send_mail
+
+from django.contrib.auth import get_user_model
+from django.template.loader import get_template
+
+# REPORTAR
+# from .models import Usuario 
 
 # Create your views here.
 
@@ -116,22 +126,35 @@ def RegisterCompany(request):
 
 def MostrarEvento(request):
     data = Actividad.objects.all()
-    return render(request, 'view/VistasPCU/mostrarEventos.html', {'data': data})
+    form = EmpresaPersona.objects.all()
+    return render(request, 'view/VistasPCU/mostrarEventos.html', {'data': data, 'form': form})
 
 def Profile(request):
     usuario = request.user
     form = Actividad.objects.filter(empresa_idempresa=usuario)
+    comment = comentarioUSer.objects.filter(author = usuario).order_by('created_on')
     actividad = EmpresaPersona.objects.all()
-    print(form)
+
+    if request.method == 'POST':
+       comment = comentarioUserform(request.POST)
+
+       if comment.is_valid():
+            commentUser = comment.save(commit=False)
+            commentUser.author = request.user
+            commentUser.receptor = request.user
+            commentUser.save()
+            return redirect('profile')
       
-    return render(request, 'view/VistasPCU/perfil.html', {'data': form, 'actividad': actividad})
+    return render(request, 'view/VistasPCU/perfil.html', {'data': form, 'actividad': actividad, 'comment': comment})
 
 
 def CoverImage(request):
      return render(request, 'view/VistasPCU/PantallaDeCarga.html')
 
-def ReportEvent(request):
-     return render(request, 'view/VistasPCU/ReportEvent.html')
+def ReportEvent(request, pk):
+     usuario = EmpresaPersona.objects.get(pk=pk)
+     contexto = {'usuario': usuario}
+     return render(request, 'view/VistasPCU/ReportEvent.html', contexto)
 
 
 def SelectUser(request):
@@ -247,49 +270,202 @@ def send_email_empresa(usuario, correo, nombreempresa, fecha_hora_actual):
         print(f"Error al enviar correo: {e}")
 
 
-def report_user(request):
+
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import get_template
+from django.utils.html import strip_tags
+from django.conf import settings
+
+def reportar_usuario(request, pk):
     if request.method == 'POST':
-        report_type = request.POST['report_type']
-        reported_user_id = request.POST['reported_user']
-        reported_user = User.objects.get(id=reported_user_id)
+        # Procesar el formulario y obtener los datos necesarios
+        print(pk)
+        # id_perfil = request.POST.get('idregistro')
+        usuario = EmpresaPersona.objects.get(idregistro=pk)  # Asegúrate de que el campo sea 'idregistro'
+        
+        # Obtener los motivos de reporte seleccionados
+        motivos_reporte = []
+        for i in range(1, 6):
+            motivo = request.POST.get(f'infraccion{i}', '')
+            if motivo:
+                motivos_reporte.append(motivo)
 
-        if request.user == reported_user:
-            return render(request, 'reports/report_user.html', {'error': 'No puedes reportarte a ti mismo.'})
+        # Guardar los motivos de reporte en el modelo
+        usuario.motivos_reporte = ', '.join(motivos_reporte)
+        usuario.save()
 
-        Report.objects.create(
-            user=request.user,
-            report_type=report_type,
-            reported_user=reported_user
-        )
+        # Enviar correo electrónico
+        subject = 'Reporte de usuario'
+        message = get_template('correo_reporte.html').render({'usuario': usuario})
+        plain_message = strip_tags(message)
+        to_email = 'contactoparchecorp@gmail.com'
+        send_mail(subject, plain_message, [to_email], html_message=message)
 
-        send_report_email(Report.objects.latest('reported_at'))
+        # Redirigir a una página de éxito o donde desees
+        return redirect('view/VistasPCU/perfil.html')
 
-        return redirect('index')
+    return render(request, 'ReportEvent.html')
 
-    return render(request, 'view/VistasPCU/ReportEvent.html')
+# def send_report_email(request):
+#     print("Entró en send_report_email")
 
-# def ReportEvent(request, reported_user_id):
-#     if request.method == 'POST':
-#         form = UserReportForm(request.POST)
-#         if form.is_valid():
-#             report = form.save(commit=False)
-#             report.reporter = request.user
-#             report.reported_user_id = reported_user_id
-#             report.save()
+#     try:
+#                 # Obtener el objeto del usuario_reportado usando el ID
+#         # EmpresaPersona = get_user_model()
+#         # usuario_reportado = EmpresaPersona.objects.get(idregistro=usuario_reportado_id)
 
-#             # Enviar notificación por correo electrónico
-#             send_mail(
-#                 'Nuevo informe de usuario',
-#                 f'Has recibido un nuevo informe por {report.category}. Revisa el panel de administración para más detalles.',
-#                 settings.DEFAULT_FROM_EMAIL,
-#                 [reported_user.email],
-#                 fail_silently=False,
-#             )
+#         context = {'nombre_usuario_reportado': usuario_reportado.get_username()}
+#         template = get_template('correo_reporte.html')
+#         content = template.render(context)
 
-#             messages.success(request, '¡Gracias por tu informe! Hemos recibido tu reporte y lo revisaremos pronto.')
-#             return redirect('perfil_del_usuario')  # Reemplaza 'perfil_del_usuario' con la URL adecuada
+#         email = EmailMultiAlternatives(
+#                     'Reporte de usuario',
+#                     'Probando app parche',
+#                     settings.EMAIL_HOST_USER,
+#                     ['contactoparchecorp@gmail.com']
+#                 )
 
-#     else:
-#         form = UserReportForm()
+#         email.attach_alternative(content, 'text/html')
+#         email.send()
 
-#     return render(request, 'view/VistasPCU/ReportEvent.html', {'form': form})
+#         print(f"Correo enviado:")
+#         return HttpResponse("Correo de reporte enviado correctamente")
+#     except EmpresaPersona.DoesNotExist:
+#                 messages.error(request, 'Usuario no encontrado.')
+#     except Exception as e:
+#                 print(f"Error al enviar correo de reporte: {e}")
+#                 messages.error(request, 'Error al enviar correo de reporte.')
+
+#     return render(request, 'correo_reporte.html')
+
+    
+
+def addLikes(request, pk):
+    post = EmpresaPersona.objects.get(pk=pk)
+
+    is_dislikes = False
+
+    for dislikes in post.dislikes.all():
+        if dislikes == request.user:
+            is_dislikes = True
+            break
+
+    if is_dislikes:
+        post.dislikes.remove(request.user)
+
+    is_likes = False
+    for likes in post.likes.all():
+        if likes == request.user:
+            is_likes = True
+            break
+
+    if not is_likes:
+        post.likes.add(request.user)
+    else:
+        post.likes.remove(request.user)
+
+    next = request.POST.get('next', '/')
+    return HttpResponseRedirect(next)
+
+def adddislike(request, pk):
+    post = EmpresaPersona.objects.get(pk=pk)
+
+    is_likes = False
+    for likes in post.likes.all():
+        if likes == request.user:
+            is_likes = True
+            break
+
+    if is_likes:
+        post.likes.remove(request.user)
+
+    is_dislikes = False
+    for dislikes in post.dislikes.all():
+        if dislikes == request.user:
+            is_dislikes = True
+            break
+
+    if not is_dislikes:
+        post.dislikes.add(request.user)
+    else:
+        post.dislikes.remove(request.user)
+
+    next = request.POST.get('next', '')
+    return HttpResponseRedirect(next)
+
+def interfazUser(request, pk ):
+  form = EmpresaPersona.objects.get(pk=pk)
+  comment = comentarioUSer.objects.filter(receptor=pk).order_by('created_on')
+
+  if request.method == 'POST':
+    comment = comentarioUserform(request.POST)
+    if comment.is_valid():
+        newcomment = comment.save(commit=False)
+        newcomment.author = request.user
+        newcomment.receptor = EmpresaPersona.objects.get(pk=pk)
+        newcomment.save()
+        return redirect('interfaz', pk=pk)
+    else:
+        comment.errors
+  return render(request,'view/VistasPCU/interfazdelosUsuarios.html', {'form':form, 'commentUser':comment})
+
+# def Comment(request):
+def addCommentLikes(request, id):
+    commentUser = comentarioUSer.objects.get(id=id)
+
+
+    is_dislikes = False
+
+    for dislikes in commentUser.dislikes.all():
+        if dislikes == request.user:
+            is_dislikes = True
+            break
+
+    if is_dislikes:
+        commentUser.dislikes.remove(request.user)
+
+    is_likes = False
+    for likes in commentUser.likes.all():
+        if likes == request.user:
+            is_likes = True
+            break
+
+    if not is_likes:
+        commentUser.likes.add(request.user)
+    else:
+        commentUser.likes.remove(request.user)
+
+    next = request.POST.get('next', '/')
+    return HttpResponseRedirect(next)
+
+def addCommentDislike(request, id):
+    commentUser = comentarioUSer.objects.get(id=id)
+
+
+    is_likes = False
+    for likes in commentUser.likes.all():
+        if likes == request.user:
+            is_likes = True
+            break
+
+    if is_likes:
+        commentUser.likes.remove(request.user)
+
+    is_dislikes = False
+    for dislikes in commentUser.dislikes.all():
+        if dislikes == request.user:
+            is_dislikes = True
+            break
+
+    if not is_dislikes:
+        commentUser.dislikes.add(request.user)
+    else:
+        commentUser.dislikes.remove(request.user)
+
+    next = request.POST.get('next', '')
+    return HttpResponseRedirect(next)
+
+def deleteComment(request, id):
+    form = comentarioUSer.objects.get(id=id)
+    form.delete()
+    return redirect('interfaz', pk = form.receptor.idregistro)

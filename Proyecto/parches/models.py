@@ -6,11 +6,14 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 # from django.contrib.auth.models import User
+
+
 from django.conf import settings
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
-                                        PermissionsMixin)
+                                        PermissionsMixin, User)
 from django.db import models
-from django.contrib.auth.models import User
+from django.utils import timezone
+
 
 class Actividad(models.Model):
     Futbol = "FUTBOL"
@@ -118,7 +121,9 @@ class EmpresaPersona(AbstractBaseUser, PermissionsMixin):
     usuario_administrador = models.BooleanField(default=False)
     estado = models.CharField(choices=Estado_ENUM, default='I', max_length=1)
     is_active = models.BooleanField(default=True)
-    
+    likes = models.ManyToManyField('self', blank=True, related_name='likes')
+    dislikes = models.ManyToManyField('self', blank=True, related_name='dislikes')
+    motivos_reporte = models.CharField(max_length=40)
 
     
 
@@ -152,6 +157,16 @@ class EmpresaPersona(AbstractBaseUser, PermissionsMixin):
     #     managed = Fals
     #     db_table = 'empresa/persona'
 
+class comentarioUSer(models.Model):
+    comment = models.TextField(db_column='comentario')
+    created_on = models.DateTimeField(default=timezone.now)
+    author = models.ForeignKey(EmpresaPersona, on_delete=models.CASCADE, related_name='comment_author')
+    receptor = models.ForeignKey(EmpresaPersona, on_delete=models.CASCADE, db_column='usuario')
+    likes = models.ManyToManyField(EmpresaPersona, blank=True, related_name='comment_likes')
+    dislikes = models.ManyToManyField(EmpresaPersona, blank=True, related_name='comment_dislikes')
+
+
+
 
 class Persona(models.Model ):
     idpersona = models.AutoField(db_column='idPersona', primary_key=True)
@@ -184,6 +199,7 @@ class Realizacion(models.Model):
     actividad_idactividad = models.OneToOneField(Actividad, models.DO_NOTHING, db_column='actividad_idActividad', primary_key=True) 
     usuario_idusuario = models.ForeignKey('EmpresaPersona', models.DO_NOTHING, db_column='usuario_idEmpresaPersona')  
     comentarios = models.CharField(max_length=45)
+  
 
     class Meta:
         
@@ -204,36 +220,3 @@ class Realizacion(models.Model):
 #     class Meta:
 #         managed = False
 #         db_table = 'usuario'
-
-
-class UserReport(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reports')
-    report_type = models.CharField(max_length=50, choices=[
-        ('Perfil falso', 'Perfil falso'),
-        ('Contenido explícito', 'Contenido explícito'),
-        ('Lenguaje ofensivo', 'Lenguaje ofensivo'),
-        ('Acoso', 'Acoso'),
-        ('Evento sospechoso', 'Evento sospechoso'),
-    ])
-    reported_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reported_by')
-    reported_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.user} reported {self.reported_user} for {self.report_type}"
-# class UserReport(models.Model):
-#     CATEGORIES = [
-#         ('Perfil falso', 'Perfil falso'),
-#         ('Contenido explícito', 'Contenido explícito'),
-#         ('Lenguaje ofensivo', 'Lenguaje ofensivo'),
-#         ('Acoso', 'Acoso'),
-#         ('Evento sospechoso', 'Evento sospechoso'),
-#     ]
-
-#     reporter = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-#     reported_user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='reported_user', on_delete=models.CASCADE)
-#     category = models.CharField(max_length=20, choices=CATEGORIES)
-#     description = models.TextField()
-#     timestamp = models.DateTimeField(auto_now_add=True)
-
-#     def __str__(self):
-#         return f"{self.reporter.username} reportó a {self.reported_user.username} por {self.category}"

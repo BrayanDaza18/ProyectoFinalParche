@@ -1,9 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import UserReport
-from django.db import models
-from .models import Actividad, Documento, EmpresaPersona, Persona
+from .models import (Actividad, Documento, EmpresaPersona, Persona,
+                     comentarioUSer)
 
 
 class FormUser(forms.ModelForm):
@@ -354,7 +353,16 @@ class FormCompanyUpdate(forms.ModelForm):
         }),
         }
 
-class UserReportForm(forms.ModelForm):
-    class Meta:
-        model = UserReport
-        fields = ['category', 'description']
+class comentarioUserform(forms.ModelForm):
+     class Meta:
+        model = comentarioUSer
+        fields = ['comment']
+        widgets = {
+            'comment': forms.TextInput(
+                 attrs= {
+            'class': 'form-control,justify-content-center',
+            'placeholder': 'comment',
+            'id': 'comment',
+            'required': 'required'
+        }),
+        }

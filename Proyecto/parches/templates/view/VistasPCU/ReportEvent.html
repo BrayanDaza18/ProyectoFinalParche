@@ -18,87 +18,44 @@
 
 </head>
 <body>
-
-  {% block content %}
-  <h2>Reportar usuario</h2>
-  {% if error %}
-      <p class="error">{{ error }}</p>
-  {% endif %}
-  <form method="post">
-      {% csrf_token %}
-      <div class="form-group">
-          <label for="report_type">Tipo de reporte:</label>
-          <select id="report_type" name="report_type">
-              <option value="Perfil falso">Perfil falso</option>
-              <option value="Contenido explícito">Contenido explícito</option>
-              <option value="L330 ofensivo">Lenguaje ofensivo</option>
-              <option value="Acoso">Acoso</option>
-              <option value="Evento sospechoso">Evento sospechoso</option>
-          </select>
-      </div>
-      <div class="form-group">
-          <label for="reported_user">Usuario reportado:</label>
-          <select id="reported_user" name="reported_user">
-              {% for user in users %}
-                  <option value="{{ user.id }}">{{ user.username }}</option>
-              {% endfor %}
-          </select>
-      </div>
-      <button type="submit" class="btn btn-primary">Reportar</button>
-  </form>
-{% endblock %}
-
-////////////////
-  <!-- {% block content %}
-  <h2>Reportar Usuario</h2>
-  {% if reported_user %}
-    <form method="post" action="{% url 'reportar_usuario' reported_user.id %}">
-      {% csrf_token %}
-      
-      {{ form.as_p }}
-
-      <button type="submit">Enviar Reporte</button>
-    </form>
-  {% else %}
-    <p>Usuario no encontrado.</p>
-  {% endif %}
-{% endblock %} -->
-
-//////////////////////////////
-  <!-- <div class="container-fluid d-flex justify-content-center align-items-center" style="background-color: rgb(214, 213, 213); height: 44.8rem;">
-    <div class="cartaR">
-      <div class="palabraRegistro d-flex justify-content-center align-items-center">
-        <h1>REPORTE</h1>
-      </div>
-      <div class="d-flex justify-content-center">
-        <div class="list-group w-75">
-          <label class="list-group-item colorInput">
-            <input class="form-check-input me-1  color" type="checkbox" value="">
-            Perfil falso
-          </label>
-          <label class="list-group-item colorInput">
-            <input class="form-check-input me-1   " type="checkbox" value="">
-            Contenido explícito
-          </label>
-          <label class="list-group-item colorInput">
-            <input class="form-check-input me-1 " type="checkbox" value="">
-            Lenguaje ofensivo
-          </label>
-          <label class="list-group-item colorInput">
-            <input class="form-check-input me-1 " type="checkbox" value="">
-            Acoso
-          </label>
-          <label class="list-group-item colorInput">
-            <input class="form-check-input me-1 " type="checkbox" value="">
-            Evento sospechoso
-          </label>
+  {{ usuario }}
+  <form method="post" action="{% url 'reportar_usuario' usuario.pk %}">
+    {% csrf_token %}
+    <input type="hidden" name="idRegistro" value="{{ usuario.id }}">
+    <div class="container-fluid d-flex justify-content-center align-items-center" style="background-color: rgb(214, 213, 213); height: 44.8rem;">
+      <div class="cartaR">
+        <div class="palabraRegistro d-flex justify-content-center align-items-center">
+          <h1>REPORTE</h1>
+        </div>
+        <div class="d-flex justify-content-center">
+          <div class="list-group w-75">
+            <label class="list-group-item colorInput">
+              <input class="form-check-input me-1  color" type="checkbox" name="infraccion1" value="Perfil falso">
+              Perfil falso
+            </label>
+            <label class="list-group-item colorInput">
+              <input class="form-check-input me-1   " type="checkbox" name="infraccion2" value="Contenido explicito">
+              Contenido explícito
+            </label>
+            <label class="list-group-item colorInput">
+              <input class="form-check-input me-1 " type="checkbox" name="infraccion3" value="Lenguaje ofensivo">
+              Lenguaje ofensivo
+            </label>
+            <label class="list-group-item colorInput">
+              <input class="form-check-input me-1 " type="checkbox" name="infraccion4" value="Acoso">
+              Acoso
+            </label>
+            <label class="list-group-item colorInput">
+              <input class="form-check-input me-1 " type="checkbox" name="infraccion1" value="Perfil falso">
+              Evento sospechoso
+            </label>
+          </div>
+        </div>
+        <div class="d-flex justify-content-center align-items-center">  
+          <button type="submit" class="btn btn-success m-2">Reportar</button>
         </div>
       </div>
-      <div class="d-flex justify-content-center align-items-center">  
-        <button type="submit" class="btn btn-success m-2">Reportar</button>
-      </div>
     </div>
-  </div>
-  </div> -->
+  </form>
 </body>
 </html>

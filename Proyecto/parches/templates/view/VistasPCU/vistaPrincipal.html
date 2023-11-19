@@ -37,7 +37,7 @@ style="background-color: #cbe9d7; z-index: -3; ">
       </div>
 
       <div class="menu-items col-5">
-        <a href="#eventos" class="scroll">
+        <a href="{% url 'mostrarEventos'%}">
           <h3 style="color: #365C45;">Eventos</h3>
         </a>
         <a href="#nosotros" class="scroll">
@@ -45,32 +45,28 @@ style="background-color: #cbe9d7; z-index: -3; ">
         </a>
         <a href="#contactanos">
           <h3 style="color: #365C45;">Contactanos</h3>
-
         </a>
         {% if user.is_authenticated %}
-        <ul class="sidebar-nav btnIniciarS">
+        <div class="sidebar-nav btnIniciarS d-flex justify-content-center align-items-center">
 
-          ...
           {% if user.is_authenticated %}
-          <li>User: {{ user.get_username }}</li>
-          <li>
-            <div class="d-flex justify-content-center align-items-center">
-              <button type="button" class="btn btn-success m-1">
-                <a href="{% url 'logout'%}?next={{request.path}}" style="font-size: 1rem;">Cerrar sesión</a>
-              </button>
-            </div>
-          </li>
+          <a class="btn btn-success m-1"  href="{% url "profile" %}" style="font-size: 1rem;">User: {{ user.get_username }}</a>
+          
+            <!-- <div class="d-flex justify-content-center align-items-center"> -->
+            <a href="{% url 'logout'%}?next={{request.path}}" type="button" class="btn btn-success" style="font-size: 1rem;">Cerrar sesión</a>             
+            <!-- </div> -->
+          
           
           {% else %}
           <li><a href="{% url 'login'%}">Iniciar sesión</a></li>
           {% endif %}
-        </ul>
+        </div>
         {% else %}
         <a href="{% url "login" %}" type="button" class="btn btn-success btnIniciarS">Iniciar
           Sesion</a>
         {% endif %}
 
-      </div>
+      
     </div>
     {% if user.is_authenticated %}
     <div class="row principal">
