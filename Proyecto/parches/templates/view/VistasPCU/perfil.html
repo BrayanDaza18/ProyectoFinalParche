@@ -41,14 +41,19 @@
                {% if actividad  %}
                 {% for element in actividad %}
     {% if request.user.is_authenticated and request.user == element  %}
-    <span>{{ element.dislikes.all.count }}</span>   
-    <h1>{{ element.likes.all.count }}likes</h1>
+    <div class=" d-flex justify-content-center ">
+        <h3 class="me-5">{{ element.likes.all.count }}likes</h3>
+        <h3  class="ms-5">{{ element.dislikes.all.count }}dislikes</h3>   
+
+    </div>
+
+
                <div class="d-flex justify-content-center ">
                 
                 <form method="POST" action="{% url 'likes' element.pk %}">
                     {% csrf_token %}
                     <input type="hidden" name="next" value="{{request.path}}">
-                    <button type="submit">
+                    <button class= "btn btn-info me-5 " type="submit">
                         <h1><i class="fas fa-regular fa-thumbs-up me-5"></i></h1>
                     </button>
                 </form>   
@@ -56,8 +61,8 @@
          
                 <form method="POST" action="{% url "dislike" element.pk %}">
                     {% csrf_token %}
-                    <button  type="submit">
-                    <input type="hidden" name="next" value="{{request.path}}">
+                    <button class= "btn btn-info  ms-5  w-100 " type="submit">
+                    <input  type="hidden" name="next" value="{{request.path}}">
                     <h1><i class="fas fa-regular fa-thumbs-down"></i></h1>
                 </button>
                 </form>   
@@ -67,14 +72,15 @@
                {% endfor %}
                {% else %}
                {% if form.pk == form.pk %}
+               <h1>{{ form.likes.all.count }}likes</h1>
                <h1>{{ form.dislikes.all.count }}dislikes</h1>   
-                <h1>{{ form.likes.all.count }}likes</h1>
+                
                <div class="d-flex justify-content-center ">
                 
                 <form method="POST" action="{% url 'likes' form.pk %}">
                     {% csrf_token %}
                     <input type="hidden" name="next" value="{{request.path}}">
-                    <button type="submit">
+                    <button  class= "btn btn-info me-5 " type="submit">
                         <h1><i class="fas fa-regular fa-thumbs-up me-5"></i></h1>
                     </button>
                 </form>   
@@ -82,7 +88,7 @@
          
                 <form method="POST" action="{% url "dislike" form.pk %}">
                     {% csrf_token %}
-                    <button  type="submit">
+                    <button  class= "btn btn-info me-5 "  type="submit">
                     <input type="hidden" name="next" value="{{request.path}}">
                     <h1><i class="fas fa-regular fa-thumbs-down"></i></h1>
                 </button>
@@ -95,7 +101,7 @@
                 <h2>Comentarios</h2>
                     <form method="POST"  >
                         {% csrf_token %}
-                        <input name="comment">
+                        <input  name="comment">
                         <button type="submit">comentar</button>
                     </form>
                     <div class="row comentarios">
@@ -116,7 +122,7 @@
                                         <form method="POST" action="{% url "likescomment" comments.id %}">
                                             {% csrf_token %}
                                             <input type="hidden" name="next" value="{{ request.path }}">
-                                            <button type="submit">
+                                            <button  class= "btn btn-info me-5 " type="submit">
                                                 <i class="fas fa-regular fa-thumbs-up me-5"></i>
                                             </button>
                                         </form>
@@ -124,7 +130,7 @@
                                         <form method="POST" action="{% url 'dislikecomment' comments.id %}">
                                             {% csrf_token %}
                                             <input type="hidden" name="next" value="{{ request.path }}">
-                                            <button type="submit">
+                                            <button  class= "btn btn-info me-5 " type="submit">
                                                 <i class="fas fa-regular fa-thumbs-down"></i>
                                             </button>
                                         </form>
@@ -153,43 +159,60 @@
                                     </div>
                                     
                                     
-                                    <!-- Optional: Place to the bottom of scripts -->
-                                    <script>
-                                        const myModal = new bootstrap.Modal(document.getElementById('modalId'), options)
-                                    
-                                    </script>
+                                 
                                 </div>
                             {% endfor %}
                         {% else %}
                             {% for comments in comment %}
                                 <div class="com mt-2">
-                                    <span>{{ comments.author }}</span>
-                                    <span>{{ comments.comment }}</span>
+                                    <div class="com d-block">
+                                        <span>{{ comments.author }}</span>
+                                    </div>
+                                    <div class="com d-block">
+                                        <span>{{ comments.comment }}</span>
+                                       
+                                    </div>
+                                   <div class="d-flex">
                                     <span>{{ comments.created_on }}</span>
-                                    <span>{{ comments.dislikes.all.count }} dislike</span>
-                                    <span>{{ comments.likes.all.count }} likes</span>
+                                    
+                                   </div>
+                                   
+                                   
                                 </div>
-                                   <a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalId">
-                                        eliminar Comentario
-                                      </a>
-                    
+                               
+                                
+                                <!-- Optional: Place to the bottom of scripts -->
+                                <script>
+                                    const myModal = new bootstrap.Modal(document.getElementById('modalId'), options)
+                                
+                                </script>
+                                 <div class="d-flex">
+                                 
+                                 <span>{{ comments.likes.all.count }} likes</span>
                                     <div class="d-flex justify-content-center">
                                         <form method="POST" action="{% url "likescomment" comments.id %}">
                                             {% csrf_token %}
                                             <input type="hidden" name="next" value="{{ request.path }}">
-                                            <button type="submit">
+                                            <button  class= "btn btn-info me-5 " type="submit">
                                                 <i class="fas fa-regular fa-thumbs-up me-5"></i>
                                             </button>
                                         </form>
-                    
+                                        <span>{{ comments.dislikes.all.count }} dislike</span>
                                         <form method="POST" action="{% url 'dislikecomment' comments.id %}">
                                             {% csrf_token %}
                                             <input type="hidden" name="next" value="{{ request.path }}">
-                                            <button type="submit">
+                                            <button  class= "btn btn-info me-5 " type="submit">
                                                 <i class="fas fa-regular fa-thumbs-down"></i>
                                             </button>
                                         </form>
+                                        
                                     </div>
+                                    <div>
+
+                                        <a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalId">
+                                            eliminar Comentario </a>
+                                    </div>
+                                </div>
 
                                     <div class="modal fade" id="modalId" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm" role="document">
@@ -266,6 +289,7 @@
                     {% endif %}</span>
                
                 <br><br>
+
                 <span>Soy una persona apasionada por el deporte y la actividad física que
                     odia perder. <br> Neiva-Huila</span>
                 
@@ -274,9 +298,9 @@
 
                 {% if actividad  %}
                 {% for element in actividad %}
-    {% if request.user.is_authenticated and request.user == element  %}
-    <h4>{{element.telefono}}</h4>
-    <a href="{% url 'logout'%}?next={{request.path}}" class="btn btn-success mt-5 cerrarSesion">Cerrar Sesion</a>
+                    {% if request.user.is_authenticated and request.user == element  %}
+                        <h4>{{element.telefono}}</h4>
+                         <a href="{% url 'logout'%}?next={{request.path}}" class="btn btn-success mt-5 cerrarSesion">Cerrar Sesion</a>
     
                {% endif %}
                {% endfor %}
@@ -288,19 +312,15 @@
 
 
                 {% for element in actividad %}
-    {% if request.user.is_authenticated and request.user == element and element.tipousuario == 'U' %}
-        <div><a href="{% url 'UpdateUser' element.idregistro element.tipousuario %}"><h1>Actualizar información</h1></a></div>
-    {% elif request.user.is_authenticated and request.user == element and element.tipousuario == 'E' %}
-        <div><a href="{% url 'UpdateUserCompany' element.idregistro element.tipousuario %}"><h1>Cambiar información de la empresa</h1></a></div>
-    {% endif %}
-{% endfor %}
+                  {% if request.user.is_authenticated and request.user == element and element.tipousuario == 'U' %}
+                     <div><a href="{% url 'UpdateUser' element.idregistro element.tipousuario %}"><h1>Actualizar información</h1></a></div>
+                  {% elif request.user.is_authenticated and request.user == element and element.tipousuario == 'E' %}
+                     <div><a href="{% url 'UpdateUserCompany' element.idregistro element.tipousuario %}"><h1>Cambiar información de la empresa</h1></a></div>
+                  {% endif %}
+                    {% endfor %}
                 
 
-
-            
-
-                
-                {% else %}
+            {% else %}
                
               
              

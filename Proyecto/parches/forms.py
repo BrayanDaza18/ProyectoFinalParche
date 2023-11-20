@@ -118,6 +118,7 @@ class USERFORM(UserCreationForm):
      model = User
      fields = "__all__"
 
+
 class FormUserCompany(forms.ModelForm):
     password1 = forms.CharField(label='password', widget= forms.PasswordInput(
         attrs={
@@ -190,6 +191,7 @@ class FormUserCompany(forms.ModelForm):
         if commit:
           user.save()
         return user
+
 
 class Document(forms.ModelForm):
     class Meta:
@@ -282,6 +284,7 @@ class CreateEventos(forms.ModelForm):
           user.save()
         return user
 
+
 class FormUserUpdate(forms.ModelForm):
 
     class Meta:
@@ -325,6 +328,8 @@ class FormUserUpdate(forms.ModelForm):
        
         # })
         }
+
+
 class FormCompanyUpdate(forms.ModelForm):
 
      class Meta:
@@ -353,6 +358,7 @@ class FormCompanyUpdate(forms.ModelForm):
             'required': 'required'
         }),
         }
+
 
 class comentarioUserform(forms.ModelForm):
      class Meta:

@@ -385,3 +385,12 @@ def deleteComment(request, id):
     form = comentarioUSer.objects.get(id=id)
     form.delete()
     return redirect('interfaz', pk = form.receptor.idregistro)
+
+# def replycomment(request, pk):
+#  post = comentarioUSer.objects.get(pk = pk)
+
+#  if request.method == 'POST':
+#     form = comentarioUserform(request.POST)
+
+#     if form.is_valid()
+
