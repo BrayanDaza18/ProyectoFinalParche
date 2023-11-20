@@ -1,0 +1,210 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventos</title>
+    <link rel="stylesheet" href="{% static "CSS/bootstrap.css" %}" />
+    <link rel="stylesheet" href="{% static "CSS/style.css" %}">
+    <style>
+        body {
+            padding: 20px;
+        }
+
+        form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"],
+        select,
+        button,
+        textarea {
+            padding: 10px;
+            margin: 5px;
+            width: 200px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .row span {
+            margin-right: 10px;
+        }
+
+        .rounded-2[disabled] {
+            background-color: #f8f9fa !important;
+            /* Fondo gris claro para elementos deshabilitados */
+            color: #6c757d !important;
+            /* Texto oscuro para elementos deshabilitados */
+        }
+
+        .img-fluid {
+            max-width: 100%;
+            /* Hacer que la imagen sea completamente visible */
+            height: auto;
+            /* Mantener la relación de aspecto original */
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+
+    <!-- Formulario de búsqueda -->
+    <form method="get" action="{% url 'mostrarEventos' %}">
+        <input type="text" name="q" placeholder="Buscar por nombre de actividad">
+        <select name="tipo_actividad">
+            <option value="" selected>Tipo de Actividad</option>
+            {% for choice in tipo_actividad_choices %}
+            <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Buscar</button>
+    </form>
+
+    <!-- Mostrar los eventos -->
+    <div class="container">
+        <div class="row">
+           
+            {% for element in data %}
+            {% for map in maps %}
+            <div class="col-md-12">
+                <div class="fondo" id="eventos">
+                    <div class="row container-fluid mt-3">
+                        <div class="row event">
+                            <div class="primerafila">
+                                <div class=" col-12 tablaUno rounded-2 ">
+                                    <div class="nombretorneo">
+                                        <h4 class="text-center" style="color:white ;">{{element.nombreactividad}}</h4>
+                                    </div>
+                                    <div class="descripcion row mt-3">
+                                        <div class="col-6 fondodegradado">
+                                            <img src="{{element.imagen.url}}" class="img-fluid rounded-2 ms-4 mb-3"
+                                                alt="..." style="height: 186px; width: 330px;">
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="row">
+                                                <span>Lugar: </span><input type="text" class="rounded-2 shadow"
+                                                    value="{{element.lugar}}" disabled>
+                                            </div>
+                                            <div class="row">
+                                                <span>Hora: </span><input type="time" value="{{element.hora}}"
+                                                    class="rounded-2 shadow ms-1"
+                                                    style="border-radius: 5px; width: 300px;" disabled>
+                                            </div>
+                                            <div class="row">
+                                                <span>Tipo de Actividad: </span><input class="rounded-2 shadow"
+                                                    type="text" value="{{element.tipoactividad}}"
+                                                    placeholder="nombre del evento" disabled>
+                                            </div>
+                                            <div class="row">
+                                                <span>Fecha de Inicio: </span><input type="date"
+                                                    value="{{element.fechainicio}}" class="rounded-2 shadow ms-1"
+                                                    style="border-radius: 5px;  width: 300px;" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-4">
+                                        <div class="col-6">
+                                          
+                                         
+                                            
+                                        
+                                            {{ map|safe }}
+                                            
+                                          
+                                         
+                                          
+
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="row">
+                                                <span>Descripcion: </span><textarea class="row shadow ms-2" style="height: 80px ; width: 230px; 
+                                                        background-color: rgb(255, 255, 255);"
+                                                    disabled>{{element.descripcion}}</textarea>
+                                            </div>
+                                            <div class="row">
+                                                <span>Contacto: </span><input class="rounded-2 shadow ms-1"
+                                                    value="{{element.contacto}}" placeholder="contacto" type="number"
+                                                    style=" width: 300px;" disabled>
+                                                <input style="display: none;" class="rounded-2 shadow"
+                                                    value="{{element.latitud}}" placeholder="contacto" type="float"
+                                                    disabled>
+                                                <input style="display: none;" class="rounded-2 shadow"
+                                                    value="{{element.longitud}}" placeholder="contacto" type="float"
+                                                    disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="vinculo mt-3">
+                                        <div class="col-6">
+                                            <button class="text-white" disabled>UNIRME <img src="{% static "img/unirme.png" %} "style=" margin:5px ;" width="20px" height="20px"alt="">
+                                            </button>
+                                        </div>
+                                        <div class="col-6">
+                                            <button class="compartir" data-id="{{ element.idactividad }}" data-nombre="{{ element.nombreactividad }}">Compartir <img src="{% static "img/compartir.png" %}" style="margin:5px ;" width="22px"height="25px" alt=""></button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="segundafila ">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Mostrar mensaje si no se encuentran eventos -->
+    {% if data.count == 0 %}
+    <p style="text-align: center;">No se encontraron eventos.</p>
+    {% endif %}
+
+</body>
+
+</html>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var botonesCompartir = document.querySelectorAll('.compartir');
+        botonesCompartir.forEach(function(boton) {
+            boton.addEventListener('click', function() {
+                var idactividad = this.getAttribute('data-id');
+                var nombreactividad = this.getAttribute('data-nombre');
+                
+                var enlace = window.location.origin + '/detalles/' + idactividad + '/';
+                
+                var mensaje = 'texto copiado en portapapeles';
+                navigator.clipboard.writeText(enlace).then(function() {
+                    alert(mensaje);
+                }).catch(function(err) {
+                    console.error('Error al copiar enlace: ', err);
+                });
+            });
+        });
+    });
+</script>

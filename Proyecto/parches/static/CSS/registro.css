@@ -1,13 +1,8 @@
 
-.paginaR{
- 
-display: flex;
-justify-content: center;
-margin-top: 30px;
-}
 .cartaR{
    background-color: rgb(255, 255, 255); 
    border-radius: 50px 50px 50px 50px;
+   box-shadow: 50px 50px 50px rgba(0, 0, 0, 0.1);
 width: 35%;
 }
 .palabraRegistro{
@@ -42,7 +37,6 @@ text-transform: uppercase;
 }
 
 .botonRegistrarse button{
-    background-color: rgb(4, 179, 75);
     width: 175px;
     height: 45px;
     font-size: 19px ;
@@ -55,15 +49,15 @@ text-transform: uppercase;
 
 .cuentaExistente{
     display: flex;
-    margin-top: 10px;
+    margin: 17px;
     justify-content: center;
-    margin-bottom: 66px;
+    align-items: center;
     
 }
 .cuentaExistente a {
     text-decoration: none;
     font-size: 18px;
-    color: black;
+    color: #365C45;
 }
 @media(max-width: 768px) {
 

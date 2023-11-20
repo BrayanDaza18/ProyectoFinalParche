@@ -2,9 +2,9 @@ html {
   scroll-behavior: smooth;
 }
 
-.encabezado {
+/* .encabezado {
   flex-direction: row;
-}
+} */
 
 .index1 {
   height: 665px;
@@ -39,7 +39,7 @@ a {
   font-size: 20px;
   width: 180px;
   margin-top: 35px;
-  margin-left: 650px;
+  margin-left: 740px;
 }
 
 
@@ -53,8 +53,17 @@ a {
   /* Espaciado entre elementos */
 }
 
+#miDiv {
+  width: 94.95rem;
+  height: 4rem;
+  background: linear-gradient(to bottom, #cbe9d7, rgb(214, 213, 213), #cbe9d7);
+}
 
-
+#miDiv2 {
+  width: 94.95rem;
+  height: 4rem;
+  background: linear-gradient(to bottom, #cbe9d7, rgb(214, 213, 213));
+}
 
 .menu-items h3 {
   color: white;
@@ -66,39 +75,35 @@ a {
 }
 
 
-.encabezado button {
+/* .encabezado button {
   height: 80px;
   background-color: 0092FC;
   color: rgb(27, 207, 36);
   margin-top: 40px;
   font-size: 911px;
-}
+} */
 
 .principal {
-  margin-top: 65px;
+  margin-top: 75px;
   color: white;
   text-align: center;
 }
 
-.principal h1 {
-  font-size: 45px;
-}
-
-.principal button {
+/* .principal button {
   font-weight: bold;
   height: 60px;
   font-size: 30px;
   margin-top: 70px;
   color: green;
-}
+} */
 
-.principal button:hover {
+/* .principal button:hover {
   font-weight: bold;
   height: 60px;
   font-size: 30px;
   margin-top: 70px;
   color: green;
-}
+} */
 
 .eventos {
   margin-top: 250px;
@@ -117,7 +122,7 @@ a {
 
 .imgP {
   height: 400px;
-  width: 500px;
+  width: 600px;
 }
 
 #logo {
@@ -131,14 +136,12 @@ a {
 
 /* segunda vista */
 
-
-
 .fondo {
-  display: flex;
-  background-image: url(/static/IMG/Fondo\ degradado\ de\ tonos\ verdes\ _\ Vector\ Premium.png);
+  /* display: flex;
+  background-color: rgb(214, 213, 213);
   background-repeat: no-repeat;
   background-size: cover;
-  height: 1050px;
+  height: 1050px; */
 }
 
 .event {
@@ -161,10 +164,9 @@ a {
 }
 
 .tablaUno {
-  background-image: url(../IMG/Captura.PNG);
+  background-color: #efefef;
   background-size: cover;
   margin-right: 20px;
-
 
 }
 
@@ -174,7 +176,7 @@ a {
 
 
 .tablaDos {
-  background-image: url(../IMG/Captura.PNG);
+  background-color: #efefef;
   background-size: cover;
 
 }
@@ -196,18 +198,15 @@ a {
 
 .nombreEvento {
   display: flex;
-  margin-top: 20px;
+  margin-top: 15px;
   justify-content: center;
-  margin-right: 55px;
-
-
 }
 
 .nombreEvento input {
   width: 180px;
   height: 30px;
   border: none;
-  background-color: rgb(109, 203, 255);
+  background-color: rgb(255, 255, 255);
   color: black;
 }
 
@@ -215,16 +214,13 @@ a {
   display: flex;
   justify-content: center;
   margin-top: 15px;
-  margin-right: 55px;
-
-
 }
 
 .semanaEvento input {
   width: 140px;
   height: 30px;
   border: none;
-  background-color: rgb(109, 203, 255);
+  background-color: rgb(255, 255, 255);
 
 }
 
@@ -242,20 +238,12 @@ a {
 
 .mapa iframe {
   display: flex;
-  margin-left: 60px;
+  margin-left: 25px;
   align-items: center;
   justify-items: center;
 
 
 }
-
-.comentario {
-  display: flex;
-
-
-
-}
-
 
 .contact {
   display: flex;
@@ -267,7 +255,7 @@ a {
   border: none;
   width: 200px;
   height: 30px;
-  background-color: rgb(109, 203, 255);
+  background-color: rgb(254, 255, 255);
 }
 
 .vinculo {
@@ -287,16 +275,15 @@ a {
 }
 
 .vinculo button {
-  border: none;
-  background-color: rgb(250, 191, 22);
+  border-radius: 10px;
+  background-color: #198754;
   font-weight: bold;
 }
 
 .fecha {
-  background-color: rgb(109, 203, 255);
+  border-radius: 10px;
   justify-content: center;
   display: grid;
-
 
 }
 
@@ -305,16 +292,13 @@ a {
   width: 100px;
   height: 30px;
   border: none;
-  background-color: rgb(109, 203, 255);
+  background-color: rgb(253, 253, 253);
 }
 
-
-
-
-
-
-
-
+/* Borde circular de imagenes del carrusel de la vista principal */
+.carousel-item img {
+  border-radius: 20px; 
+}
 
 
 
@@ -420,14 +404,14 @@ a {
     font-size: 10px;
   }
 
-  .btnCrear a {
-    font-size: 25px;
-  }
+  /* .btnCrear a {
+    font-size: 10rem;
+  } */
 
-  .btnCrear {
+  /* .btnCrear {
     height: 90px;
     width: 265px;
-  }
+  } */
 
   .principal {
     color: white;
@@ -445,7 +429,7 @@ a {
     display: block;
     justify-content: center;
     margin-left: 30px;
-    background-image: url(../IMG/Captura.PNG);
+    background-color: #efefef;
     background-size: cover;
     margin-right: 20px;
     width: 550px;
@@ -459,7 +443,7 @@ a {
 
   .tablaDos {
     display: none;
-    background-image: url(../IMG/Captura.PNG);
+    background-color: #efefef;
     background-size: cover;
 
   }
