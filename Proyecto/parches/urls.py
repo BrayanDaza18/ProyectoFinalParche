@@ -24,4 +24,10 @@ urlpatterns = [
     path('eliminar', views.viewEventoELI, name='eliminar'),
     
     path('detalles/<int:idactividad>/', views.DetallesEvento, name='detalles_evento'),
+    path('profile/dislikes/<int:pk>', views.adddislike, name='dislike'),
+    path('profile/likes/<int:pk>', views.addLikes, name='likes'),
+    path('interfaz/<int:pk>/User', views.interfazUser, name='interfaz'),
+    path('profile/dislikes/<int:id>/comment', views.addCommentDislike, name='dislikecomment'),
+    path('profile/likes/<int:id>/comment', views.addCommentLikes, name='likescomment'),
+    path('profile/delete/<int:id>/comment', views.deleteComment, name='deleteComment'),
 ]

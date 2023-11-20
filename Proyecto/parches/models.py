@@ -6,11 +6,14 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 # from django.contrib.auth.models import User
+
+
 from django.conf import settings
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
-                                        PermissionsMixin)
+                                        PermissionsMixin, User)
 from django.db import models
-import uuid
+from django.utils import timezone
+
 
 class Actividad(models.Model):
     Futbol = "FUTBOL"
@@ -120,6 +123,8 @@ class EmpresaPersona(AbstractBaseUser, PermissionsMixin):
     usuario_administrador = models.BooleanField(default=False)
     estado = models.CharField(choices=Estado_ENUM, default='I', max_length=1)
     is_active = models.BooleanField(default=True)
+    likes = models.ManyToManyField('self', blank=True, related_name='likes')
+    dislikes = models.ManyToManyField('self', blank=True, related_name='dislikes')
     
 
     
@@ -154,6 +159,16 @@ class EmpresaPersona(AbstractBaseUser, PermissionsMixin):
     #     managed = Fals
     #     db_table = 'empresa/persona'
 
+class comentarioUSer(models.Model):
+    comment = models.TextField(db_column='comentario')
+    created_on = models.DateTimeField(default=timezone.now)
+    author = models.ForeignKey(EmpresaPersona, on_delete=models.CASCADE, related_name='comment_author')
+    receptor = models.ForeignKey(EmpresaPersona, on_delete=models.CASCADE, db_column='usuario')
+    likes = models.ManyToManyField(EmpresaPersona, blank=True, related_name='comment_likes')
+    dislikes = models.ManyToManyField(EmpresaPersona, blank=True, related_name='comment_dislikes')
+
+
+
 
 class Persona(models.Model ):
     idpersona = models.AutoField(db_column='idPersona', primary_key=True)
@@ -186,6 +201,7 @@ class Realizacion(models.Model):
     actividad_idactividad = models.OneToOneField(Actividad, models.DO_NOTHING, db_column='actividad_idActividad', primary_key=True) 
     usuario_idusuario = models.ForeignKey('EmpresaPersona', models.DO_NOTHING, db_column='usuario_idEmpresaPersona')  
     comentarios = models.CharField(max_length=45)
+  
 
     class Meta:
         
