@@ -22,6 +22,8 @@ urlpatterns = [
     path('updateUserCompany/<int:idregistro>/<str:tipousuario>', views.UpdateUserCompany, name='UpdateUserCompany'),
     path('eventos', views.MostrarEvento, name='mostrarEventos'),
     path('eliminar', views.viewEventoELI, name='eliminar'),
+    
+    path('detalles/<int:idactividad>/', views.DetallesEvento, name='detalles_evento'),
     path('profile/dislikes/<int:pk>', views.adddislike, name='dislike'),
     path('profile/likes/<int:pk>', views.addLikes, name='likes'),
     path('interfaz/<int:pk>/User', views.interfazUser, name='interfaz'),
