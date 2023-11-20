@@ -1,8 +1,7 @@
 from datetime import datetime
-from pyexpat.errors import messages
 from smtplib import SMTPException
+
 import folium
-from folium import Marker
 from django.conf import settings
 from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.core.exceptions import ValidationError
@@ -10,6 +9,8 @@ from django.core.mail import EmailMultiAlternatives
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import get_template
+from folium import Marker
+from pyexpat.errors import messages
 
 from .forms import (CreateEventos, Document, FormCompanyUpdate, FormUser,
                     FormUserCompany, FormUserUpdate, UserRegister,
@@ -129,7 +130,7 @@ def RegisterCompany(request):
 def MostrarEvento(request):
     query = request.GET.get('q', '')
     tipo_actividad = request.GET.get('tipo_actividad', '') 
-
+    form = EmpresaPersona.objects.all()
     eventos = Actividad.objects.all()
     if query:
         eventos = eventos.filter(nombreactividad__icontains=query)
@@ -147,7 +148,7 @@ def MostrarEvento(request):
         ).add_to(map)
         maps.append(map._repr_html_())
 
-    context = {'data': eventos, 'tipo_actividad_choices': tipo_actividad_choices, 'maps': maps}
+    context = {'data': eventos,'form':form, 'tipo_actividad_choices': tipo_actividad_choices, 'maps': maps}
     return render(request, 'view/VistasPCU/mostrarEventos.html', context)
 
 

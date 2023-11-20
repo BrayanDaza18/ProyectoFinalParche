@@ -281,7 +281,8 @@
                     alt="">
                 <br>
                 {% if user.is_authenticated %}
-                <span class="name" >{% if form and commentUser%}
+                <span class="name" >
+                    {% if form %}
                     
                     {{form.usuario}}
                     {% else %}
