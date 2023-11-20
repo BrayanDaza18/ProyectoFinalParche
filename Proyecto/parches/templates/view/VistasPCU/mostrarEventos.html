@@ -86,8 +86,8 @@
         <div class="row">
             
             {% for element in data %}
-            {% for elements in form %}
-            {% for map in maps %}
+           
+        
           
             <div class="col-md-12">
                 <div class="fondo" id="eventos">
@@ -95,13 +95,13 @@
                         <div class="row event">
                             <div class="primerafila">
                                 <div class=" col-12 tablaUno rounded-2 ">
-                                    {% if elements.pk != element.empresa_idempresa %}
+                               
                                     <div class="nombretorneo">
-                                        <h4 class="text-center " style="color:white ;"><a href="{% url "interfaz" element.pk %}">{{elements.usuario}}</a>{{element.tipoactividad}}</h4>
+                                        <h4 class="text-center " style="color:white ;"><a href="{% url "interfaz" element.empresa_idempresa %}">{{element.empresa_idempresa}}</a>{{element.tipoactividad}}</h4>
                                    
-                                      
+                                
                                     </div>
-                                    {% endif %}
+                                 
                                     <div class="descripcion row mt-3">
                                         <div class="col-6 fondodegradado">
                                             <img src="{{element.imagen.url}}" class="img-fluid rounded-2 ms-4 mb-3"
@@ -132,12 +132,12 @@
                                     <div class="row mt-4">
                                         <div class="col-6">
                                           
-                                         
+                                            {% for map in maps %}
                                             
                                         
                                             {{ map|safe }}
                                             
-                                          
+                                            {% endfor %}
                                          
                                           
 
@@ -181,8 +181,8 @@
                 </div>
             </div>
           
-            {% endfor %}
-            {% endfor %}
+          
+          
             {% endfor %}
         </div>
     </div>

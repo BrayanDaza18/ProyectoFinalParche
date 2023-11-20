@@ -360,18 +360,18 @@ def adddislike(request, pk):
     next = request.POST.get('next', '')
     return HttpResponseRedirect(next)
 
-def interfazUser(request, pk ):
-  form = EmpresaPersona.objects.get(pk=pk)
-  comment = comentarioUSer.objects.filter(receptor=pk).order_by('created_on')
+def interfazUser(request, empresa_idempresa ):
+  form = EmpresaPersona.objects.get(usuario=empresa_idempresa)
+  comment = comentarioUSer.objects.filter(receptor=form).order_by('created_on')
 
   if request.method == 'POST':
     comment = comentarioUserform(request.POST)
     if comment.is_valid():
         newcomment = comment.save(commit=False)
         newcomment.author = request.user
-        newcomment.receptor = EmpresaPersona.objects.get(pk=pk)
+        newcomment.receptor =  EmpresaPersona.objects.filter(usuario=empresa_idempresa)
         newcomment.save()
-        return redirect('interfaz', pk=pk)
+        return redirect('interfaz', empresa_idempresa=form)
     else:
         comment.errors
   return render(request,'view/VistasPCU/interfazdelosUsuarios.html', {'form':form, 'commentUser':comment})
@@ -435,7 +435,8 @@ def addCommentDislike(request, id):
 def deleteComment(request, id):
     form = comentarioUSer.objects.get(id=id)
     form.delete()
-    return redirect('interfaz', pk = form.receptor.idregistro)
+    print(f"este es el usuario {form.receptor}")
+    return redirect('interfaz', empresa_idempresa = form.receptor)
 
 # def replycomment(request, pk):
 #  post = comentarioUSer.objects.get(pk = pk)
