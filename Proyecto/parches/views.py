@@ -3,6 +3,7 @@ from smtplib import SMTPException
 
 import folium
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.core.exceptions import ValidationError
 from django.core.mail import EmailMultiAlternatives
@@ -10,11 +11,10 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import get_template
 from folium import Marker
-from pyexpat.errors import messages
 
 from .forms import (CreateEventos, Document, FormCompanyUpdate, FormUser,
                     FormUserCompany, FormUserUpdate, UserRegister,
-                    comentarioUserform)
+                    comentarioUserform, joinEventP)
 from .models import (Actividad, EmpresaPersona, Persona, Realizacion,
                      comentarioUSer)
 
@@ -146,7 +146,7 @@ def MostrarEvento(request):
             location=[evento.latitud, evento.longitud],
             popup=f"{evento.nombreactividad}"
         ).add_to(map)
-        maps.append(map._repr_html_())
+        maps.append({'maps':map._repr_html_(), 'idactividad':evento.pk})
 
     context = {'data': eventos,'form':form, 'tipo_actividad_choices': tipo_actividad_choices, 'maps': maps}
     return render(request, 'view/VistasPCU/mostrarEventos.html', context)
@@ -438,6 +438,12 @@ def deleteComment(request, id):
     print(f"este es el usuario {form.receptor}")
     return redirect('interfaz', empresa_idempresa = form.receptor)
 
+def deleteCommentUser(request, id):
+    form = comentarioUSer.objects.get(id=id)
+    form.delete()
+    print(f"este es el usuario {form.receptor}")
+    return redirect('interfaz')
+
 # def replycomment(request, pk):
 #  post = comentarioUSer.objects.get(pk = pk)
 
@@ -446,3 +452,25 @@ def deleteComment(request, id):
 
 #     if form.is_valid()
 
+def joinEvent(request, pk):
+    if request.method == 'POST':
+        post = joinEventP(request.POST)
+        if post.is_valid():
+            newpost = post.save(commit=False)
+            newpost.usuario_idusuario = request.user
+            newpost.save()
+            messages.add_message(request=request, level=messages.SUCCESS, message='registro exitoso')
+            return redirect('mostrarEventos')
+        else:
+            print(post.errors)
+            messages.add_message(request=request, level=messages.ERROR, message='No puedes unirte de Nuevo')
+
+
+    return redirect('mostrarEventos')
+    
+
+
+        
+     
+
+        

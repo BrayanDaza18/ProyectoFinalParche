@@ -30,4 +30,6 @@ urlpatterns = [
     path('profile/dislikes/<int:id>/comment', views.addCommentDislike, name='dislikecomment'),
     path('profile/likes/<int:id>/comment', views.addCommentLikes, name='likescomment'),
     path('profile/delete/<int:id>/comment', views.deleteComment, name='deleteComment'),
+    path('profile/delete/<int:id>/comment', views.deleteCommentUser, name='deleteCommentUser'),
+    path('join/event/<int:pk>', views.joinEvent, name='joinEvent'),
 ]
