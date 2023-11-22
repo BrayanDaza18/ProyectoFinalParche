@@ -126,7 +126,7 @@ class EmpresaPersona(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     likes = models.ManyToManyField('self', blank=True, related_name='likes')
     dislikes = models.ManyToManyField('self', blank=True, related_name='dislikes')
-    motivos_reporte = models.CharField(max_length=40)
+    motivos_reporte = models.ManyToManyField('self', )
 
     
 
@@ -167,6 +167,20 @@ class comentarioUSer(models.Model):
     receptor = models.ForeignKey(EmpresaPersona, on_delete=models.CASCADE, db_column='usuario')
     likes = models.ManyToManyField(EmpresaPersona, blank=True, related_name='comment_likes')
     dislikes = models.ManyToManyField(EmpresaPersona, blank=True, related_name='comment_dislikes')
+    
+    # parent = models.ForeignKey("self", on_delete=models.CASCADE, blank=True, null=True, related_name='+')
+
+    # @property
+    # def children(self):
+    #     return comentarioUSer.objects.filter(parent=self).order_by('created_on').all()
+    
+    # @property
+    # def is_parent(self):
+    #     if self.parent is None:
+    #         return True
+    #     return False
+    
+
 
 
 

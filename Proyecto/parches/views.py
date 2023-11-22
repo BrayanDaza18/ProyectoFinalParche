@@ -1,5 +1,4 @@
 from datetime import datetime
-from pyexpat.errors import messages
 from smtplib import SMTPException
 from folium import Marker
 import folium
@@ -13,6 +12,8 @@ from django.http import HttpResponseRedirect
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import get_template
+from folium import Marker
+from pyexpat.errors import messages
 
 from .forms import (CreateEventos, Document, FormCompanyUpdate, FormUser,
                     FormUserCompany, FormUserUpdate, UserRegister,
@@ -143,7 +144,7 @@ def RegisterCompany(request):
 def MostrarEvento(request):
     query = request.GET.get('q', '')
     tipo_actividad = request.GET.get('tipo_actividad', '') 
-
+    form = EmpresaPersona.objects.all()
     eventos = Actividad.objects.all()
     if query:
         eventos = eventos.filter(nombreactividad__icontains=query)
@@ -159,9 +160,12 @@ def MostrarEvento(request):
             location=[evento.latitud, evento.longitud],
             popup=f"{evento.nombreactividad}"
         ).add_to(map)
-        maps.append(map._repr_html_())
-
-    context = {'data': eventos, 'tipo_actividad_choices': tipo_actividad_choices, 'maps': maps}
+        maps.append({
+            "map": map._repr_html_(),
+            "idactividad": evento.pk
+        })
+    
+    context = {'data': eventos,'form':form, 'tipo_actividad_choices': tipo_actividad_choices, 'maps': maps}
     return render(request, 'view/VistasPCU/mostrarEventos.html', context)
 
 
@@ -444,18 +448,18 @@ def adddislike(request, pk):
     next = request.POST.get('next', '')
     return HttpResponseRedirect(next)
 
-def interfazUser(request, pk ):
-  form = EmpresaPersona.objects.get(pk=pk)
-  comment = comentarioUSer.objects.filter(receptor=pk).order_by('created_on')
+def interfazUser(request, empresa_idempresa ):
+  form = EmpresaPersona.objects.get(usuario=empresa_idempresa)
+  comment = comentarioUSer.objects.filter(receptor=form).order_by('created_on')
 
   if request.method == 'POST':
     comment = comentarioUserform(request.POST)
     if comment.is_valid():
         newcomment = comment.save(commit=False)
         newcomment.author = request.user
-        newcomment.receptor = EmpresaPersona.objects.get(pk=pk)
+        newcomment.receptor =  EmpresaPersona.objects.get(usuario=empresa_idempresa)
         newcomment.save()
-        return redirect('interfaz', pk=pk)
+        return redirect('interfaz', empresa_idempresa=form)
     else:
         comment.errors
   return render(request,'view/VistasPCU/interfazdelosUsuarios.html', {'form':form, 'commentUser':comment})
@@ -519,4 +523,14 @@ def addCommentDislike(request, id):
 def deleteComment(request, id):
     form = comentarioUSer.objects.get(id=id)
     form.delete()
-    return redirect('interfaz', pk = form.receptor.idregistro)
+    print(f"este es el usuario {form.receptor}")
+    return redirect('interfaz', empresa_idempresa = form.receptor)
+
+# def replycomment(request, pk):
+#  post = comentarioUSer.objects.get(pk = pk)
+
+#  if request.method == 'POST':
+#     form = comentarioUserform(request.POST)
+
+#     if form.is_valid()
+
