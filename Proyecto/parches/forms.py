@@ -209,12 +209,11 @@ class Document(forms.ModelForm):
           user.save()
         return user
 
-
 class CreateEventos(forms.ModelForm):
 
     class Meta:
         model = Actividad
-        fields = ['nombreactividad', 'tipoactividad', 'lugar', 'fechainicio','fechafin','hora','imagen', 'contacto','descripcion']
+        fields = ['nombreactividad', 'tipoactividad', 'lugar', 'fechainicio', 'fechafin', 'hora', 'imagen', 'contacto', 'descripcion']
         widgets = {
             'nombreactividad': forms.TextInput(
             attrs= {
@@ -275,10 +274,16 @@ class CreateEventos(forms.ModelForm):
         }),
         }
     
-    def save(self, commit = True):
-        user = super().save(commit= False)  
+    latitud = forms.FloatField(widget=forms.HiddenInput(), required=False)
+    longitud = forms.FloatField(widget=forms.HiddenInput(), required=False)
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.latitud = self.cleaned_data.get('latitud', 0)
+        user.longitud = self.cleaned_data.get('longitud', 0)
+
         if commit:
-          user.save()
+            user.save()
         return user
 
 class FormUserUpdate(forms.ModelForm):

@@ -14,13 +14,14 @@ from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
 from django.db import models
 from django.utils import timezone
 
+import uuid
 
 class Actividad(models.Model):
     Futbol = "FUTBOL"
-    Baloncesto = "BALONCESTO"
-    juegoMesa = "JuegoDeMesa"
+    Baloncesto = "Baloncesto"
+    juegoMesa = "Juego de mesa"
     Voleibol = "Voleibol"
-    pasarElRato = "PasarElRato"
+    pasarElRato = "Pasar el rato"
     natacion = "natacion"
     patinaje = 'patinaje'
     tenis= 'tenis'
@@ -31,31 +32,33 @@ class Actividad(models.Model):
         (Baloncesto, 'Baloncesto'),
         (juegoMesa, 'Juegos De Mesa'),
         (Voleibol,'Voleibol'),
-        (pasarElRato,'pasar el rato '),
+        (pasarElRato,'Pasar el rato'),
         (natacion, 'Natacion'),
-        (patinaje, 'patinaje'),
-        (tenis, 'tenis'),
-        (cilcismo,'cilcismo')
+        (patinaje, 'Patinaje'),
+        (tenis, 'Tenis'),
+        (cilcismo,'Cilcismo')
     ]
-    idactividad = models.AutoField(db_column='idActividad', primary_key=True)  # Field name made lowercase.
-    nombreactividad = models.CharField(db_column='nombreActividad', max_length=30)  # Field name made lowercase.
-    tipoactividad = models.CharField(db_column='tipoActividad', choices=deporte,max_length=15)  # Field name made lowercase.
+    idactividad = models.AutoField(db_column='idActividad', primary_key=True)
+    nombreactividad = models.CharField(db_column='nombreActividad', max_length=30)
+    tipoactividad = models.CharField(db_column='tipoActividad', choices=deporte,max_length=15)
     lugar = models.CharField(max_length=40)
     ubicacion = models.CharField(max_length=80)
-    fechainicio = models.CharField(db_column='fechaInicio', max_length=40)  # Field name made lowercase.
-    fechafin = models.CharField(db_column='fechaFin', max_length=40)  # Field name made lowercase.
+    fechainicio = models.CharField(db_column='fechaInicio', max_length=40)
+    fechafin = models.CharField(db_column='fechaFin', max_length=40)
     descripcion = models.TextField(db_column="descripcion", max_length=75, blank=True, null=True)
     hora = models.CharField(max_length=40)
     imagen = models.ImageField(upload_to='actividad/', max_length=80)
     contacto = models.CharField(max_length=30)
     puntosdeportivos = models.ForeignKey('Puntosdeportivos', models.DO_NOTHING, null=True)
-    empresa_idempresa = models.ForeignKey('EmpresaPersona', on_delete=models.CASCADE, db_column='empresa_idEmpresa', null=True) # Field name made lowercase.
+    empresa_idempresa = models.ForeignKey('EmpresaPersona', on_delete=models.CASCADE, db_column='empresa_idEmpresa', null=True)
 
+    latitud = models.FloatField(blank=True, null=True)
+    longitud = models.FloatField(blank=True, null=True)
 
     class Meta:
-       
         db_table = 'actividad'
         unique_together = (('idactividad', 'puntosdeportivos', 'empresa_idempresa'),)
+
     
     def delete(self, using= None, keep_parents=False):
         self.imagen.storage.delete(self.imagen.name)

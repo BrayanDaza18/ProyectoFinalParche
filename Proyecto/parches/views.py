@@ -1,10 +1,13 @@
 from datetime import datetime
+from pyexpat.errors import messages
 from smtplib import SMTPException
-
+from folium import Marker
+import folium
 from django.conf import settings
 from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.core.exceptions import ValidationError
 from django.core.mail import EmailMultiAlternatives
+from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.http import HttpResponseRedirect
@@ -24,10 +27,19 @@ from django.core.mail import send_mail
 from django.contrib.auth import get_user_model
 from django.template.loader import get_template
 
+
 # REPORTAR
 # from .models import Usuario 
 
 # Create your views here.
+
+
+# def home(request):
+#     initialMap = folium.Map(location=[2.9349676,-75.2914166], zoom_start= 13)
+#     context = {'map': initialMap._repr_html_()}
+#     return render (request, 'view/folium.html', context)
+
+
 
 def HomepageProject(request):
      return render(request, 'view/VistasPCU/vistaPrincipal.html')
@@ -91,6 +103,8 @@ def CreateEvent(request):
     
     return render(request, 'view/VistasPCU/crearEvento.html', {'activity': activity})
 
+
+
 def RegisterCompany(request):
     document_form = Document()  
     form = FormUserCompany()
@@ -124,10 +138,47 @@ def RegisterCompany(request):
     return render(request, 'registration/registroEmpresa.html', {'document': document_form, 'form': form})
 
 
+
+
 def MostrarEvento(request):
-    data = Actividad.objects.all()
-    form = EmpresaPersona.objects.all()
-    return render(request, 'view/VistasPCU/mostrarEventos.html', {'data': data, 'form': form})
+    query = request.GET.get('q', '')
+    tipo_actividad = request.GET.get('tipo_actividad', '') 
+
+    eventos = Actividad.objects.all()
+    if query:
+        eventos = eventos.filter(nombreactividad__icontains=query)
+    if tipo_actividad:
+        eventos = eventos.filter(tipoactividad=tipo_actividad)
+
+    tipo_actividad_choices = Actividad.deporte
+
+    maps = []
+    for evento in eventos:
+        map = folium.Map(location=[evento.latitud, evento.longitud], zoom_start=13)
+        folium.Marker(
+            location=[evento.latitud, evento.longitud],
+            popup=f"{evento.nombreactividad}"
+        ).add_to(map)
+        maps.append(map._repr_html_())
+
+    context = {'data': eventos, 'tipo_actividad_choices': tipo_actividad_choices, 'maps': maps}
+    return render(request, 'view/VistasPCU/mostrarEventos.html', context)
+
+
+
+def DetallesEvento(request, idactividad):
+    evento = get_object_or_404(Actividad, idactividad=idactividad)
+
+    mapa = folium.Map(location=[evento.latitud, evento.longitud], zoom_start=13)
+    folium.Marker(
+        location=[evento.latitud, evento.longitud],
+        popup=f"{evento.nombreactividad} - Coordenadas: {evento.latitud}, {evento.longitud}"
+    ).add_to(mapa)
+
+    mapa_html = mapa._repr_html_()
+
+    return render(request, 'view/VistasPCU/detalles_evento.html', {'evento': evento, 'mapa_html': mapa_html})
+
 
 def Profile(request):
     usuario = request.user
