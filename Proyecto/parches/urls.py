@@ -21,7 +21,7 @@ urlpatterns = [
     path('updateUser/<int:idregistro>/<str:tipousuario>', views.UpdateUser, name='UpdateUser'),
     path('updateUserCompany/<int:idregistro>/<str:tipousuario>', views.UpdateUserCompany, name='UpdateUserCompany'),
     path('eventos', views.MostrarEvento, name='mostrarEventos'),
-    path('eliminar', views.viewEventoELI, name='eliminar'),
+    path('eliminar/<int:idactividad>', views.viewEventoELI, name='eliminar'),
     
     path('detalles/<int:idactividad>/', views.DetallesEvento, name='detalles_evento'),
     path('profile/dislikes/<int:pk>', views.adddislike, name='dislike'),
@@ -32,4 +32,6 @@ urlpatterns = [
     path('profile/delete/<int:id>/comment', views.deleteComment, name='deleteComment'),
     path('profile/delete/<int:id>/comment', views.deleteCommentUser, name='deleteCommentUser'),
     path('join/event/<int:pk>', views.joinEvent, name='joinEvent'),
+    path('evento/inscripcion/<str:usuario_idusuario>', views.eventoRegistration , name='inscripcion'),
+    path('evento/inscripcion/anular/<str:usuario_idusuario>', views.eventoRegistration , name='inscripcion')
 ]

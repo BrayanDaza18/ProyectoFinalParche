@@ -170,6 +170,7 @@ def DetallesEvento(request, idactividad):
 def Profile(request):
     usuario = request.user
     form = Actividad.objects.filter(empresa_idempresa=usuario)
+    send = Realizacion.objects.filter(usuario_idusuario=usuario)
     comment = comentarioUSer.objects.filter(author = usuario).order_by('created_on')
     actividad = EmpresaPersona.objects.all()
 
@@ -183,7 +184,7 @@ def Profile(request):
             commentUser.save()
             return redirect('profile')
       
-    return render(request, 'view/VistasPCU/perfil.html', {'data': form, 'actividad': actividad, 'comment': comment})
+    return render(request, 'view/VistasPCU/perfil.html', {'data': form, 'actividad': actividad, 'comment': comment,'send':send})
 
 
 def CoverImage(request):
@@ -205,7 +206,7 @@ def eventForUser(request):
 
 
 def viewEventoELI(request, idactividad):
-    data = Actividad.objects.get(idactividad=idactividad)
+    data = Actividad.objects.get(pk=idactividad)
     data.delete()
 
     return redirect('eventUser')
@@ -467,6 +468,15 @@ def joinEvent(request, pk):
 
 
     return redirect('mostrarEventos')
+
+def eventoRegistration(request, usuario_idusuario):
+    form = EmpresaPersona.objects.get(usuario=usuario_idusuario)
+    print(form)
+    form = Actividad.objects.filter(empresa_idempresa= form.pk)
+ 
+   
+    print(f"elemento{form}")
+    return render(request, 'view/VistasPCU/eventoEgistration.html', {'data':form})
     
 
 
