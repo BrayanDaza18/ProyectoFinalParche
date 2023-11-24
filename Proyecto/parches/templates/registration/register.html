@@ -9,40 +9,58 @@
     <title>Document</title>
     <link rel="stylesheet" href="{% static "CSS/bootstrap(1).css" %}">
     <link rel="stylesheet" href="{% static "CSS/registro.css" %}">  
+    <style>
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
 </head>
 
 <body>
-<div class="container-fluid d-flex justify-content-center align-items-center" style="height: 44.8rem;  background-color: rgb(214, 213, 213);">
+    <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 44.8rem;  background-color: rgb(214, 213, 213);">
         <div class="row cartaR">
             <div class="palabraRegistro">
                 <h1 style="color: #365C45;">Registro</h1>
             </div>
-          
+
             <form method="post">
                 {% csrf_token %}
+
                 <div class="inputRegistro">
                     <div class="nombreRegistro d-block ">
-                       
                         {{ form.usuario }}
+                        {% if form.errors.usuario %}
+                            <div class="error-message">{{ form.errors.usuario }}</div>
+                        {% endif %}
                     </div>
                     <div class="correoRegistro d-block">
-                
                         {{ form.correo }}
+                        {% if form.errors.correo %}
+                            <div class="error-message">{{ form.errors.correo }}</div>
+                        {% endif %}
                     </div>
                     <div class="telefonoRegistro   ">
-                     
                         {{ form.telefono }}
+                        {% if form.errors.telefono %}
+                            <div class="error-message">{{ form.errors.telefono }}</div>
+                        {% endif %}
                     </div>
                     <div class="contraseñaRegistro   ">
-                      
                         {{ form.password1 }}
+                        {% if form.errors.password1 %}
+                            <div class="error-message">{{ form.errors.password1 }}</div>
+                        {% endif %}
                     </div>
                     <div class="contraseñaRegistro   ">
-                     
                         {{ form.password2 }}
+                        {% if form.errors.password2 %}
+                            <div class="error-message">{{ form.errors.password2 }}</div>
+                        {% endif %}
                     </div>
-                     
                 </div>
+
                 <div class="botonRegistrarse">
                     <button type="submit" class="btn btn-success">Registrarse</button>
                 </div>
@@ -51,9 +69,7 @@
                 </div>
             </form>
         </div>
-</div>
-
-
+    </div>
 </body>
 
 </html>

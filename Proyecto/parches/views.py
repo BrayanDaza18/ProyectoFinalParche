@@ -31,32 +31,43 @@ from .models import (Actividad, EmpresaPersona, Persona, Realizacion,
 def HomepageProject(request):
      return render(request, 'view/VistasPCU/vistaPrincipal.html')
 
+from django.contrib import messages
+
+from django.contrib.auth.models import User
+from django.contrib import messages
+
 def registerUser(request):
     form = FormUser()
-    usuario = UserRegister()  
-    
+
     if request.method == 'POST':
         form = FormUser(request.POST)
-        # usuario = UserRegister(request.POST)
         if form.is_valid():
-           data = form.save()
-           data.tipousuario = 'U' 
-           data.save()
-        correo = request.POST.get('correo')
-        usuario = request.POST.get('usuario')
-        now = datetime.now()
-        fecha_hora_actual = now.strftime("%Y-%m-%d %H:%M:%S")
+            # Validar si el correo ya está en uso
+            correo = form.cleaned_data['correo']
+            if EmpresaPersona.objects.filter(correo=correo).exists():
+                form.add_error('correo', 'El correo ya está asociado a otra cuenta.')
+                return render(request, 'registration/register.html', {'form': form})
 
-        send_email(correo, usuario, fecha_hora_actual)
-        #    data = form.save() 
-        #    datos =usuario.save(commit = False)
-        #    datos.empresa_idEmpresa = data
-        #    datos.save()
-     
-        return redirect('login')
+            # Validar si el nombre de usuario ya está en uso
+            usuario = form.cleaned_data['usuario']
+            if EmpresaPersona.objects.filter(usuario=usuario).exists():
+                form.add_error('usuario', 'El nombre de usuario ya está en uso.')
+                return render(request, 'registration/register.html', {'form': form})
 
-    
-    return render(request, 'registration/register.html', {'form': form, 'usuario': usuario})
+            # Guardar el formulario si las validaciones pasan
+            data = form.save(commit=False)
+            data.tipousuario = 'U'
+            data.save()
+
+            now = datetime.now()
+            fecha_hora_actual = now.strftime("%Y-%m-%d %H:%M:%S")
+            send_email(correo, usuario, fecha_hora_actual)
+
+            return redirect('login')
+
+    return render(request, 'registration/register.html', {'form': form})
+
+
 
 
 def login(request):
