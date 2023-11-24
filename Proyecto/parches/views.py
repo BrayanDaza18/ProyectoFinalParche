@@ -42,19 +42,16 @@ def registerUser(request):
     if request.method == 'POST':
         form = FormUser(request.POST)
         if form.is_valid():
-            # Validar si el correo ya está en uso
             correo = form.cleaned_data['correo']
             if EmpresaPersona.objects.filter(correo=correo).exists():
                 form.add_error('correo', 'El correo ya está asociado a otra cuenta.')
                 return render(request, 'registration/register.html', {'form': form})
 
-            # Validar si el nombre de usuario ya está en uso
             usuario = form.cleaned_data['usuario']
             if EmpresaPersona.objects.filter(usuario=usuario).exists():
                 form.add_error('usuario', 'El nombre de usuario ya está en uso.')
                 return render(request, 'registration/register.html', {'form': form})
 
-            # Guardar el formulario si las validaciones pasan
             data = form.save(commit=False)
             data.tipousuario = 'U'
             data.save()
@@ -106,20 +103,24 @@ def CreateEvent(request):
 def RegisterCompany(request):
     document_form = Document()  
     form = FormUserCompany()
-  
 
     if request.method == 'POST':
         form = FormUserCompany(request.POST)
         document_form = Document(request.POST, request.FILES) 
 
         if form.is_valid() and document_form.is_valid():
+            correo = form.cleaned_data['correo']
+            if EmpresaPersona.objects.filter(correo=correo).exists():
+                form.add_error('correo', 'El correo ya está asociado a otra cuenta.')
+                return render(request, 'registration/registroEmpresa.html', {'document': document_form, 'form': form})
+
             data = form.save() 
             data.tipousuario = 'E' 
             data.save()
             datos = document_form.save(commit=False)
             datos.empresa_idempresa = data
             datos.save()
-       
+
             usuario = request.POST.get('usuario')
             correo = request.POST.get('correo')
             nombreempresa = request.POST.get('nombreempresa')
@@ -128,10 +129,11 @@ def RegisterCompany(request):
             
             send_email_empresa(usuario, correo, nombreempresa, fecha_hora_actual)
 
+            return redirect('login')
         else:
-          print("Errores en el formulario FormUserCompany:", form.errors)
-          print("Errores en el formulario Document:", document_form.errors)
-        return redirect('login')
+            print("Errores en el formulario FormUserCompany:", form.errors)
+            print("Errores en el formulario Document:", document_form.errors)
+            return render(request, 'registration/registroEmpresa.html', {'document': document_form, 'form': form})
 
     return render(request, 'registration/registroEmpresa.html', {'document': document_form, 'form': form})
 
