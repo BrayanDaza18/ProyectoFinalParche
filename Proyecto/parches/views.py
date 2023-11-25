@@ -458,13 +458,9 @@ def deleteCommentUser(request, id):
     print(f"este es el usuario {form.receptor}")
     return redirect('interfaz')
 
-# def replycomment(request, pk):
-#  post = comentarioUSer.objects.get(pk = pk)
 
-#  if request.method == 'POST':
-#     form = comentarioUserform(request.POST)
+from django.shortcuts import get_object_or_404
 
-#     if form.is_valid()
 
 def joinEvent(request, pk):
     if request.method == 'POST':
@@ -473,14 +469,26 @@ def joinEvent(request, pk):
             newpost = post.save(commit=False)
             newpost.usuario_idusuario = request.user
             newpost.save()
-            messages.add_message(request=request, level=messages.SUCCESS, message='registro exitoso')
+            
+            usuario_correo = request.user.correo
+            usuario_nombre = request.user.usuario
+            evento_nombre = newpost.actividad_idactividad.nombreactividad
+            fecha_inicio_evento = newpost.actividad_idactividad.fechainicio
+            hora_inicio_evento = newpost.actividad_idactividad.hora
+
+            send_event_notification(usuario_correo, usuario_nombre, evento_nombre, fecha_inicio_evento, hora_inicio_evento)
+
+            messages.add_message(request=request, level=messages.SUCCESS, message='Registro exitoso')
             return redirect('mostrarEventos')
         else:
             print(post.errors)
-            messages.add_message(request=request, level=messages.ERROR, message='No puedes unirte de Nuevo')
-
+            messages.add_message(request=request, level=messages.ERROR, message='No puedes unirte de nuevo')
 
     return redirect('mostrarEventos')
+
+
+
+
 
 def eventoRegistration(request, usuario_idusuario):
     form = EmpresaPersona.objects.get(usuario=usuario_idusuario)
@@ -492,8 +500,30 @@ def eventoRegistration(request, usuario_idusuario):
     return render(request, 'view/VistasPCU/eventoEgistration.html', {'data':form})
     
 
-
+def send_event_notification(usuario_correo, usuario_nombre, evento_nombre, fecha_inicio_evento, hora_inicio_evento):
+    try:
+        context = {
+            'usuario_correo': usuario_correo,
+            'usuario_nombre': usuario_nombre,
+            'evento_nombre': evento_nombre,
+            'fecha_inicio_evento': fecha_inicio_evento,
+            'hora_inicio_evento': hora_inicio_evento,
+        }
+        template = get_template('evento_notificacion.html')
+        content = template.render(context)
         
+        email = EmailMultiAlternatives(
+            'Unión a evento',
+            '¡Te has unido a un nuevo evento!',
+            settings.EMAIL_HOST_USER,
+            [usuario_correo]
+        )
+
+        email.attach_alternative(content, 'text/html')
+        email.send()
+
+    except (ValidationError, SMTPException) as e:
+        print(f"Error al enviar correo de notificación de evento: {e}")
      
 
         
