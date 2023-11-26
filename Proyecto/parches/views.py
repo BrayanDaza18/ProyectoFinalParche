@@ -3,6 +3,7 @@ from smtplib import SMTPException
 from folium import Marker
 import folium
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.core.exceptions import ValidationError
 from django.core.mail import EmailMultiAlternatives
@@ -13,11 +14,10 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import get_template
 from folium import Marker
-from pyexpat.errors import messages
 
 from .forms import (CreateEventos, Document, FormCompanyUpdate, FormUser,
                     FormUserCompany, FormUserUpdate, UserRegister,
-                    comentarioUserform)
+                    comentarioUserform, joinEventP)
 from .models import (Actividad, EmpresaPersona, Persona, Realizacion,
                      comentarioUSer)
 
@@ -62,6 +62,7 @@ def registerUser(request):
         fecha_hora_actual = now.strftime("%Y-%m-%d %H:%M:%S")
 
         send_email(correo, usuario, fecha_hora_actual)
+        send_report_email(usuario,request)
         #    data = form.save() 
         #    datos =usuario.save(commit = False)
         #    datos.empresa_idEmpresa = data
@@ -164,7 +165,7 @@ def MostrarEvento(request):
             "map": map._repr_html_(),
             "idactividad": evento.pk
         })
-    
+
     context = {'data': eventos,'form':form, 'tipo_actividad_choices': tipo_actividad_choices, 'maps': maps}
     return render(request, 'view/VistasPCU/mostrarEventos.html', context)
 
@@ -208,7 +209,7 @@ def CoverImage(request):
 
 def ReportEvent(request, pk):
      usuario = EmpresaPersona.objects.get(pk=pk)
-     contexto = {'usuario': usuario}
+     contexto = {'usuario': usuario}     
      return render(request, 'view/VistasPCU/ReportEvent.html', contexto)
 
 
@@ -331,67 +332,68 @@ from django.template.loader import get_template
 from django.utils.html import strip_tags
 from django.conf import settings
 
-def reportar_usuario(request, pk):
-    if request.method == 'POST':
-        # Procesar el formulario y obtener los datos necesarios
-        print(pk)
-        # id_perfil = request.POST.get('idregistro')
-        usuario = EmpresaPersona.objects.get(idregistro=pk)  # Asegúrate de que el campo sea 'idregistro'
+# def reportar_usuario(request, pk):
+#     if request.method == 'POST':
+#         # Procesar el formulario y obtener los datos necesarios
+#         print(pk)
+#         # id_perfil = request.POST.get('idregistro')
+#         usuario = EmpresaPersona.objects.get(idregistro=pk)  # Asegúrate de que el campo sea 'idregistro'
         
-        # Obtener los motivos de reporte seleccionados
-        motivos_reporte = []
-        for i in range(1, 6):
-            motivo = request.POST.get(f'infraccion{i}', '')
-            if motivo:
-                motivos_reporte.append(motivo)
+#         # Obtener los motivos de reporte seleccionados
+#         motivos_reporte = []
+#         for i in range(1, 6):
+#             motivo = request.POST.get(f'infraccion{i}', '')
+#             if motivo:
+#                 motivos_reporte.append(motivo)
 
-        # Guardar los motivos de reporte en el modelo
-        usuario.motivos_reporte = ', '.join(motivos_reporte)
-        usuario.save()
+#         # Guardar los motivos de reporte en el modelo
+#         usuario.motivos_reporte = ', '.join(motivos_reporte)
+#         usuario.save()
 
-        # Enviar correo electrónico
-        subject = 'Reporte de usuario'
-        message = get_template('correo_reporte.html').render({'usuario': usuario})
-        plain_message = strip_tags(message)
-        to_email = 'contactoparchecorp@gmail.com'
-        send_mail(subject, plain_message, [to_email], html_message=message)
+#         # Enviar correo electrónico
+#         subject = 'Reporte de usuario'
+#         message = get_template('correo_reporte.html').render({'usuario': usuario})
+#         plain_message = strip_tags(message)
+#         to_email = 'contactoparchecorp@gmail.com'
+#         send_mail(subject, plain_message, [to_email], html_message=message)
 
-        # Redirigir a una página de éxito o donde desees
-        return redirect('view/VistasPCU/perfil.html')
+#         # Redirigir a una página de éxito o donde desees
+#         return redirect('view/VistasPCU/perfil.html')
 
-    return render(request, 'ReportEvent.html')
+#     return render(request, 'ReportEvent.html')
 
-# def send_report_email(request):
-#     print("Entró en send_report_email")
+def send_report_email(request, pk):
+    print("Entró en send_report_email")
 
-#     try:
-#                 # Obtener el objeto del usuario_reportado usando el ID
-#         # EmpresaPersona = get_user_model()
-#         # usuario_reportado = EmpresaPersona.objects.get(idregistro=usuario_reportado_id)
+    try:
+                # Obtener el objeto del usuario_reportado usando el ID
+        # EmpresaPersona = get_user_model()
+        # usuario_reportado = EmpresaPersona.objects.get(idregistro=usuario_reportado_id)
+        usuario = EmpresaPersona.objects.get(idregistro=pk)
 
-#         context = {'nombre_usuario_reportado': usuario_reportado.get_username()}
-#         template = get_template('correo_reporte.html')
-#         content = template.render(context)
+        context = {'usuario': usuario}
+        template = get_template('correo_reporte.html')
+        content = template.render(context)
 
-#         email = EmailMultiAlternatives(
-#                     'Reporte de usuario',
-#                     'Probando app parche',
-#                     settings.EMAIL_HOST_USER,
-#                     ['contactoparchecorp@gmail.com']
-#                 )
+        email = EmailMultiAlternatives(
+                    'Reporte de usuario',
+                    'Probando app parche',
+                    settings.EMAIL_HOST_USER,
+                    ['contactoparchecorp@gmail.com']
+                )
 
-#         email.attach_alternative(content, 'text/html')
-#         email.send()
+        email.attach_alternative(content, 'text/html')
+        email.send()
 
-#         print(f"Correo enviado:")
-#         return HttpResponse("Correo de reporte enviado correctamente")
-#     except EmpresaPersona.DoesNotExist:
-#                 messages.error(request, 'Usuario no encontrado.')
-#     except Exception as e:
-#                 print(f"Error al enviar correo de reporte: {e}")
-#                 messages.error(request, 'Error al enviar correo de reporte.')
+        print(f"Correo enviado:")
+        return HttpResponse("Correo de reporte enviado correctamente")
+    except EmpresaPersona.DoesNotExist:
+                messages.error(request, 'Usuario no encontrado.')
+    except Exception as e:
+                print(f"Error al enviar correo de reporte: {e}")
+                messages.error(request, 'Error al enviar correo de reporte.')
 
-#     return render(request, 'correo_reporte.html')
+    return render(request, 'view/VistasPCU/perfil.html')
 
     
 
@@ -526,6 +528,12 @@ def deleteComment(request, id):
     print(f"este es el usuario {form.receptor}")
     return redirect('interfaz', empresa_idempresa = form.receptor)
 
+def deleteCommentUser(request, id):
+    form = comentarioUSer.objects.get(id=id)
+    form.delete()
+    print(f"este es el usuario {form.receptor}")
+    return redirect('interfaz')
+
 # def replycomment(request, pk):
 #  post = comentarioUSer.objects.get(pk = pk)
 
@@ -534,3 +542,25 @@ def deleteComment(request, id):
 
 #     if form.is_valid()
 
+def joinEvent(request, pk):
+    if request.method == 'POST':
+        post = joinEventP(request.POST)
+        if post.is_valid():
+            newpost = post.save(commit=False)
+            newpost.usuario_idusuario = request.user
+            newpost.save()
+            messages.add_message(request=request, level=messages.SUCCESS, message='registro exitoso')
+            return redirect('mostrarEventos')
+        else:
+            print(post.errors)
+            messages.add_message(request=request, level=messages.ERROR, message='No puedes unirte de Nuevo')
+
+
+    return redirect('mostrarEventos')
+    
+
+
+        
+     
+
+        

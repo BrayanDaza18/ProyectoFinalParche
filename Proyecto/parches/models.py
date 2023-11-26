@@ -126,7 +126,7 @@ class EmpresaPersona(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     likes = models.ManyToManyField('self', blank=True, related_name='likes')
     dislikes = models.ManyToManyField('self', blank=True, related_name='dislikes')
-    motivos_reporte = models.ManyToManyField('self', )
+    # motivos_reporte = models.ManyToManyField('self', )
 
     
 

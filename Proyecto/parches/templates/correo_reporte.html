@@ -12,11 +12,6 @@
         <div class="content" style="background-color: #fff; padding: 20px;">
             <h2>Hola Administradores de PARC#E</h2>
             <p>Han reportado al usuario {{ usuario.usuario }} por los siguientes motivos:</p>
-            <ul>
-                {% for motivo in usuario.motivos_reporte.split(', ') %}
-                    <li>{{ motivo }}</li>
-                {% endfor %}
-            </ul>
         </div>
         <div class="footer" style="background-color: #00a8e8; color: #fff; text-align: center; padding: 10px;">
             <p>&copy; 2023 Parche</p>

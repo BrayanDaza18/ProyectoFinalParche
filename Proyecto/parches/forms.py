@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import (Actividad, Documento, EmpresaPersona, Persona,
-                     comentarioUSer)
+                     Realizacion, comentarioUSer)
 
 
 class FormUser(forms.ModelForm):
@@ -377,3 +377,14 @@ class comentarioUserform(forms.ModelForm):
             'required': 'required'
         }),
         }
+
+class joinEventP(forms.ModelForm):
+    class Meta:
+        model = Realizacion
+        fields = ['actividad_idactividad']
+
+        def save(self, commit = True):
+         user = super().save(commit= False)  
+         if commit:
+            user.save()
+            return user

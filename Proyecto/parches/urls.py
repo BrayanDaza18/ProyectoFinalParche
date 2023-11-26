@@ -29,7 +29,9 @@ urlpatterns = [
     path('profile/dislikes/<int:id>/comment', views.addCommentDislike, name='dislikecomment'),
     path('profile/likes/<int:id>/comment', views.addCommentLikes, name='likescomment'),
     path('profile/delete/<int:id>/comment', views.deleteComment, name='deleteComment'),
-    path('reportar_usuario/<int:pk>/', views.reportar_usuario, name='reportar_usuario'),
+    path('reportar_usuario/<int:pk>/', views.send_report_email, name='report'),
     
     path('detalles/<int:idactividad>/', views.DetallesEvento, name='detalles_evento'),
+    path('profile/delete/<int:id>/comment', views.deleteCommentUser, name='deleteCommentUser'),
+    path('join/event/<int:pk>', views.joinEvent, name='joinEvent'),
 ]
