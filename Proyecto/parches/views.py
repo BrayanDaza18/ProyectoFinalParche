@@ -454,9 +454,14 @@ def deleteCommentUser(request, id):
 #     if form.is_valid()
 
 def joinEvent(request, pk):
+    
     if request.method == 'POST':
         post = joinEventP(request.POST)
         if post.is_valid():
+            if Realizacion.objects.filter(actividad_idactividad=pk, usuario_idusuario=request.user).exists():
+                # El usuario ya está inscrito, puedes manejar esto según tus necesidades
+                messages.error(request, 'Ya estás inscrito en esta actividad.')
+                return redirect('mostrarEventos')
             newpost = post.save(commit=False)
             newpost.usuario_idusuario = request.user
             newpost.save()
