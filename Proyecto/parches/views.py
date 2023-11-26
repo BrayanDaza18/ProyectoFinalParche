@@ -371,7 +371,20 @@ def send_report_email(request, pk):
         # usuario_reportado = EmpresaPersona.objects.get(idregistro=usuario_reportado_id)
         usuario = EmpresaPersona.objects.get(idregistro=pk)
 
-        context = {'usuario': usuario}
+        infraccion1 = request.POST.get('infraccion1')
+        infraccion2 = request.POST.get('infraccion2')
+        infraccion3 = request.POST.get('infraccion3')
+        infraccion4 = request.POST.get('infraccion4')
+        infraccion5 = request.POST.get('infraccion5')
+
+        context = {
+            'usuario': usuario,
+            'infraccion1': infraccion1,
+            'infraccion2': infraccion2,
+            'infraccion3': infraccion3,
+            'infraccion4': infraccion4,
+            'infraccion5': infraccion5
+            }
         template = get_template('correo_reporte.html')
         content = template.render(context)
 
