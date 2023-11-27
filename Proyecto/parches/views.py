@@ -533,3 +533,39 @@ def send_event_notification(usuario_correo, usuario_nombre, evento_nombre, fecha
      
 
         
+
+#Api de actividades sin autenticacion
+from rest_framework import generics
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from .serializers import ActividadSerializer, EmpresaPersonaSerializer
+
+class ActividadListAPIView(generics.ListAPIView):
+    queryset = Actividad.objects.all()
+    serializer_class = ActividadSerializer
+    permission_classes = [AllowAny] 
+
+class ActividadDetailAPIView(generics.RetrieveAPIView):
+    queryset = Actividad.objects.all()
+    serializer_class = ActividadSerializer
+    permission_classes = [AllowAny]  
+    
+class EmpresaPersonaListAPIView(generics.ListAPIView):
+    queryset = EmpresaPersona.objects.all()
+    serializer_class = EmpresaPersonaSerializer
+    permission_classes = [AllowAny]  # Permitir acceso sin autenticación
+
+class EmpresaPersonaDetailAPIView(generics.RetrieveAPIView):
+    queryset = EmpresaPersona.objects.all()
+    serializer_class = EmpresaPersonaSerializer
+    permission_classes = [AllowAny] 
+    
+#con autenticación 
+# class ActividadListAPIView(generics.ListAPIView):
+#     queryset = Actividad.objects.all()
+#     serializer_class = ActividadSerializer
+#     permission_classes = [IsAuthenticated]
+
+# class ActividadDetailAPIView(generics.RetrieveAPIView):
+#     queryset = Actividad.objects.all()
+#     serializer_class = ActividadSerializer
+#     permission_classes = [IsAuthenticated]
