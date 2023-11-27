@@ -86,92 +86,64 @@
                                     <span class="input-group-text">Nombre del evento</span>
                                     <input type="text" aria-label="nombreactividad" name="nombreactividad" class="form-control">
                                 </div>
-                                <div class="p-2">
-                                    <span class="p-2" style="border: 1px solid grey; border-radius: 7px;">Seleccione el tipo de evento
-                                        <select name="tipoactividad" style="border-radius: 10px;">
-                                            {% for value, label in activity.fields.tipoactividad.choices %}
-                                            <option value="{{ value }}">{{ label }}</option>
-                                            {% endfor %}
-                                                   
-                                        </select>
-                                    </span>            
-                                </div>
-                                <div class="row p-3">
-                                    <div class="col-6 p-1" style="border: 1px solid grey; border-radius: 7px;">
-                                        <span>Seleccione la fecha de inicio
-                                            <input type="date" name="fechafin" style="border-radius: 10px;"></span>
-                                    </div>
-                                    <div class="col-6" style="border: 1px solid grey; border-radius: 7px;">
-                                        <span>Seleccione la fecha de fin
-                                            <input type="date" name="fechainicio" style="border-radius: 10px;"></span>
-                                    </div>
-                                </div>   
-                                <div class="p-2">
-                                    <span class="p-2" style="border: 1px solid grey; border-radius: 7px;">Seleccione la hora del evento
-                                        <input type="time" name="hora" style="border-radius: 10px;"></span>            
-                                </div>
-                                <div class="p-2">
-                                    <div>
-                                        <span >Escriba una breve descripción del evento</span>  
-                                    </div>
-                                        <textarea name="descripcion" id="" cols="65" rows="5" style="border-radius: 10px;"></textarea>          
-                                </div> 
-                                <div class="p-2">
-                                    <span>Direccion en la que se realiza el evento
-                                        <input type="text" name="lugar" style="border-radius: 10px;"></span>            
-                                </div>
-                                <div class="p-2">
-                                    <span>Digite su numero de contacto
-                                        <input type="number" placeholder="Contacto" name="contacto" style="border-radius: 10px;"></span>            
-                                </div>
-                                <div class="p-2">
-                                    <span>Agrega imagen al evento
-                                        <input type="file" name="imagen" placeholder="Cargar imagen de portada" style="border-radius: 10px;">
-                                    </span>
-                                    
-                                </div>        
-                                <!-- <div class="parteUno d-flex justify-content-center align-items-center">
-                                    <div class="col-6 seleccion">
-                                        <input class="col-6" type="text" name="nombreactividad" placeholder="Título del Evento">
-                                        <select name="tipoactividad">
-                                            {% for value, label in activity.fields.tipoactividad.choices %}
+                                <div class="d-flex justify-content-center align-content-center">
+                                    <div class="p-2" style="border: 1px solid #e4e7ea; width: 637px; border-radius: 6px;">
+                                        <span class="p-1" style="border-radius: 7px;">Seleccione el tipo de evento
+                                            <select name="tipoactividad" style="border-radius: 10px; margin-left: 270px;">
+                                                {% for value, label in activity.fields.tipoactividad.choices %}
                                                 <option value="{{ value }}">{{ label }}</option>
-                                            {% endfor %}
-                                        </select>
+                                                {% endfor %}
+                                                       
+                                            </select>
+                                        </span>   
+                                    </div>    
+                                </div>
+                                <div class="p-3 d-block justify-content-center align-content-center">
+                                    <div class="p-2" style="border: 1px solid #e4e7ea; width: 637px; border-radius: 6px;">
+                                        <span>Seleccione la fecha de inicio
+                                            <input type="date" name="fechafin" style="border-radius: 10px; margin-left: 270px;"></span>
                                     </div>
-                                    <div class="col-6 cargarImagen d-flex justify-content-center align-items-center">
-                                        <div class="bloque d-flex justify-content-center align-items-center">
-                                            <input type="file" name="imagen" placeholder="Cargar imagen de portada">
-                                        </div>
+                                    <div class="p-2 mt-1" style="border: 1px solid #e4e7ea; width: 637px; border-radius: 6px;">
+                                        <span>Seleccione la fecha de fin
+                                            <input type="date" name="fechainicio" style="border-radius: 10px; margin-left: 290px;"></span>
+                                    </div>  
+                                </div>
+                                <div class="d-flex justify-content-center align-content-center">
+                                    <div class="p-1" style="border: 1px solid #e4e7ea; width: 637px; border-radius: 6px;">
+                                        <span style="border-radius: 7px;">Seleccione la hora del evento
+                                            <input type="time" name="hora" style="border-radius: 10px; margin-left: 285px;"></span>            
                                     </div>
                                 </div>
-                                <div class="parteDos">
-                                    <div class="col-6 fecha">
-                                        <div class="tiempo">
-                                            <input type="date" name="fechainicio">
-                                            <input type="date" name="fechafin">
+                                <div class="p-3 d-flex justify-content-center align-content-center">
+                                    <div style="border: 1px solid #e4e7ea; width: 637px; border-radius: 6px;">
+                                        <div>
+                                            <span >Escriba una breve descripción del evento</span>  
                                         </div>
-                                        <div class="hora">
-                                            <input type="time" name="hora">
-                                        </div>
-                                    </div>
-                                    <div class="col-6 descripcion d-flex justify-content-center align-items-center">
-                                        <textarea placeholder="Descripción" name="descripcion" id="" cols="30"
-                                            rows="10"></textarea>
+                                            <textarea name="descripcion" id="" cols="70" rows="2" style="border-radius: 10px;"></textarea>          
+                                    </div> 
+                                </div>
+                                <div class="d-flex justify-content-center align-content-center">
+                                    <div class="p-1" style="border: 1px solid #e4e7ea; width: 637px; border-radius: 6px;">
+                                        <span>Direccion en la que se realiza el evento
+                                            <input type="text" name="lugar" style="border-radius: 10px; margin-left: 145px;"></span>            
                                     </div>
                                 </div>
-                                <div class="parteTres">
-                                    <div class="col-6 lugar d-flex justify-content-center align-items-center">
-                                        <input type="text" placeholder="Lugar-Dirrección" name="lugar">
+                                <div class="p-3 d-flex justify-content-center align-content-center">
+                                    <div class="p-1" style="border: 1px solid #e4e7ea; width: 637px; border-radius: 6px;">
+                                        <span>Digite su numero de contacto
+                                            <input type="number" placeholder="Contacto" name="contacto" style="border-radius: 10px; margin-left: 210px;"></span>            
                                     </div>
-                                    <div class="col-6 contacto">
-                                        <input type="number" placeholder="Contacto" name="contacto">
-                                    </div>
-                                </div> -->
+                                </div>
+                                <div class="d-flex justify-content-center align-content-center">
+                                    <div class="p-1" style="border: 1px solid #e4e7ea; width: 637px; border-radius: 6px;">
+                                        <span>Agrega imagen al evento
+                                            <input type="file" name="imagen" placeholder="Cargar imagen de portada" style="border-radius: 5px; margin-left: 115px;">
+                                        </span>
+                                    </div> 
+                                </div>
                             </div>
                         </div>
                     </div>
-                    
                     <div class="crearEvento d-flex justify-content-center align-items-center">
                         <button class="btn btn-success" type="submit">Crear Evento</button>
                     </div>
@@ -180,222 +152,6 @@
         </div>
     </div>
 
-    <!-- CAMBIOS BRAYAN ORDENAOD -->
-    <!-- <div class="container-fluid d-flex justify-content-center align-items-center"
-    style="height: 44.8rem;  background-color: rgb(214, 213, 213);">
-    <div class="pagina container-fluid">
-        <div class="carta">
-            <div class="titulo bg-success">
-                <h1>Nuevo Evento</h1>
-            </div>
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-
-                <div class="parteUno d-flex justify-content-center align-items-center">
-                    <div class="col-6 seleccion">
-                        <input class="col-6" type="text" name="nombreactividad" placeholder="Título del Evento">
-                        <select name="tipoactividad">
-                            {% for value, label in activity.fields.tipoactividad.choices %}
-                                <option value="{{ value }}">{{ label }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="col-6 cargarImagen d-flex justify-content-center align-items-center">
-                        <div class="bloque d-flex justify-content-center align-items-center">
-                            <input type="file" name="imagen" placeholder="Cargar imagen de portada">
-                        </div>
-                    </div>
-                </div>
-                <div class="parteDos">
-                    <div class="col-6 fecha">
-                        <div class="tiempo">
-                            <input type="date" name="fechainicio">
-                            <input type="date" name="fechafin">
-                        </div>
-                        <div class="hora">
-                            <input type="time" name="hora">
-                        </div>
-                    </div>
-                    <div class="col-6 descripcion d-flex justify-content-center align-items-center">
-                        <textarea placeholder="Descripción" name="descripcion" id="" cols="30"
-                            rows="10"></textarea>
-                    </div>
-                </div>
-                <div class="parteTres">
-                    <div class="col-6 lugar d-flex justify-content-center align-items-center">
-                        <input type="text" placeholder="Lugar-Dirrección" name="lugar">
-                    </div>
-                    <div class="col-6 contacto">
-                        <input type="number" placeholder="Contacto" name="contacto">
-                    </div>
-                </div>
-                <div class="parteCuatro">
-                    <div class="col-6 mapa">
-                        <p>Marca el mapa</p>
-                        <div id="mapa" style="height: 250px; width: 450px; margin-left: 110px;"></div>
-
-                        {{ activity.latitud }}
-                        {{ activity.longitud }}
-
-                        <script>
-                            var latitud = 2.9304;
-                            var longitud = -75.2829;
-                            var zoom = 13;
-                            var marker;
-
-                            console.log('Latitud:', latitud);
-                            console.log('Longitud:', longitud);
-
-                            if (!isNaN(latitud) && !isNaN(longitud) && !isNaN(zoom)) {
-                                var mymap = L.map('mapa').setView([latitud, longitud], zoom);
-                                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mymap);
-
-                                // Limitar el mapa a la vista de Neiva, Huila
-                                mymap.setMaxBounds([
-                                    [2.9104, -75.3129],
-                                    [2.9504, -75.2529]
-                                ]);
-
-                                mymap.on('click', function (e) {
-                                    var clickedLatitud = e.latlng.lat;
-                                    var clickedLongitud = e.latlng.lng;
-
-                                    console.log('Latitud clic:', clickedLatitud);
-                                    console.log('Longitud clic:', clickedLongitud);
-
-                                    if (marker) {
-                                        mymap.removeLayer(marker);
-                                    }
-
-                                    marker = L.marker([clickedLatitud, clickedLongitud]).addTo(mymap);
-
-                                    // Actualiza los campos ocultos en el formulario
-                                    document.getElementById("id_latitud").value = clickedLatitud;
-                                    document.getElementById("id_longitud").value = clickedLongitud;
-                                });
-                            } else {
-                                console.error("Error al obtener las coordenadas o el zoom desde el contexto de Django.");
-                            }
-                        </script>
-                    </div>
-                </div>
-                <div class="crearEvento d-flex justify-content-center align-items-center">
-                    <button class="btn btn-success" type="submit">Crear Evento</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div> -->
-
-    <!-- CAMBIOS DE FABIAN -->
-    <!-- <div class="container-fluid">
-        <div class="container-fluid">
-            <div class="titulo bg-success">
-                <h1>Nuevo Evento</h1>
-            </div>
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="row">
-                    <div class="col-6">
-                        <div class="input-group">
-                            <span class="input-group-text">Nombre del evento</span>
-                            <input type="text" aria-label="nombreactividad" name="nombreactividad" class="form-control">
-                        </div>
-                    </div>
-
-                    <div class="col-6">
-                        <span>Seleccione el tipo de evento
-                            <select name="tipoactividad">
-                                {% for value, label in activity.fields.tipoactividad.choices %}
-                                <option value="{{ value }}">{{ label }}</option>
-                                {% endfor %}
-                                       
-                            </select>
-                        </span>
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <span>Seleccione la fecha de inicio
-                                <input type="date" name="fechafin"></span>
-                        </div>
-                        <div class="col-6">
-                            <span>Seleccione la fecha fin
-                                <input type="date" name="fechainicio"></span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <span>Seleccione la hora del evento
-                            <input type="time" name="hora"</span>
-                        </div>
-                        <div class="col-6">
-                            <span>Escriba una breve descripción del evento
-                            <textarea name="descripcion" id="" cols="30"
-                                rows="10"></textarea></span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <span>Direccion en la que se realiza el evento
-                            <input type="text" name="lugar"></span>
-                        </div>
-                        <div class="col-6">
-                            <span>Digite su numero de contacto
-                            <input type="number" placeholder="Contacto" name="contacto"></span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="mapa" style="margin-left: 200px;">
-                            <p>Marca el mapa</p>
-                            <div id="mapa" style="height: 400px; width: 800px;"></div>
-
-                            {{ activity.latitud }}
-                            {{ activity.longitud }}
-
-                            <script>
-                                var latitud = 2.9304;
-                                var longitud = -75.2829;
-                                var zoom = 13;
-                                var marker;
-
-                                console.log('Latitud:', latitud);
-                                console.log('Longitud:', longitud);
-
-                                if (!isNaN(latitud) && !isNaN(longitud) && !isNaN(zoom)) {
-                                    var mymap = L.map('mapa').setView([latitud, longitud], zoom);
-                                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mymap);
-
-                                    mymap.setMaxBounds([
-                                        [2.9104, -75.3129],
-                                        [2.9504, -75.2529]
-                                    ]);
-
-                                    mymap.on('click', function (e) {
-                                        var clickedLatitud = e.latlng.lat;
-                                        var clickedLongitud = e.latlng.lng;
-
-                                        console.log('Latitud clic:', clickedLatitud);
-                                        console.log('Longitud clic:', clickedLongitud);
-
-                                        if (marker) {
-                                            mymap.removeLayer(marker);
-                                        }
-
-                                        marker = L.marker([clickedLatitud, clickedLongitud]).addTo(mymap);
-
-                                        // Actualiza los campos ocultos en el formulario
-                                        document.getElementById("id_latitud").value = clickedLatitud;
-                                        document.getElementById("id_longitud").value = clickedLongitud;
-                                    });
-                                } else {
-                                    console.error("Error al obtener las coordenadas o el zoom desde el contexto de Django.");
-                                }
-                            </script>
-                        </div>
-                    </div>
-            </form>
-        </div>
-    </div> -->
 </body>
 
 </html>

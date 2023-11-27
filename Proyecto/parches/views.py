@@ -332,35 +332,6 @@ from django.template.loader import get_template
 from django.utils.html import strip_tags
 from django.conf import settings
 
-# def reportar_usuario(request, pk):
-#     if request.method == 'POST':
-#         # Procesar el formulario y obtener los datos necesarios
-#         print(pk)
-#         # id_perfil = request.POST.get('idregistro')
-#         usuario = EmpresaPersona.objects.get(idregistro=pk)  # Asegúrate de que el campo sea 'idregistro'
-        
-#         # Obtener los motivos de reporte seleccionados
-#         motivos_reporte = []
-#         for i in range(1, 6):
-#             motivo = request.POST.get(f'infraccion{i}', '')
-#             if motivo:
-#                 motivos_reporte.append(motivo)
-
-#         # Guardar los motivos de reporte en el modelo
-#         usuario.motivos_reporte = ', '.join(motivos_reporte)
-#         usuario.save()
-
-#         # Enviar correo electrónico
-#         subject = 'Reporte de usuario'
-#         message = get_template('correo_reporte.html').render({'usuario': usuario})
-#         plain_message = strip_tags(message)
-#         to_email = 'contactoparchecorp@gmail.com'
-#         send_mail(subject, plain_message, [to_email], html_message=message)
-
-#         # Redirigir a una página de éxito o donde desees
-#         return redirect('view/VistasPCU/perfil.html')
-
-#     return render(request, 'ReportEvent.html')
 
 def send_report_email(request, pk):
     print("Entró en send_report_email")
