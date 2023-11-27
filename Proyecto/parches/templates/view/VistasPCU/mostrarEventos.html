@@ -78,6 +78,7 @@
             });
         });
     </script>
+    {%  include "view/VistasPCU/SearcheBar.html" %}
     <!-- Formulario de búsqueda -->
     <form method="get" action="{% url 'mostrarEventos' %}">
         <input type="text" name="q" placeholder="Buscar por nombre de actividad">

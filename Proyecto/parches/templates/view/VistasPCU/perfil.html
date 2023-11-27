@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="stylesheet" href="{% static "CSS/perfil.css" %}">
     <link rel="stylesheet" href="{% static "CSS/bootstrap.css" %}">
+    <link rel="stylesheet" href="{% static "CSS/style.css" %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" />
@@ -16,8 +17,13 @@
 <title>Document</title>
 </head>
 
-<body>
-    {% block content %}
+<body class="g-0">
+    
+  
+    <div class="container-fluid   "
+    style="background-color: #cbe9d7; z-index: -3; ">
+    {%  include "view/VistasPCU/SearcheBar.html" %}
+</div>
     <div class="container-fluid">
 
         <div class="row titulos">
@@ -365,7 +371,7 @@
 
 
 
-    {% endblock  %}
+
 </body>
 
 </html>

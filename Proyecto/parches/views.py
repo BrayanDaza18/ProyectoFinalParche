@@ -5,6 +5,7 @@ import folium
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, update_session_auth_hash
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.core.mail import EmailMultiAlternatives
 from django.http import HttpResponseRedirect
@@ -32,9 +33,8 @@ def HomepageProject(request):
      return render(request, 'view/VistasPCU/vistaPrincipal.html')
 
 from django.contrib import messages
-
 from django.contrib.auth.models import User
-from django.contrib import messages
+
 
 def registerUser(request):
     form = FormUser()
@@ -179,13 +179,15 @@ def DetallesEvento(request, idactividad):
 
     return render(request, 'view/VistasPCU/detalles_evento.html', {'evento': evento, 'mapa_html': mapa_html})
 
-
+@login_required
 def Profile(request):
+    
     usuario = request.user
-    form = Actividad.objects.filter(empresa_idempresa=usuario)
-    send = Realizacion.objects.filter(usuario_idusuario=usuario)
-    comment = comentarioUSer.objects.filter(author = usuario).order_by('created_on')
-    actividad = EmpresaPersona.objects.all()
+    if usuario:
+        form = Actividad.objects.filter(empresa_idempresa=usuario)
+        send = Realizacion.objects.filter(usuario_idusuario=usuario)
+        comment = comentarioUSer.objects.filter(author = usuario).order_by('created_on')
+        actividad = EmpresaPersona.objects.all()
 
     if request.method == 'POST':
        comment = comentarioUserform(request.POST)
