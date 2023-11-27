@@ -484,7 +484,13 @@ def eventoRegistration(request):
    
     print(f"elemento{form}")
     return render(request, 'view/VistasPCU/eventoEgistration.html', {'data':form, 'send':send})
+
+
     
+def deleteRegistration(request,idactividad):
+    post = Realizacion.objects.get(actividad_idactividad= idactividad,usuario_idusuario= request.user)
+    post.delete()
+    return redirect('inscripcion')
 
 
         

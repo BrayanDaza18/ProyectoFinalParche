@@ -33,5 +33,5 @@ urlpatterns = [
     path('profile/delete/<int:id>/comment', views.deleteCommentUser, name='deleteCommentUser'),
     path('join/event/<int:pk>', views.joinEvent, name='joinEvent'),
     path('evento/inscripcion/', views.eventoRegistration , name='inscripcion'),
-    # path('evento/inscripcion/anular/<str:usuario_idusuario>', views.eventoRegistration , name='inscripcion')
+    path('evento/inscripcion/anular/<int:idactividad>', views.deleteRegistration , name='inscripcionDeletes')
 ]
