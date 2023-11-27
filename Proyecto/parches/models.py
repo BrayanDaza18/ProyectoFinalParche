@@ -212,7 +212,7 @@ class Puntosdeportivos(models.Model):
 
 
 class Realizacion(models.Model):
-    actividad_idactividad = models.OneToOneField(Actividad,on_delete=models.CASCADE,db_column='actividad_idActividad', primary_key=True) 
+    actividad_idactividad = models.ForeignKey(Actividad,on_delete=models.CASCADE,db_column='actividad_idActividad') 
     usuario_idusuario = models.ForeignKey('EmpresaPersona',on_delete=models.CASCADE, db_column='usuario_idEmpresaPersona')  
     comentarios = models.CharField(max_length=45)
   
@@ -220,19 +220,3 @@ class Realizacion(models.Model):
     class Meta:
         
         db_table = 'realizacion'
-        unique_together = (('actividad_idactividad', 'usuario_idusuario'),)
-
-
-        
-# class Usuario(models.Model):
-#     idusuario = models.AutoField(db_column='idUsuario', primary_key=True)
-#     usuario = models.CharField(max_length=40, db_column='usuario', unique=True)
-#     password = models.CharField(max_length=128) 
-#     correo = models.CharField(max_length=45)
-#     fotoperfil = models.CharField(db_column='fotoPerfil', max_length=80)
-#     resena = models.CharField(max_length=40)
-#     telefono = models.IntegerField(null=True)
-    
-#     class Meta:
-#         managed = False
-#         db_table = 'usuario'

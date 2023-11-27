@@ -463,9 +463,13 @@ from django.shortcuts import get_object_or_404
 
 
 def joinEvent(request, pk):
+    
     if request.method == 'POST':
         post = joinEventP(request.POST)
         if post.is_valid():
+            if Realizacion.objects.filter(actividad_idactividad=pk, usuario_idusuario=request.user).exists():
+                messages.error(request, 'Ya estás inscrito en esta actividad.')
+                return redirect('mostrarEventos')
             newpost = post.save(commit=False)
             newpost.usuario_idusuario = request.user
             newpost.save()
