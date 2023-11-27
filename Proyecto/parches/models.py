@@ -212,7 +212,7 @@ class Puntosdeportivos(models.Model):
 
 
 class Realizacion(models.Model):
-    actividad_idactividad = models.OneToOneField(Actividad,on_delete=models.CASCADE,db_column='actividad_idActividad', primary_key=True) 
+    actividad_idactividad = models.ForeignKey(Actividad,on_delete=models.CASCADE,db_column='actividad_idActividad') 
     usuario_idusuario = models.ForeignKey('EmpresaPersona',on_delete=models.CASCADE, db_column='usuario_idEmpresaPersona')  
     comentarios = models.CharField(max_length=45)
   
@@ -220,7 +220,7 @@ class Realizacion(models.Model):
     class Meta:
         
         db_table = 'realizacion'
-        unique_together = (('actividad_idactividad', 'usuario_idusuario'),)
+       
 
 
         

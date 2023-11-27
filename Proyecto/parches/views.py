@@ -463,9 +463,14 @@ from django.shortcuts import get_object_or_404
 
 
 def joinEvent(request, pk):
+    
     if request.method == 'POST':
         post = joinEventP(request.POST)
         if post.is_valid():
+            if Realizacion.objects.filter(actividad_idactividad=pk, usuario_idusuario=request.user).exists():
+                # El usuario ya está inscrito, puedes manejar esto según tus necesidades
+                messages.error(request, 'Ya estás inscrito en esta actividad.')
+                return redirect('mostrarEventos')
             newpost = post.save(commit=False)
             newpost.usuario_idusuario = request.user
             newpost.save()
@@ -488,17 +493,19 @@ def joinEvent(request, pk):
 
 
 
-
-
-def eventoRegistration(request, usuario_idusuario):
-    form = EmpresaPersona.objects.get(usuario=usuario_idusuario)
-    print(form)
-    form = Actividad.objects.filter(empresa_idempresa= form.pk)
- 
-   
+def eventoRegistration(request):
+    send = Realizacion.objects.filter(usuario_idusuario=request.user) 
+    form = Actividad.objects.filter(idactividad__in=send.values('actividad_idactividad'))
     print(f"elemento{form}")
     return render(request, 'view/VistasPCU/eventoEgistration.html', {'data':form})
     
+
+def deleteRegistration(request,idactividad):
+    post = Realizacion.objects.get(actividad_idactividad= idactividad,usuario_idusuario= request.user)
+    post.delete()
+    return redirect('inscripcion')
+
+
 
 def send_event_notification(usuario_correo, usuario_nombre, evento_nombre, fecha_inicio_evento, hora_inicio_evento):
     try:
