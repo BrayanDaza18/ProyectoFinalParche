@@ -220,19 +220,3 @@ class Realizacion(models.Model):
     class Meta:
         
         db_table = 'realizacion'
-       
-
-
-        
-# class Usuario(models.Model):
-#     idusuario = models.AutoField(db_column='idUsuario', primary_key=True)
-#     usuario = models.CharField(max_length=40, db_column='usuario', unique=True)
-#     password = models.CharField(max_length=128) 
-#     correo = models.CharField(max_length=45)
-#     fotoperfil = models.CharField(db_column='fotoPerfil', max_length=80)
-#     resena = models.CharField(max_length=40)
-#     telefono = models.IntegerField(null=True)
-    
-#     class Meta:
-#         managed = False
-#         db_table = 'usuario'
