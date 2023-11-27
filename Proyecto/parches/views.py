@@ -474,14 +474,16 @@ def joinEvent(request, pk):
 
     return redirect('mostrarEventos')
 
-def eventoRegistration(request, usuario_idusuario):
-    form = EmpresaPersona.objects.get(usuario=usuario_idusuario)
-    print(form)
-    form = Actividad.objects.filter(empresa_idempresa= form.pk)
+def eventoRegistration(request):
+    send = Realizacion.objects.filter(usuario_idusuario=request.user) 
+
+    # Obtén las actividades relacionadas con las realizaciones del usuario actual
+    form = Actividad.objects.filter(idactividad__in=send.values('actividad_idactividad'))
+   
  
    
     print(f"elemento{form}")
-    return render(request, 'view/VistasPCU/eventoEgistration.html', {'data':form})
+    return render(request, 'view/VistasPCU/eventoEgistration.html', {'data':form, 'send':send})
     
 
 
