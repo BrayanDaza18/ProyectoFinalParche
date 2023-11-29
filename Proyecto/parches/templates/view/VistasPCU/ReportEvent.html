@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Reportar Usuario</title>
     <link rel="stylesheet" href="{% static "CSS/bootstrap.css" %}" />
   <link rel="stylesheet" href="{% static "css/Report.css" %}">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -17,39 +17,45 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </head>
-<body class="bg-primary">
-    <div class="container-fluid d-flex justify-content-center align-items-center mt-5" >
-        <div class=" text-center  w-25">
-          <div class="d-flex justify-content-center " style="background-color: rgb(255,4,4 ); ">
-            
-            <img src="../static/IMG/download-removebg-preview (1).png" width="40px" height="50px" alt="">
-            <h2 class="text-white">Reporte</h2>
-          </div>
-          <div class=" bg-white d-flex justify-content-center color"   style="height:400px; ">
-            <div class="list-group w-75 mt-5 ">
-              <label class="list-group-item colorInput">
-                <input class="form-check-input me-1  color" type="checkbox" value="">
-                First checkbox
-              </label>
-              <label class="list-group-item colorInput">
-                <input class="form-check-input me-1   " type="checkbox" value="">
-                Second checkbox
-              </label>
-              <label class="list-group-item colorInput">
-                <input class="form-check-input me-1 " type="checkbox" value="">
-                Third checkbox
-              </label>
-              <label class="list-group-item colorInput">
-                <input class="form-check-input me-1 " type="checkbox" value="">
-                Fourth checkbox
-              </label>
-              <label class="list-group-item colorInput">
-                <input class="form-check-input me-1 " type="checkbox" value="">
-                Fifth checkbox
-              </label>
-            </div>
+<body>
+  
+  <form method="post" action="{% url 'report' usuario.pk %}">
+    {% csrf_token %}
+    <input type="hidden" name="idRegistro" value="{{ usuario.pk }}">
+    <div class="container-fluid d-flex justify-content-center align-items-center" style="background-color: rgb(214, 213, 213); height: 44.8rem;">
+      <div class="cartaR">
+        <div class="palabraRegistro d-flex justify-content-center align-items-center">
+          <h1>REPORTAR A {{ usuario }}</h1>
+        </div>
+        <div class="d-flex justify-content-center">
+          <div class="list-group w-75">
+            <label class="list-group-item colorInput">
+              <input class="form-check-input me-1  color" type="checkbox" name="infraccion1" value="Perfil falso">
+              Perfil falso
+            </label>
+            <label class="list-group-item colorInput">
+              <input class="form-check-input me-1   " type="checkbox" name="infraccion2" value="Contenido explicito">
+              Contenido explícito
+            </label>
+            <label class="list-group-item colorInput">
+              <input class="form-check-input me-1 " type="checkbox" name="infraccion3" value="Lenguaje ofensivo">
+              Lenguaje ofensivo
+            </label>
+            <label class="list-group-item colorInput">
+              <input class="form-check-input me-1 " type="checkbox" name="infraccion4" value="Acoso">
+              Acoso
+            </label>
+            <label class="list-group-item colorInput">
+              <input class="form-check-input me-1 " type="checkbox" name="infraccion5" value="Perfil falso">
+              Evento sospechoso
+            </label>
           </div>
         </div>
+        <div class="d-flex justify-content-center align-items-center">  
+          <button type="submit" class="btn btn-success m-2">Reportar</button>
+        </div>
       </div>
+    </div>
+  </form>
 </body>
 </html>
