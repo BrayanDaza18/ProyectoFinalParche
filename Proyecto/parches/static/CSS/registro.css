@@ -3,15 +3,17 @@
    background-color: rgb(255, 255, 255); 
    border-radius: 50px 50px 50px 50px;
    box-shadow: 50px 50px 50px rgba(0, 0, 0, 0.1);
-width: 35%;
+width: 38%;
 }
 .palabraRegistro{
     margin-top: 15px;
     text-align: center;
 text-transform: uppercase;
+
 }
 .palabraRegistro h1{
     font-size: 55px;
+    font-style: italic;
 }
 .inputRegistro{
     margin-top: 30px;
@@ -23,13 +25,13 @@ text-transform: uppercase;
     height: 42px;
     margin-bottom: 20px;
     background-color: rgb(255, 255, 255);
-    border-radius: 15px 15px 15px 15px;
+    border-radius: 12px 12px 12px 12px;
     border: rgb(172, 172, 172) solid 2px;
 
 }
 
 .botonRegistrarse{
-    margin-top: 30px;
+    
     display: flex;
     justify-content: center;
     align-content: center;
@@ -57,7 +59,7 @@ text-transform: uppercase;
 .cuentaExistente a {
     text-decoration: none;
     font-size: 18px;
-    color: #365C45;
+    color: #ffffff;
 }
 @media(max-width: 768px) {
 

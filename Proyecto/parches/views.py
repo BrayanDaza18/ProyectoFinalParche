@@ -6,9 +6,10 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.mail import EmailMultiAlternatives
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import get_template
 from folium import Marker
@@ -32,8 +33,7 @@ from .models import (Actividad, EmpresaPersona, Persona, Realizacion,
 def HomepageProject(request):
      return render(request, 'view/VistasPCU/vistaPrincipal.html')
 
-from django.contrib import messages
-from django.contrib.auth.models import User
+
 
 
 def registerUser(request):
@@ -59,7 +59,7 @@ def registerUser(request):
             now = datetime.now()
             fecha_hora_actual = now.strftime("%Y-%m-%d %H:%M:%S")
             send_email(correo, usuario, fecha_hora_actual)
-
+            send_report_email(usuario, request)
             return redirect('login')
 
     return render(request, 'registration/register.html', {'form': form})
@@ -205,8 +205,6 @@ def Profile(request):
 def CoverImage(request):
      return render(request, 'view/VistasPCU/PantallaDeCarga.html')
 
-def ReportEvent(request):
-     return render(request, 'view/VistasPCU/ReportEvent.html')
 
 
 def SelectUser(request):
@@ -532,6 +530,90 @@ def send_event_notification(usuario_correo, usuario_nombre, evento_nombre, fecha
 
     except (ValidationError, SMTPException) as e:
         print(f"Error al enviar correo de notificación de evento: {e}")
+        
+        
+def ReportEvent(request, pk):
+     usuario = EmpresaPersona.objects.get(pk=pk)
+     contexto = {'usuario': usuario}     
+     return render(request, 'view/VistasPCU/ReportEvent.html', contexto)
      
+     
+def send_report_email(request, pk):
+    print("Entró en send_report_email")
+
+    try:
+        usuario = EmpresaPersona.objects.get(idregistro=pk)
+
+        infraccion1 = request.POST.get('infraccion1')
+        infraccion2 = request.POST.get('infraccion2')
+        infraccion3 = request.POST.get('infraccion3')
+        infraccion4 = request.POST.get('infraccion4')
+        infraccion5 = request.POST.get('infraccion5')
+
+        context = {
+            'usuario': usuario,
+            'infraccion1': infraccion1,
+            'infraccion2': infraccion2,
+            'infraccion3': infraccion3,
+            'infraccion4': infraccion4,
+            'infraccion5': infraccion5
+            }
+        template = get_template('correo_reporte.html')
+        content = template.render(context)
+
+        email = EmailMultiAlternatives(
+                    'Reporte de usuario',
+                    'Probando app parche',
+                    settings.EMAIL_HOST_USER,
+                    ['contactoparchecorp@gmail.com']
+                )
+
+        email.attach_alternative(content, 'text/html')
+        email.send()
+
+        print(f"Correo enviado:")
+        return HttpResponse("Correo de reporte enviado correctamente")
+    except EmpresaPersona.DoesNotExist:
+        print("no funciono")
+        
+    return render(request, 'view/VistasPCU/perfil.html')
 
         
+
+#Api de actividades sin autenticacion
+from rest_framework import generics
+from rest_framework.permissions import AllowAny, IsAuthenticated
+
+from .serializers import ActividadSerializer, EmpresaPersonaSerializer
+
+
+class ActividadListAPIView(generics.ListAPIView):
+    queryset = Actividad.objects.all()
+    serializer_class = ActividadSerializer
+    permission_classes = [AllowAny] 
+
+class ActividadDetailAPIView(generics.RetrieveAPIView):
+    queryset = Actividad.objects.all()
+    serializer_class = ActividadSerializer
+    permission_classes = [AllowAny]  
+    
+class EmpresaPersonaListAPIView(generics.ListAPIView):
+    queryset = EmpresaPersona.objects.all()
+    serializer_class = EmpresaPersonaSerializer
+    permission_classes = [AllowAny]  # Permitir acceso sin autenticación
+
+class EmpresaPersonaDetailAPIView(generics.RetrieveAPIView):
+    queryset = EmpresaPersona.objects.all()
+    serializer_class = EmpresaPersonaSerializer
+    permission_classes = [AllowAny] 
+    
+#con autenticación 
+# class ActividadListAPIView(generics.ListAPIView):
+#     queryset = Actividad.objects.all()
+#     serializer_class = ActividadSerializer
+#     permission_classes = [IsAuthenticated]
+
+# class ActividadDetailAPIView(generics.RetrieveAPIView):
+#     queryset = Actividad.objects.all()
+#     serializer_class = ActividadSerializer
+#     permission_classes = [IsAuthenticated]

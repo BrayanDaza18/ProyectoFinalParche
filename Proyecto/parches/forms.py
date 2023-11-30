@@ -1,9 +1,12 @@
+import re
+
 from django import forms
-from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-import re
-from .models import (Actividad, Documento, EmpresaPersona, Persona, Realizacion, comentarioUSer)
+from django.core.exceptions import ValidationError
+
+from .models import (Actividad, Documento, EmpresaPersona, Persona,
+                     Realizacion, comentarioUSer)
 
 
 def validate_password(value):
@@ -316,7 +319,7 @@ class FormUserUpdate(forms.ModelForm):
 
     class Meta:
         model = EmpresaPersona
-        fields = ('usuario', 'correo', 'telefono')
+        fields = ('usuario', 'correo', 'telefono', 'Descripcion')
         widgets = {
             'usuario': forms.TextInput(
                 attrs={
@@ -339,6 +342,14 @@ class FormUserUpdate(forms.ModelForm):
                     'id': 'email',
                     'required': 'required'
                 }),
+            'Descripcion': forms.Textarea(
+                attrs={
+                   'class': 'form-control,justify-content-center',
+                    'placeholder': 'Descripcion',
+                    'id': 'Descripcion',
+                    'required': False
+                }
+            )
         }
 
 
@@ -346,7 +357,7 @@ class FormCompanyUpdate(forms.ModelForm):
 
     class Meta:
         model = EmpresaPersona
-        fields = ('usuario', 'correo', 'telefono', 'nombreempresa', 'direccion')
+        fields = ('usuario', 'correo', 'telefono', 'nombreempresa', 'direccion','Descripcion')
         widgets = {
             'usuario': forms.TextInput(
                 attrs={
@@ -382,9 +393,16 @@ class FormCompanyUpdate(forms.ModelForm):
                     'placeholder': 'Dirección',
                     'id': 'direccion',
 
-                })
+                }),
+            'Descripcion': forms.Textarea(
+                attrs={
+                   'class': 'form-control,justify-content-center',
+                    'placeholder': 'Descripcion',
+                    'id': 'Descripcion',
+                    'required': False
+                }
+            )
         }
-
 
 class comentarioUserform(forms.ModelForm):
     class Meta:

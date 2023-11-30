@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib.staticfiles.urls import static
 from django.urls import include, path
-
+from .views import ActividadListAPIView, ActividadDetailAPIView, EmpresaPersonaListAPIView, EmpresaPersonaDetailAPIView
 from . import views
 
 urlpatterns = [
@@ -33,5 +33,12 @@ urlpatterns = [
     path('profile/delete/<int:id>/comment', views.deleteCommentUser, name='deleteCommentUser'),
     path('join/event/<int:pk>', views.joinEvent, name='joinEvent'),
     path('evento/inscripcion/', views.eventoRegistration , name='inscripcion'),
-    path('evento/inscripcion/anular/<int:idactividad>', views.deleteRegistration , name='inscripcionDeletes')
+    path('evento/inscripcion/anular/<int:idactividad>', views.deleteRegistration , name='inscripcionDeletes'),
+    path('reportar_usuario/<int:pk>/', views.send_report_email, name='report'),
+    path('Report/<int:pk>/', views.ReportEvent, name='Report'),
+    
+    path('api/actividades/', ActividadListAPIView.as_view(), name='actividad-list'),
+    path('api/actividades/<int:pk>/', ActividadDetailAPIView.as_view(), name='actividad-detail'),
+    path('api/usuarios/', EmpresaPersonaListAPIView.as_view(), name='usuario-list'),
+    path('api/usuarios/<int:pk>/', EmpresaPersonaDetailAPIView.as_view(), name='usuario-detail'),
 ]
