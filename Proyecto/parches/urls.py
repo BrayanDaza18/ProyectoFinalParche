@@ -36,9 +36,12 @@ urlpatterns = [
     path('evento/inscripcion/anular/<int:idactividad>', views.deleteRegistration , name='inscripcionDeletes'),
     path('reportar_usuario/<int:pk>/', views.send_report_email, name='report'),
     path('Report/<int:pk>/', views.ReportEvent, name='Report'),
-    
+    path('participantes/evento/<int:pk>/', views.eventParticipante, name='participantes'),
+     path('eliminar/participantes/evento/<int:idregistro>/<int:pk>', views.anularinscripcion, name='Eliminarparticipantes'),
+
     path('api/actividades/', ActividadListAPIView.as_view(), name='actividad-list'),
     path('api/actividades/<int:pk>/', ActividadDetailAPIView.as_view(), name='actividad-detail'),
     path('api/usuarios/', EmpresaPersonaListAPIView.as_view(), name='usuario-list'),
     path('api/usuarios/<int:pk>/', EmpresaPersonaDetailAPIView.as_view(), name='usuario-detail'),
+    
 ]

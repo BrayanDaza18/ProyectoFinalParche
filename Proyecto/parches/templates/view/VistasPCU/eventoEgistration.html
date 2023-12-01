@@ -11,22 +11,33 @@
 <link rel="stylesheet" href="{% static "CSS/style.css" %}">
 <title>Document</title>
 </head>
-<body>
+<body  style="background-image: url(/static/IMG/zyro-image.png ); background-repeat: no-repeat; background-size: cover; ">
   <div class="container-fluid   "
     style="background-color: #cbe9d7; z-index: -3; ">
     {%  include "view/VistasPCU/SearcheBar.html" %}
 </div>
+
+
   {% for realizacion in data %}
      {% if request.user %}
-      <div class="card mb-3 col-4">
-        <img src="{{ realizacion.imagen.url }}" width="20" height="60" class="card-img-top" alt="">
-        <div class="card-body">
-          <h5 class="card-title">{{ realizacion.nombreactividad }}</h5>
-          <p class="card-text">{{ realizacion.descripcion }}</p>
-          <p class="card-text"><small class="text-body-secondary">{{ realizacion.fechainicio }}</small></p>
-          <a class="btn btn-success" type="button" href="{% url 'inscripcionDeletes' realizacion.idactividad %}">cancelar inscripción</a> 
+     <div class="mt-5  d-flex justify-content-center p-5 flex-wrap">
+      <div class="card mb-4 p-3 " style="max-width: 840px; background-color: rgba(251, 234, 234, 0.572);">
+        <div class="row g-0 ">
+          <div class="col-md-4">
+            <img src="{{realizacion.imagen.url}}" class="img-fluid rounded-start" alt="...">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h2 class="card-title " >{{realizacion.nombreactividad}}</h2>
+              <hr>
+              <p class="card-text">{{realizacion.descripcion}}</p>
+              <hr>
+              <a class="btn btn-success" type="button" href="{% url 'inscripcionDeletes' realizacion.idactividad %}">cancelar inscripción</a> 
+            </div>
+          </div>
         </div>
       </div>
+      
     {% endif %}
   {% endfor %}
 

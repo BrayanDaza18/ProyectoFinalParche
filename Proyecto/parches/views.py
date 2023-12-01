@@ -82,7 +82,7 @@ def login(request):
             messages.error(request, 'Usuario o contraseña incorrectos.')
 
     return render(request, 'view/VistasPCU/registration/login.html')
-
+@login_required
 def CreateEvent(request):
     activity = CreateEventos()
     if request.method == 'POST':
@@ -91,10 +91,12 @@ def CreateEvent(request):
             usuario = activity.save(commit=False)
             usuario.empresa_idempresa = request.user
             usuario.save()
+            return redirect('vistaPrincipal')
         else:
             print("Errores en el formulario CreateEventos:", activity.errors)
+            messages.add_message(request=request, level=messages.ERROR, message='datos incompletos')
 
-        return redirect('vistaPrincipal')
+        
     
     return render(request, 'view/VistasPCU/crearEvento.html', {'activity': activity})
 
@@ -139,7 +141,7 @@ def RegisterCompany(request):
 
 
 
-
+@login_required
 def MostrarEvento(request):
     query = request.GET.get('q', '')
     tipo_actividad = request.GET.get('tipo_actividad', '') 
@@ -579,7 +581,19 @@ def send_report_email(request, pk):
     return render(request, 'view/VistasPCU/perfil.html')
 
         
+def eventParticipante(request, pk):
+    activity = Actividad.objects.get(pk=pk)
+    send = Realizacion.objects.filter(actividad_idactividad=pk).values('usuario_idusuario').distinct()
+    form = EmpresaPersona.objects.filter(idregistro__in=send)
+    
+   
+    return render(request, 'view/VistasPCU/viewEventcompetitor.html',{'form':form, 'activity': activity})
 
+def anularinscripcion(request, idregistro, pk):
+
+ form = Realizacion.objects.get(actividad_idactividad= pk, usuario_idusuario= idregistro)
+ form.delete()
+ return redirect('participantes', pk=pk)
 #Api de actividades sin autenticacion
 from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated
