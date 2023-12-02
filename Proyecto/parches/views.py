@@ -13,7 +13,7 @@ from folium import Marker
 
 from .forms import (CreateEventos, Document, FormCompanyUpdate, FormUser,
                     FormUserCompany, FormUserUpdate, UserRegister,
-                    comentarioUserform, joinEventP)
+                    comentarioUserform, joinEventP, PuntosDeportivosForm)
 from .models import (Actividad, EmpresaPersona, Persona, Realizacion,
                      comentarioUSer)
 
@@ -57,7 +57,6 @@ def registerUser(request):
             now = datetime.now()
             fecha_hora_actual = now.strftime("%Y-%m-%d %H:%M:%S")
             send_email(correo, usuario, fecha_hora_actual)
-            send_report_email(usuario, request)
             return redirect('login')
 
     return render(request, 'registration/register.html', {'form': form})
@@ -532,6 +531,16 @@ def ReportEvent(request, pk):
      usuario = EmpresaPersona.objects.get(pk=pk)
      contexto = {'usuario': usuario}     
      return render(request, 'view/VistasPCU/ReportEvent.html', contexto)
+ 
+def agregarPd(request):
+    if request.method == 'POST':
+        form = PuntosDeportivosForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('vistaPrincipal')
+    else:
+        form = PuntosDeportivosForm()
+    return render(request, 'view/VistasPCU/puntoDeportivo.html', {'form': form})
      
      
 def send_report_email(request, pk):

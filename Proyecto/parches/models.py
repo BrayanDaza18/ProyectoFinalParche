@@ -201,10 +201,9 @@ class Persona(models.Model ):
 
 
 class Puntosdeportivos(models.Model):
-    nombre = models.CharField(max_length=50)
-    id = models.IntegerField(primary_key=True)
-    logo = models.CharField(max_length=80)
-    direccion = models.CharField(max_length=40)
+    idPuntoDeportivo = models.AutoField(db_column='idPuntoDeportivo', primary_key=True)
+    nombre = models.CharField(db_column='nombre',max_length=50)
+    direccion = models.CharField(db_column='direccion', max_length=40)
 
     class Meta:
    

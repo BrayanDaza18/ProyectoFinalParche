@@ -1,4 +1,77 @@
-.recuadro h4 {
+.body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100vh;
+    background: linear-gradient(-45deg, #00FF00, #FFFFFF, #0000FF);
+    background-size: 400% 400%;
+    animation: gradientAnimation 15s infinite;
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.container-fluid {
+    z-index: 1;
+    position: relative;
+}
+
+.fonfo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+/* Resto de tu CSS existente */
+
+
+.titulo {
+    width: 101.7%;
+    display: flex;
+    text-align: center;
+}
+.titulo h1 {
+font-weight: bold;
+}
+.container-fluid {
+    margin-top: 50px;
+}
+
+.seleccion {
+    height: 470px;
+    display: flex;
+}
+
+.card { 
+    margin-left: 210px;
+    opacity: 0.8;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.card:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.card a {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+/* .recuadro h4 {
     margin-top: 10px;
 }
 
@@ -6,8 +79,8 @@
     margin-top: 10px;
 }
 
-.recuadro div {
-    height: 50px;
+.recuadro  {
+    height: 200px;
 }
 
 .personal i,
@@ -17,7 +90,7 @@
 }
 
 .recuadro {
-    margin-top: 280px;
+    margin-top: 230px;
     text-align: center;
     border-radius: 30px;
 }
@@ -29,7 +102,7 @@
 }
 
 .personal {
-    border-bottom: 1px solid black;
+    border-right: 3px solid black;
    
 }
 .personal a{
@@ -70,4 +143,4 @@
     .recuadro h3 {
         margin-top: 18px;
     }
-}
+} */

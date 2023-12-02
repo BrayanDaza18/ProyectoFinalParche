@@ -11,15 +11,23 @@
 </head>
 
 <body>
-    <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 44.8rem;  background-color: rgb(214, 213, 213);"
-        class="container-fluid">
-        <div class="row cartaR">
+    <div class="container-fluid background d-flex justify-content-end align-items-end" style="height: 45rem;">
+        <img src="{% static 'IMG/bgr.png' %}" class="bg" alt="">
+        <div class="row cartaR me-5">
             <div class="palabraRegistro">
-                <h1 class="pregistro">REGISTRO</h1>
+                <h2 class="pregistro">REGISTRO</h2>
             </div>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="inputRegistro">
+
+                    <div class="numeroRegistro">
+                        {{ form.nombreempresa }}
+                        {% if form.nombreempresa.errors %}
+                            <div class="error">{{ form.nombreempresa.errors }}</div>
+                        {% endif %}
+                    </div>
+
                     <div class="nombreRegistro">
                         {{ form.usuario }}
                         {% if form.usuario.errors %}
@@ -34,6 +42,13 @@
                         {% endif %}
                     </div>
                 
+                    <div class="numeroRegistro">
+                        {{ form.telefono }}
+                        {% if form.telefono.errors %}
+                            <div class="error">{{ form.telefono.errors }}</div>
+                        {% endif %}
+                    </div>
+
                     <div class="contraseñaRegistro">
                         {{ form.direccion }}
                         {% if form.direccion.errors %}
@@ -42,35 +57,21 @@
                     </div>
                 
                     <div class="contraseñaRegistro">
-                        {{ form.password2 }}
-                        {% if form.password2.errors %}
-                            <div class="error">{{ form.password2.errors }}</div>
-                        {% endif %}
-                    </div>
-                    <div class="contraseñaRegistro">
                         {{ form.password1 }}
                         {% if form.password1.errors %}
                             <div class="error">{{ form.password1.errors }}</div>
                         {% endif %}
                     </div>
-               
-                    <div class="numeroRegistro">
-                        {{ form.telefono }}
-                        {% if form.telefono.errors %}
-                            <div class="error">{{ form.telefono.errors }}</div>
-                        {% endif %}
-                    </div>
-                
-                    <div class="numeroRegistro">
-                        {{ form.nombreempresa }}
-                        {% if form.nombreempresa.errors %}
-                            <div class="error">{{ form.nombreempresa.errors }}</div>
+                    <div class="contraseñaRegistro">
+                        {{ form.password2 }}
+                        {% if form.password2.errors %}
+                            <div class="error">{{ form.password2.errors }}</div>
                         {% endif %}
                     </div>
                 </div>
                 
                 {{ document.documentocol }}
-                <button id="mi-boton" type="button" class="btn btn-success">Cargar Documento de Identidad</button>
+                <button id="mi-boton" type="button" class="btn btn-primary">Documento del encargado</button>
                 
                 <input type="file" id="input-file" style="display: none">
                 <script>

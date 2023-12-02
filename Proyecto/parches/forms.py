@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 import re
-from .models import (Actividad, Documento, EmpresaPersona, Persona, Realizacion, comentarioUSer)
+from .models import (Actividad, Documento, EmpresaPersona, Persona, Realizacion, comentarioUSer, Puntosdeportivos)
 
 
 def validate_password(value):
@@ -426,3 +426,17 @@ class joinEventP(forms.ModelForm):
         if commit:
             user.save()
         return user
+    
+class PuntosDeportivosForm(forms.ModelForm):
+    class Meta:
+        model = Puntosdeportivos
+        fields = ['nombre', 'direccion']
+
+        widgets = {
+            'nombre': forms.TextInput(
+                attrs={
+                    'class': 'form-control', 'placeholder': 'Nombre'}),
+            'direccion': forms.TextInput(
+                attrs={
+                    'class': 'form-control', 'placeholder': 'Dirección'}),
+        }

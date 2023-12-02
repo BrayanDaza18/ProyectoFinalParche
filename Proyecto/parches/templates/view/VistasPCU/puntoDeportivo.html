@@ -1,0 +1,16 @@
+<!-- templates/puntosdeportivos_form.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Punto Deportivo</title>
+</head>
+<body>
+    <h2>Agregar Punto Deportivo</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Guardar</button>
+    </form>
+</body>
+</html>
