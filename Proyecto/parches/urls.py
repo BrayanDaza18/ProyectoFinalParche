@@ -37,7 +37,8 @@ urlpatterns = [
     path('reportar_usuario/<int:pk>/', views.send_report_email, name='report'),
     path('Report/<int:pk>/', views.ReportEvent, name='Report'),
     path('puntoDeportivo', views.agregarPd, name='puntoDeportivo'),
-    
+    # path('mostrarPd/', views.mostrarPd, name='mostrarPd'),
+
     
     path('api/actividades/', ActividadListAPIView.as_view(), name='actividad-list'),
     path('api/actividades/<int:pk>/', ActividadDetailAPIView.as_view(), name='actividad-detail'),

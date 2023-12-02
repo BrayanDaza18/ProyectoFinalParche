@@ -15,7 +15,7 @@ from .forms import (CreateEventos, Document, FormCompanyUpdate, FormUser,
                     FormUserCompany, FormUserUpdate, UserRegister,
                     comentarioUserform, joinEventP, PuntosDeportivosForm)
 from .models import (Actividad, EmpresaPersona, Persona, Realizacion,
-                     comentarioUSer)
+                     comentarioUSer, Puntosdeportivos)
 
 # Create your views here.
 
@@ -79,9 +79,12 @@ def login(request):
             messages.error(request, 'Usuario o contraseña incorrectos.')
 
     return render(request, 'view/VistasPCU/registration/login.html')
+# Importa el modelo Puntosdeportivos al principio de tu archivo views.py
 
 def CreateEvent(request):
     activity = CreateEventos()
+    puntos_deportivos = Puntosdeportivos.objects.all()
+
     if request.method == 'POST':
         activity = CreateEventos(request.POST, request.FILES)
         if activity.is_valid():
@@ -92,8 +95,11 @@ def CreateEvent(request):
             print("Errores en el formulario CreateEventos:", activity.errors)
 
         return redirect('vistaPrincipal')
-    
-    return render(request, 'view/VistasPCU/crearEvento.html', {'activity': activity})
+
+    print('Puntos deportivos:', puntos_deportivos)
+
+    return render(request, 'view/VistasPCU/crearEvento.html', {'activity': activity, 'puntos_deportivos': puntos_deportivos})
+
 
 
 
@@ -541,6 +547,15 @@ def agregarPd(request):
     else:
         form = PuntosDeportivosForm()
     return render(request, 'view/VistasPCU/puntoDeportivo.html', {'form': form})
+
+
+# def mostrarPd(request):
+#     puntos_deportivos = Puntosdeportivos.objects.all()
+#     context = {
+#         'puntos_deportivos': puntos_deportivos,
+#     }
+#     return render(request, 'view/VistasPCU/crearEvento.html', context)
+
      
      
 def send_report_email(request, pk):
