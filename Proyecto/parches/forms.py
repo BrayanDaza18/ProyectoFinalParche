@@ -429,3 +429,25 @@ class joinEventP(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+
+
+class ResenaEventoF(forms.ModelForm):
+    class Meta:
+        model = Realizacion
+        fields = ['comentarios']
+        widgets = {
+             'comentarios': forms.Textarea(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'comentarios',
+                    'id': 'comentarios',
+                    'required': False
+                }),
+        }
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        if commit:
+            user.save()
+        return user

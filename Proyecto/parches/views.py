@@ -15,8 +15,8 @@ from django.template.loader import get_template
 from folium import Marker
 
 from .forms import (CreateEventos, Document, FormCompanyUpdate, FormUser,
-                    FormUserCompany, FormUserUpdate, UserRegister,
-                    comentarioUserform, joinEventP)
+                    FormUserCompany, FormUserUpdate, ResenaEventoF,
+                    UserRegister, comentarioUserform, joinEventP)
 from .models import (Actividad, EmpresaPersona, Persona, Realizacion,
                      comentarioUSer)
 
@@ -59,7 +59,7 @@ def registerUser(request):
             now = datetime.now()
             fecha_hora_actual = now.strftime("%Y-%m-%d %H:%M:%S")
             send_email(correo, usuario, fecha_hora_actual)
-            send_report_email(usuario, request)
+           
             return redirect('login')
 
     return render(request, 'registration/register.html', {'form': form})
@@ -90,6 +90,7 @@ def CreateEvent(request):
         if activity.is_valid():
             usuario = activity.save(commit=False)
             usuario.empresa_idempresa = request.user
+            usuario.estado = 'activo'
             usuario.save()
             return redirect('vistaPrincipal')
         else:
@@ -143,6 +144,7 @@ def RegisterCompany(request):
 
 @login_required
 def MostrarEvento(request):
+    messageEnd()
     query = request.GET.get('q', '')
     tipo_actividad = request.GET.get('tipo_actividad', '') 
     form = EmpresaPersona.objects.all()
@@ -153,7 +155,7 @@ def MostrarEvento(request):
         eventos = eventos.filter(tipoactividad=tipo_actividad)
 
     tipo_actividad_choices = Actividad.deporte
-
+    
     maps = []
     for evento in eventos:
         map = folium.Map(location=[evento.latitud, evento.longitud], zoom_start=13)
@@ -385,7 +387,7 @@ def interfazUser(request, empresa_idempresa ):
     if comment.is_valid():
         newcomment = comment.save(commit=False)
         newcomment.author = request.user
-        newcomment.receptor =  EmpresaPersona.objects.filter(usuario=empresa_idempresa)
+        newcomment.receptor =  EmpresaPersona.objects.get(usuario=empresa_idempresa)
         newcomment.save()
         return redirect('interfaz', empresa_idempresa=form)
     else:
@@ -594,6 +596,58 @@ def anularinscripcion(request, idregistro, pk):
  form = Realizacion.objects.get(actividad_idactividad= pk, usuario_idusuario= idregistro)
  form.delete()
  return redirect('participantes', pk=pk)
+
+
+def messageEnd():
+    userFinally = Actividad.objects.all()
+    for element in userFinally:
+        if element.fechafin  < str(datetime.now().date()):
+           element.estado = 'finalizado'
+           element.save()
+           realizar = Realizacion.objects.filter(actividad_idactividad = element.idactividad)
+           
+           for realizarc in realizar:
+            if realizarc.usuario_idusuario and element.estado == 'finalizado':
+                usuario = realizarc.usuario_idusuario
+                evento = realizarc.actividad_idactividad
+                print(usuario)
+                try:
+                   context = {'correo': usuario.correo, 'usuario': usuario.usuario, 'current_datetime': element.fechafin, 'idEvento': evento.pk}
+                   template = get_template('correo_finalizacion.html')
+                   content = template.render(context)
+                   print( usuario.correo)
+                   print(usuario)
+
+                   email = EmailMultiAlternatives(
+                   'El evento a finalizado',  # Título
+                   'Probando app parche',  # Descripción
+                   settings.EMAIL_HOST_USER,  # Quién envía el correo
+                   [usuario.correo])
+
+                   email.attach_alternative(content, 'text/html')
+                   email.send()
+
+                except (ValidationError, SMTPException) as e:
+                  print(f"Error al enviar correo: {e}")
+
+
+def calificacionFinal(request, idEvento):
+    
+    evento = Realizacion.objects.get(actividad_idactividad= idEvento,usuario_idusuario= request.user )
+    resena = ResenaEventoF()
+    
+    if request.method == 'POST':
+        resena = ResenaEventoF(request.POST or None, instance=evento)
+        if resena.is_valid() :
+            
+            resena.save()
+    
+    return render(request, 'view/VistasPCU/ResenaFinalCalificacion.html', {'data':resena})
+
+
+
+
+
 #Api de actividades sin autenticacion
 from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated

@@ -25,7 +25,7 @@ class Actividad(models.Model):
     patinaje = 'patinaje'
     tenis= 'tenis'
     cilcismo = 'ciclismo' 
-
+   
     deporte = [
         (Futbol, 'Futbol'),
         (Baloncesto, 'Baloncesto'),
@@ -37,6 +37,7 @@ class Actividad(models.Model):
         (tenis, 'Tenis'),
         (cilcismo,'Cilcismo')
     ]
+ 
     idactividad = models.AutoField(db_column='idActividad', primary_key=True)
     nombreactividad = models.CharField(db_column='nombreActividad', max_length=30)
     tipoactividad = models.CharField(db_column='tipoActividad', choices=deporte,max_length=15)
@@ -48,6 +49,7 @@ class Actividad(models.Model):
     hora = models.CharField(max_length=40)
     imagen = models.ImageField(upload_to='actividad/', max_length=80)
     contacto = models.CharField(max_length=30)
+    estado = models.CharField(max_length=20)
     puntosdeportivos = models.ForeignKey('Puntosdeportivos', models.DO_NOTHING, null=True)
     empresa_idempresa = models.ForeignKey('EmpresaPersona', on_delete=models.CASCADE, db_column='empresa_idEmpresa', null=True)
 
@@ -212,9 +214,9 @@ class Puntosdeportivos(models.Model):
 
 
 class Realizacion(models.Model):
-    actividad_idactividad = models.ForeignKey(Actividad,on_delete=models.CASCADE,db_column='actividad_idActividad') 
+    actividad_idactividad = models.ForeignKey('Actividad',on_delete=models.CASCADE,db_column='actividad_idActividad') 
     usuario_idusuario = models.ForeignKey('EmpresaPersona',on_delete=models.CASCADE, db_column='usuario_idEmpresaPersona')  
-    comentarios = models.CharField(max_length=45)
+    comentarios = models.CharField(max_length=45, null=True)
   
 
     class Meta:
