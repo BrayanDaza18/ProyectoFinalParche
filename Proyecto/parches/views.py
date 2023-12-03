@@ -81,6 +81,8 @@ def login(request):
     return render(request, 'view/VistasPCU/registration/login.html')
 # Importa el modelo Puntosdeportivos al principio de tu archivo views.py
 
+
+
 def CreateEvent(request):
     activity = CreateEventos()
     puntos_deportivos = Puntosdeportivos.objects.all()
@@ -89,6 +91,10 @@ def CreateEvent(request):
         activity = CreateEventos(request.POST, request.FILES)
         if activity.is_valid():
             usuario = activity.save(commit=False)
+
+            # Aquí deberías asignar el punto deportivo seleccionado al modelo
+            usuario.puntosdeportivos = activity.cleaned_data.get('puntosdeportivos')
+
             usuario.empresa_idempresa = request.user
             usuario.save()
         else:

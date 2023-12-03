@@ -40,7 +40,7 @@ class Actividad(models.Model):
     idactividad = models.AutoField(db_column='idActividad', primary_key=True)
     nombreactividad = models.CharField(db_column='nombreActividad', max_length=30)
     tipoactividad = models.CharField(db_column='tipoActividad', choices=deporte,max_length=15)
-    lugar = models.CharField(max_length=40)
+    # lugar = models.CharField(max_length=40)
     ubicacion = models.CharField(max_length=80)
     fechainicio = models.CharField(db_column='fechaInicio', max_length=40)
     fechafin = models.CharField(db_column='fechaFin', max_length=40)

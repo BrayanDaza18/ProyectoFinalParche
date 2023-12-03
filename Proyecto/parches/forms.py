@@ -235,10 +235,9 @@ class Document(forms.ModelForm):
 
 
 class CreateEventos(forms.ModelForm):
-
     class Meta:
         model = Actividad
-        fields = ['nombreactividad', 'tipoactividad', 'lugar', 'fechainicio', 'fechafin', 'hora', 'imagen', 'contacto', 'descripcion']
+        fields = ['nombreactividad', 'tipoactividad', 'fechainicio', 'fechafin', 'hora', 'imagen', 'contacto', 'descripcion']
         widgets = {
             'nombreactividad': forms.TextInput(
                 attrs={
@@ -248,13 +247,12 @@ class CreateEventos(forms.ModelForm):
                     'required': 'required'
                 }),
 
-            'lugar': forms.TextInput(
-                attrs={
-                    'class': 'form-control,justify-content-center',
-                    'placeholder': 'Lugar',
-                    'id': 'lugar',
-                    'required': 'required'
-                }),
+            # 'lugar': forms.TextInput(
+            #     attrs={
+            #         'class': 'form-control,justify-content-center',
+            #         'placeholder': 'Lugar',
+            #         'id': 'lugar',
+            #     }),
             'fechainicio': forms.DateInput(
                 attrs={
                     'class': 'form-control, justify-content-center',
@@ -267,50 +265,46 @@ class CreateEventos(forms.ModelForm):
                     'class': 'form-control,justify-content-center',
                     'placeholder': 'Fecha de Fin',
                     'id': 'fechafin',
-
                 }),
             'hora': forms.TimeInput(
                 attrs={
                     'class': 'form-control,justify-content-center',
                     'placeholder': 'Hora',
                     'id': 'hora',
-
                 }),
             'imagen': forms.FileInput(
                 attrs={
                     'class': 'form-control,justify-content-center',
                     'placeholder': 'Imagen',
                     'id': 'imagen',
-
                 }),
             'contacto': forms.NumberInput(
                 attrs={
                     'class': 'form-control,justify-content-center',
                     'placeholder': 'Contacto',
                     'id': 'contacto',
-
                 }),
             'descripcion': forms.Textarea(
                 attrs={
                     'class': 'form-control,justify-content-center',
                     'placeholder': 'Descripción',
                     'id': 'descripcion',
-
                 }),
         }
 
     latitud = forms.FloatField(widget=forms.HiddenInput(), required=False)
     longitud = forms.FloatField(widget=forms.HiddenInput(), required=False)
+    puntosdeportivos = forms.ModelChoiceField(queryset=Puntosdeportivos.objects.all(), empty_label="Seleccione un punto deportivo")
 
     def save(self, commit=True):
         user = super().save(commit=False)
         user.latitud = self.cleaned_data.get('latitud', 0)
         user.longitud = self.cleaned_data.get('longitud', 0)
+        user.puntosdeportivos = self.cleaned_data.get('puntosdeportivos')
 
         if commit:
             user.save()
         return user
-
 
 class FormUserUpdate(forms.ModelForm):
 
