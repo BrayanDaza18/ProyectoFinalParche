@@ -222,7 +222,7 @@ class Document(forms.ModelForm):
                 'class': 'justify-content-center',
                 'placeholder': 'documento',
                 'id': 'input-file',
-                'style': 'display: none',
+                'style': 'q qlay: none',
                 'required': 'required'
             })
         }
@@ -237,7 +237,7 @@ class Document(forms.ModelForm):
 class CreateEventos(forms.ModelForm):
     class Meta:
         model = Actividad
-        fields = ['nombreactividad', 'tipoactividad', 'fechainicio', 'fechafin', 'hora', 'imagen', 'contacto', 'descripcion']
+        fields = ['nombreactividad', 'tipoactividad', 'lugar', 'fechainicio', 'fechafin', 'hora', 'imagen', 'contacto', 'descripcion']
         widgets = {
             'nombreactividad': forms.TextInput(
                 attrs={
@@ -247,12 +247,13 @@ class CreateEventos(forms.ModelForm):
                     'required': 'required'
                 }),
 
-            # 'lugar': forms.TextInput(
-            #     attrs={
-            #         'class': 'form-control,justify-content-center',
-            #         'placeholder': 'Lugar',
-            #         'id': 'lugar',
-            #     }),
+            'lugar': forms.TextInput(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'Lugar',
+                    'id': 'lugar',
+                    'required': False
+                }),
             'fechainicio': forms.DateInput(
                 attrs={
                     'class': 'form-control, justify-content-center',
@@ -294,7 +295,7 @@ class CreateEventos(forms.ModelForm):
 
     latitud = forms.FloatField(widget=forms.HiddenInput(), required=False)
     longitud = forms.FloatField(widget=forms.HiddenInput(), required=False)
-    puntosdeportivos = forms.ModelChoiceField(queryset=Puntosdeportivos.objects.all(), empty_label="Seleccione un punto deportivo")
+    puntosdeportivos = forms.ModelChoiceField(queryset=Puntosdeportivos.objects.all(), empty_label="Seleccione un punto deportivo", required=False)
 
     def save(self, commit=True):
         user = super().save(commit=False)

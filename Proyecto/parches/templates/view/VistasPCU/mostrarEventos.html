@@ -131,8 +131,24 @@
                                         </div>
                                         <div class="col-6">
                                             <div class="row">
+                                                {% if element.lugar == Null %}
+                                                <input type="hidden" class="rounded-2 shadow"
+                                                value="{{element.lugar}}" disabled>
+                                                {% else %}
                                                 <span>Lugar: </span><input type="text" class="rounded-2 shadow"
                                                     value="{{element.lugar}}" disabled>
+                                                {% endif %}
+                                                
+                                            </div>
+                                            <div class="row">
+                                                {% if element.puntosdeportivos.nombre == Null %}
+                                                <input type="hidden" class="rounded-2 shadow"
+                                                    value="{{element.puntosdeportivos.nombre}} - {{element.puntosdeportivos.direccion}}" disabled>
+                                                    {% else %}
+                                                    <span>Pd: </span><input type="text" class="rounded-2 shadow"
+                                                    value="{{element.puntosdeportivos.nombre}} - {{element.puntosdeportivos.direccion}}" disabled>
+                                                    {% endif %}
+                                                
                                             </div>
                                             <div class="row">
                                                 <span>Hora: </span><input type="time" value="{{element.hora}}"

@@ -124,15 +124,13 @@
                                 </div>
                                 <div class="d-flex justify-content-center align-content-center">
                                     <div class="p-1" style="border: 1px solid #e4e7ea; width: 637px; border-radius: 6px;">
-                                        <span>Seleccione o agregue la dirección del evento</span>
+                                        <input type="text" name="lugar" id="lugar" placeholder="Ingrese otra dirección" style="border-radius: 10px; margin-left: 20px;">
                                         <select name="puntosdeportivos" id="direccion" style="border-radius: 10px; margin-left: 120px;">
-                                            <option value="" disabled selected>Seleccione una dirección</option>
+                                            <option value="" disabled selected>Spuntos deportivos comunes</option>
                                             {% for punto in puntos_deportivos %}
                                                 <option value="{{ punto.idPuntoDeportivo }}">{{ punto.nombre }}, {{ punto.direccion }}</option>
                                             {% endfor %}
-                                            <option value="otra">Otra dirección</option>
                                         </select>
-                                        <input type="text" name="lugar" id="lugar" placeholder="Ingrese otra dirección" style="border-radius: 10px; margin-left: 20px; display: none;">
                                     </div>
                                 </div>
                                 <div class="p-3 d-flex justify-content-center align-content-center">
@@ -159,23 +157,27 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var direccionSelect = document.getElementById('direccion');
-            var lugarInput = document.getElementById('lugar');
-    
-            direccionSelect.addEventListener('change', function() {
-                lugarInput.style.display = (this.value === "otra") ? 'block' : 'none';
-    
-                if (this.value === "otra") {
-                    document.getElementById('puntosDeportivos').disabled = true;
-                } else {
-                    document.getElementById('puntosDeportivos').disabled = false;
-                }
-            });
-        });
-    </script>
 
 </body>
 
 </html>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var lugarField = document.getElementById("lugar");
+        var puntosDeportivosSelect = document.getElementById("direccion");
+
+        puntosDeportivosSelect.addEventListener("change", function () {
+            // Verifica si se selecciona un punto deportivo
+            if (puntosDeportivosSelect.value !== "") {
+                // Si se selecciona un punto deportivo, desactiva el campo de "lugar"
+                lugarField.disabled = true;
+                lugarField.value = ""; // También puedes limpiar el valor del campo si lo deseas
+            } else {
+                // Si no se selecciona un punto deportivo, activa el campo de "lugar"
+                lugarField.disabled = false;
+            }
+        });
+    });
+</script>
