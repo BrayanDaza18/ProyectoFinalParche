@@ -27,7 +27,7 @@ class Actividad(models.Model):
     patinaje = 'patinaje'
     tenis= 'tenis'
     cilcismo = 'ciclismo' 
-
+   
     deporte = [
         (Futbol, 'Futbol'),
         (Baloncesto, 'Baloncesto'),
@@ -39,6 +39,7 @@ class Actividad(models.Model):
         (tenis, 'Tenis'),
         (cilcismo,'Cilcismo')
     ]
+ 
     idactividad = models.AutoField(db_column='idActividad', primary_key=True)
     nombreactividad = models.CharField(db_column='nombreActividad', max_length=30)
     tipoactividad = models.CharField(db_column='tipoActividad', choices=deporte,max_length=15)
@@ -50,6 +51,7 @@ class Actividad(models.Model):
     hora = models.CharField(max_length=40)
     imagen = models.ImageField(upload_to='actividad/', max_length=80)
     contacto = models.CharField(max_length=30)
+    estado = models.CharField(max_length=20)
     puntosdeportivos = models.ForeignKey('Puntosdeportivos', models.DO_NOTHING, null=True)
     empresa_idempresa = models.ForeignKey('EmpresaPersona', on_delete=models.CASCADE, db_column='empresa_idEmpresa', null=True)
 
@@ -127,6 +129,7 @@ class EmpresaPersona(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     likes = models.ManyToManyField('self', blank=True, related_name='likes')
     dislikes = models.ManyToManyField('self', blank=True, related_name='dislikes')
+    Descripcion = models.TextField(max_length=180, blank=True, null=True)
 
     
 
@@ -213,27 +216,11 @@ class Puntosdeportivos(models.Model):
 
 
 class Realizacion(models.Model):
-    actividad_idactividad = models.OneToOneField(Actividad, models.DO_NOTHING, db_column='actividad_idActividad', primary_key=True) 
-    usuario_idusuario = models.ForeignKey('EmpresaPersona', models.DO_NOTHING, db_column='usuario_idEmpresaPersona')  
-    comentarios = models.CharField(max_length=45)
+    actividad_idactividad = models.ForeignKey('Actividad',on_delete=models.CASCADE,db_column='actividad_idActividad') 
+    usuario_idusuario = models.ForeignKey('EmpresaPersona',on_delete=models.CASCADE, db_column='usuario_idEmpresaPersona')  
+    comentarios = models.CharField(max_length=45, null=True)
   
 
     class Meta:
         
         db_table = 'realizacion'
-        unique_together = (('actividad_idactividad', 'usuario_idusuario'),)
-
-
-        
-# class Usuario(models.Model):
-#     idusuario = models.AutoField(db_column='idUsuario', primary_key=True)
-#     usuario = models.CharField(max_length=40, db_column='usuario', unique=True)
-#     password = models.CharField(max_length=128) 
-#     correo = models.CharField(max_length=45)
-#     fotoperfil = models.CharField(db_column='fotoPerfil', max_length=80)
-#     resena = models.CharField(max_length=40)
-#     telefono = models.IntegerField(null=True)
-    
-#     class Meta:
-#         managed = False
-#         db_table = 'usuario'

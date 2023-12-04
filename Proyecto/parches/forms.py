@@ -1,194 +1,217 @@
+import re
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from .models import (Actividad, Documento, EmpresaPersona, Persona,
                      Realizacion, comentarioUSer)
 
 
+def validate_password(value):
+    if len(value) < 8:
+        raise ValidationError('La contraseña debe tener al menos 8 caracteres.')
+
+    if not any(char.isdigit() for char in value):
+        raise ValidationError('La contraseña debe contener al menos un número.')
+
+    special_characters = r"[~\!@#\$%\^&\*\(\)_\+{}\":;'\[\]]"
+    if not re.search(special_characters, value):
+        raise ValidationError('La contraseña debe contener al menos un carácter especial.')
+
+
 class FormUser(forms.ModelForm):
-    password1 = forms.CharField(label='password', widget= forms.PasswordInput(
-        attrs={
-            'class': 'form-control, justify-content-center',
-            'placeholder': 'ingrese la contraseña',
-            'id': 'password',
-            'required': 'required',
-             'type': 'password'
-        }
-    ))
-    password2 = forms.CharField(label='contreseña de validacion', widget= forms.PasswordInput(
-        attrs= {
-             'class': 'form-control,justify-content-center',
-            'placeholder': 'verifique la contraseña',
-            'id': 'password2',
-            'required': 'required',
-             'type': 'password'
-        }
-    ))
+    password1 = forms.CharField(
+        label='Contraseña',
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control, justify-content-center',
+                'placeholder': 'Ingrese la contraseña',
+                'id': 'password',
+                'required': 'required',
+                'type': 'password'
+            }
+        ),
+        validators=[validate_password]  # Agrega la validación personalizada
+    )
+
+    password2 = forms.CharField(
+        label='Confirmar Contraseña',
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control,justify-content-center',
+                'placeholder': 'Verifique la contraseña',
+                'id': 'password2',
+                'required': 'required',
+                'type': 'password'
+            }
+        ),
+    )
+
     class Meta:
         model = EmpresaPersona
         fields = ('usuario', 'correo', 'telefono')
         widgets = {
             'usuario': forms.TextInput(
-                 attrs= {
-            'class': 'form-control,justify-content-center',
-            'placeholder': 'usuario',
-            'id': 'usuario',
-            'required': 'required'
-        }),
-            'correo': forms.EmailInput( 
-                attrs= {
-            'class': 'form-control,justify-content-center',
-            'placeholder': 'correo',
-            'id': 'email',
-            'required': 'required'
-        }),
-        'telefono': forms.NumberInput(
-            attrs= {
-             'class': 'form-control,justify-content-center',
-            'placeholder': 'telefono',
-            'id': 'email',
-            'required': 'required'
-        })
-        # 'nombreempresa': forms.NumberInput(
-        #     attrs= {
-        #      'class': 'form-control,justify-content-center',
-        #     'placeholder': 'nombreempresa',
-        #     'id': 'nombreempresa',
-       
-        # })
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'Usuario',
+                    'id': 'usuario',
+                    'required': 'required'
+                }),
+            'correo': forms.EmailInput(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'Correo',
+                    'id': 'email',
+                    'required': 'required'
+                }),
+            'telefono': forms.NumberInput(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'Teléfono',
+                    'id': 'telefono',
+                    'required': 'required'
+                }),
         }
+
     def clean_password2(self):
+        password1 = self.cleaned_data.get('password1')
+        password2 = self.cleaned_data.get('password2')
 
-     password1 = self.cleaned_data.get('password1')
-     password2 = self.cleaned_data.get('password2')
+        if password1 != password2:
+            raise forms.ValidationError('Las contraseñas no coinciden')
+        return password2
 
-     if password1 != password2:
-        raise forms.ValidationError('las contraseñas no coinciden')
-     return password2
-
-    def save(self, commit = True):
-        user = super().save(commit= False)
-        user.set_password(self.cleaned_data['password1'])    
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data['password1'])
         if commit:
-          user.save()
+            user.save()
         return user
-        
-    
+
 
 class UserRegister(forms.ModelForm):
     class Meta:
-    
-     model = Persona
-     fields = ['documento','nombre', 'apellido']
-     widgets = {
-     'documento': forms.NumberInput( 
-         attrs= {
-            'class': 'form-control,justify-content-center',
-            'placeholder': 'documento',
-            'id': 'documento',
-            'required': 'required'
-      }),
-     'nombre': forms.TextInput(
-        attrs={
-             'class': 'form-control,justify-content-center',
-            'placeholder': 'nombre',
-            'id': 'nombre',
-            'required': 'required'
-        }),
-      'apellido': forms.TextInput(
-        attrs={
-             'class': 'form-control,justify-content-center',
-            'placeholder': 'apellido',
-            'id': 'apellido',
-            'required': 'required'
-     })
-     }
-    def save(self, commit = True):
-        user = super().save(commit= False)
-    
+        model = Persona
+        fields = ['documento', 'nombre', 'apellido']
+        widgets = {
+            'documento': forms.NumberInput(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'documento',
+                    'id': 'documento',
+                    'required': 'required'
+                }),
+            'nombre': forms.TextInput(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'nombre',
+                    'id': 'nombre',
+                    'required': 'required'
+                }),
+            'apellido': forms.TextInput(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'apellido',
+                    'id': 'apellido',
+                    'required': 'required'
+                })
+        }
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
         if commit:
-          user.save()
+            user.save()
         return user
-        
+
 
 class USERFORM(UserCreationForm):
     class Meta:
-     
-     model = User
-     fields = "__all__"
+        model = User
+        fields = "__all__"
 
 
 class FormUserCompany(forms.ModelForm):
-    password1 = forms.CharField(label='password', widget= forms.PasswordInput(
-        attrs={
-            'class': 'form-control, justify-content-center',
-            'placeholder': 'ingrese la contraseña',
-            'id': 'password',
-            'required': 'required'
-        }
-    ))
-    password2 = forms.CharField(label='contreseña de validacion', widget= forms.PasswordInput(
-        attrs= {
-             'class': 'form-control,justify-content-center',
-            'placeholder': 'verifique la contraseña',
-            'id': 'password2',
-            'required': 'required'
-        }
-    ))
+    password1 = forms.CharField(
+        label='Contraseña',
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control, justify-content-center',
+                'placeholder': 'Ingrese la contraseña',
+                'id': 'password',
+                'required': 'required'
+            }
+        ),
+        validators=[validate_password]  # Agrega la validación personalizada
+    )
+
+    password2 = forms.CharField(
+        label='Confirmar Contraseña',
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control,justify-content-center',
+                'placeholder': 'Verifique la contraseña',
+                'id': 'password2',
+                'required': 'required'
+            }
+        ),
+    )
+
     class Meta:
         model = EmpresaPersona
-        fields = ('usuario', 'correo', 'telefono', 'nombreempresa','direccion')
+        fields = ('usuario', 'correo', 'telefono', 'nombreempresa', 'direccion')
         widgets = {
             'usuario': forms.TextInput(
-                 attrs= {
-            'class': 'form-control,justify-content-center',
-            'placeholder': 'usuario',
-            'id': 'usuario',
-            'required': 'required'
-        }),
-            'correo': forms.EmailInput( 
-                attrs= {
-            'class': 'form-control,justify-content-center',
-            'placeholder': 'correo',
-            'id': 'email',
-            'required': 'required'
-        }),
-        'telefono': forms.NumberInput(
-            attrs= {
-             'class': 'form-control,justify-content-center',
-            'placeholder': 'telefono',
-            'id': 'email',
-            'required': 'required'
-        }), 
-        'nombreempresa': forms.TextInput(
-                 attrs= {
-            'class': 'form-control, justify-content-center',
-            'placeholder': 'nombreEmpresa',
-            'id': 'nombreempresa',
-            'required': 'required'
-        }),
-        'direccion': forms.TextInput(
-            attrs= {
-             'class': 'form-control,justify-content-center',
-            'placeholder': 'direccion',
-            'id': 'direccion',
-       
-        })
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'Usuario',
+                    'id': 'usuario',
+                    'required': 'required'
+                }),
+            'correo': forms.EmailInput(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'Correo',
+                    'id': 'email',
+                    'required': 'required'
+                }),
+            'telefono': forms.NumberInput(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'Teléfono',
+                    'id': 'telefono',
+                    'required': 'required'
+                }),
+            'nombreempresa': forms.TextInput(
+                attrs={
+                    'class': 'form-control, justify-content-center',
+                    'placeholder': 'Nombre de la Empresa',
+                    'id': 'nombreempresa',
+                    'required': 'required'
+                }),
+            'direccion': forms.TextInput(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'Dirección',
+                    'id': 'direccion',
+
+                })
         }
+
     def clean_password2(self):
+        password1 = self.cleaned_data.get('password1')
+        password2 = self.cleaned_data.get('password2')
 
-     password1 = self.cleaned_data.get('password1')
-     password2 = self.cleaned_data.get('password2')
+        if password1 != password2:
+            raise forms.ValidationError('Las contraseñas no coinciden')
+        return password2
 
-     if password1 != password2:
-        raise forms.ValidationError('las contraseñas no coinciden')
-     return password2
-
-    def save(self, commit = True):
-        user = super().save(commit= False)
-        user.set_password(self.cleaned_data['password1'])    
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data['password1'])
         if commit:
-          user.save()
+            user.save()
         return user
 
 
@@ -205,11 +228,13 @@ class Document(forms.ModelForm):
                 'required': 'required'
             })
         }
-    def save(self, commit = True):
-        user = super().save(commit= False)  
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
         if commit:
-          user.save()
+            user.save()
         return user
+
 
 class CreateEventos(forms.ModelForm):
 
@@ -218,64 +243,64 @@ class CreateEventos(forms.ModelForm):
         fields = ['nombreactividad', 'tipoactividad', 'lugar', 'fechainicio', 'fechafin', 'hora', 'imagen', 'contacto', 'descripcion']
         widgets = {
             'nombreactividad': forms.TextInput(
-            attrs= {
-            'class': 'form-control,justify-content-center',
-            'placeholder': 'nombreactividad',
-            'id': 'nombreactividad',
-            'required': 'required'
-        }),
-           
-        'lugar': forms.TextInput(
-            attrs= {
-             'class': 'form-control,justify-content-center',
-            'placeholder': 'lugar',
-            'id': 'lugar',
-            'required': 'required'
-        }), 
-        'fechainicio': forms.DateInput(
-                 attrs= {
-            'class': 'form-control, justify-content-center',
-            'placeholder': 'fechainicio',
-            'id': 'fechainicio',
-            'required': 'required'
-        }),
-        'fechafin': forms.DateInput(
-            attrs= {
-             'class': 'form-control,justify-content-center',
-            'placeholder': 'fechafin',
-            'id': 'fechafin',
-       
-        }),
-         'hora': forms.TimeInput(
-            attrs= {
-             'class': 'form-control,justify-content-center',
-            'placeholder': 'hora',
-            'id': 'hora',
-       
-        }),
-          'imagen': forms.FileInput(
-            attrs= {
-             'class': 'form-control,justify-content-center',
-            'placeholder': 'imagen',
-            'id': 'imagen',
-       
-        }),
-          'contacto': forms.NumberInput(
-            attrs= {
-             'class': 'form-control,justify-content-center',
-            'placeholder': 'contacto',
-            'id': 'contacto',
-       
-        }),
-        'descripcion': forms.Textarea(
-            attrs= {
-             'class': 'form-control,justify-content-center',
-            'placeholder': 'descripcion',
-            'id': 'descripcion',
-       
-        }),
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'Nombre de la Actividad',
+                    'id': 'nombreactividad',
+                    'required': 'required'
+                }),
+
+            'lugar': forms.TextInput(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'Lugar',
+                    'id': 'lugar',
+                    'required': 'required'
+                }),
+            'fechainicio': forms.DateInput(
+                attrs={
+                    'class': 'form-control, justify-content-center',
+                    'placeholder': 'Fecha de Inicio',
+                    'id': 'fechainicio',
+                    'required': 'required'
+                }),
+            'fechafin': forms.DateInput(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'Fecha de Fin',
+                    'id': 'fechafin',
+
+                }),
+            'hora': forms.TimeInput(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'Hora',
+                    'id': 'hora',
+
+                }),
+            'imagen': forms.FileInput(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'Imagen',
+                    'id': 'imagen',
+
+                }),
+            'contacto': forms.NumberInput(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'Contacto',
+                    'id': 'contacto',
+
+                }),
+            'descripcion': forms.Textarea(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'Descripción',
+                    'id': 'descripcion',
+
+                }),
         }
-    
+
     latitud = forms.FloatField(widget=forms.HiddenInput(), required=False)
     longitud = forms.FloatField(widget=forms.HiddenInput(), required=False)
 
@@ -293,106 +318,144 @@ class FormUserUpdate(forms.ModelForm):
 
     class Meta:
         model = EmpresaPersona
-        fields = ('usuario', 'correo', 'telefono', 'fotoperfil')
+        fields = ('usuario', 'correo', 'telefono', 'fotoperfil', 'Descripcion')
         widgets = {
             'usuario': forms.TextInput(
-                 attrs= {
-            'class': 'form-control,justify-content-center',
-            'placeholder': 'usuario',
-            'id': 'usuario',
-            'required': 'required'
-        }),
-            'correo': forms.EmailInput( 
-                attrs= {
-            'class': 'form-control,justify-content-center',
-            'placeholder': 'correo',
-            'id': 'email',
-            'required': 'required'
-        }),
-        'telefono': forms.NumberInput(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'Usuario',
+                    'id': 'usuario',
+                    'required': 'required'
+                }),
+            'correo': forms.EmailInput(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'Correo',
+                    'id': 'email',
+                    'required': 'required'
+                }),
+            'telefono': forms.NumberInput(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'Teléfono',
+                    'id': 'email',
+                    'required': 'required'
+                }),
+            'fotoperfil': forms.FileInput(
             attrs= {
-             'class': 'form-control,justify-content-center',
-            'placeholder': 'telefono',
-            'id': 'email',
-            'required': 'required'
-        }),
-        'fotoperfil': forms.FileInput(
-            attrs= {
-             'class': 'form-control,justify-content-center',
+             
+            'class': 'form-control,justify-content-center',
             'placeholder': 'imagen',
             'id': 'fotoperfil',
             'required': False
        
         }),
-        #   'password': forms.PasswordInput(
-        #     attrs= {
-        #      'class': 'justify-content-center',
-        #     'placeholder': 'password',
-        #     'id': 'password',
-        #     'required': 'required',
-        #     'type': 'password'
-        # })
-        # 'nombreempresa': forms.NumberInput(
-        #     attrs= {
-        #      'class': 'form-control,justify-content-center',
-        #     'placeholder': 'nombreempresa',
-        #     'id': 'nombreempresa',
-       
-        # })
+            'Descripcion': forms.Textarea(
+                attrs={
+                   'class': 'form-control,justify-content-center',
+                    'placeholder': 'Descripcion',
+                    'id': 'Descripcion',
+                    'required': False
+                }
+            )
         }
 
 
 class FormCompanyUpdate(forms.ModelForm):
 
-     class Meta:
+    class Meta:
         model = EmpresaPersona
-        fields = ('usuario', 'correo', 'telefono', 'nombreempresa','direccion')
+        fields = ('usuario', 'correo', 'telefono', 'nombreempresa', 'direccion','Descripcion')
         widgets = {
             'usuario': forms.TextInput(
-                 attrs= {
-            'class': 'form-control,justify-content-center',
-            'placeholder': 'usuario',
-            'id': 'usuario',
-            'required': 'required'
-        }),
-            'correo': forms.EmailInput( 
-                attrs= {
-            'class': 'form-control,justify-content-center',
-            'placeholder': 'correo',
-            'id': 'email',
-            'required': 'required'
-        }),
-        'telefono': forms.NumberInput(
-            attrs= {
-             'class': 'form-control,justify-content-center',
-            'placeholder': 'telefono',
-            'id': 'telefono',
-            'required': 'required'
-        }),
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'Usuario',
+                    'id': 'usuario',
+                    'required': 'required'
+                }),
+            'correo': forms.EmailInput(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'Correo',
+                    'id': 'email',
+                    'required': 'required'
+                }),
+            'telefono': forms.NumberInput(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'Teléfono',
+                    'id': 'telefono',
+                    'required': 'required'
+                }),
+            'nombreempresa': forms.TextInput(
+                attrs={
+                    'class': 'form-control, justify-content-center',
+                    'placeholder': 'Nombre de la Empresa',
+                    'id': 'nombreempresa',
+                    'required': 'required'
+                }),
+            'direccion': forms.TextInput(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'Dirección',
+                    'id': 'direccion',
+
+                }),
+            'Descripcion': forms.Textarea(
+                attrs={
+                   'class': 'form-control,justify-content-center',
+                    'placeholder': 'Descripcion',
+                    'id': 'Descripcion',
+                    'required': False
+                }
+            )
         }
 
-
 class comentarioUserform(forms.ModelForm):
-     class Meta:
+    class Meta:
         model = comentarioUSer
         fields = ['comment']
         widgets = {
             'comment': forms.TextInput(
-                 attrs= {
-            'class': 'form-control,justify-content-center',
-            'placeholder': 'comment',
-            'id': 'comment',
-            'required': 'required'
-        }),
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'Comentario',
+                    'id': 'comment',
+                    'required': 'required'
+                }),
         }
+
 
 class joinEventP(forms.ModelForm):
     class Meta:
         model = Realizacion
         fields = ['actividad_idactividad']
 
-        def save(self, commit = True):
-         user = super().save(commit= False)  
-         if commit:
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        if commit:
             user.save()
-            return user
+        return user
+
+
+
+class ResenaEventoF(forms.ModelForm):
+    class Meta:
+        model = Realizacion
+        fields = ['comentarios']
+        widgets = {
+             'comentarios': forms.Textarea(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'comentarios',
+                    'id': 'comentarios',
+                    'required': False
+                }),
+        }
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        if commit:
+            user.save()
+        return user

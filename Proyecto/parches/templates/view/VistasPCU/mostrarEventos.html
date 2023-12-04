@@ -70,14 +70,8 @@
 </head>
 
 <body>
-    <script>
-
-        $(document).ready(function(){
-            $(".alert").fadeTo(5000, 0).slideUp(500, function(){
-                $(this).remove();
-            });
-        });
-    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {%  include "view/VistasPCU/SearcheBar.html" %}
     <!-- Formulario de búsqueda -->
     <form method="get" action="{% url 'mostrarEventos' %}">
         <input type="text" name="q" placeholder="Buscar por nombre de actividad">

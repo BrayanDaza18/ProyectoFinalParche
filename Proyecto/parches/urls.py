@@ -2,6 +2,8 @@ from django.conf import settings
 from django.contrib.staticfiles.urls import static
 from django.urls import include, path
 from . import views
+from .views import (ActividadDetailAPIView, ActividadListAPIView,
+                    EmpresaPersonaDetailAPIView, EmpresaPersonaListAPIView)
 
 urlpatterns = [
     
@@ -20,7 +22,7 @@ urlpatterns = [
     path('updateUser/<int:idregistro>/<str:tipousuario>', views.UpdateUser, name='UpdateUser'),
     path('updateUserCompany/<int:idregistro>/<str:tipousuario>', views.UpdateUserCompany, name='UpdateUserCompany'),
     path('eventos', views.MostrarEvento, name='mostrarEventos'),
-    path('eliminar', views.viewEventoELI, name='eliminar'),
+    path('eliminar/<int:idactividad>', views.viewEventoELI, name='eliminar'),
     
     path('detalles/<int:idactividad>/', views.DetallesEvento, name='detalles_evento'),
     path('profile/dislikes/<int:pk>', views.adddislike, name='dislike'),
@@ -34,6 +36,18 @@ urlpatterns = [
     path('detalles/<int:idactividad>/', views.DetallesEvento, name='detalles_evento'),
     path('profile/delete/<int:id>/comment', views.deleteCommentUser, name='deleteCommentUser'),
     path('join/event/<int:pk>', views.joinEvent, name='joinEvent'),
+    path('evento/inscripcion/', views.eventoRegistration , name='inscripcion'),
+    path('evento/inscripcion/anular/<int:idactividad>', views.deleteRegistration , name='inscripcionDeletes'),
+    path('reportar_usuario/<int:pk>/', views.send_report_email, name='report'),
+    path('Report/<int:pk>/', views.ReportEvent, name='Report'),
+    path('participantes/evento/<int:pk>/', views.eventParticipante, name='participantes'),
+    path('eliminar/participantes/evento/<int:idregistro>/<int:pk>', views.anularinscripcion, name='Eliminarparticipantes'),
+    path('resena/Evento/<int:idEvento>',views.calificacionFinal, name='finalReseña' ),
 
-    # path('actualizar_imagen_de_perfil/', views.update_profile, name='actualizar_imagen_de_perfil'),
+
+    path('api/actividades/', ActividadListAPIView.as_view(), name='actividad-list'),
+    path('api/actividades/<int:pk>/', ActividadDetailAPIView.as_view(), name='actividad-detail'),
+    path('api/usuarios/', EmpresaPersonaListAPIView.as_view(), name='usuario-list'),
+    path('api/usuarios/<int:pk>/', EmpresaPersonaDetailAPIView.as_view(), name='usuario-detail'),
+    
 ]
