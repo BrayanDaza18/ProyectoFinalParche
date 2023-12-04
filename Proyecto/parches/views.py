@@ -20,9 +20,9 @@ from folium import Marker
 
 from .forms import (CreateEventos, Document, FormCompanyUpdate, FormUser,
                     FormUserCompany, FormUserUpdate, ResenaEventoF,
-                    UserRegister, comentarioUserform, joinEventP)
+                    UserRegister, comentarioUserform, joinEventP, PuntosDeportivosForm)
 from .models import (Actividad, EmpresaPersona, Persona, Realizacion,
-                     comentarioUSer)
+                     comentarioUSer, Puntosdeportivos)
 
 from django.contrib import messages
 # from .forms import UserReportForm
@@ -74,7 +74,6 @@ def registerUser(request):
             now = datetime.now()
             fecha_hora_actual = now.strftime("%Y-%m-%d %H:%M:%S")
             send_email(correo, usuario, fecha_hora_actual)
-           
             return redirect('login')
 
     return render(request, 'registration/register.html', {'form': form})
@@ -98,10 +97,16 @@ def login(request):
 @login_required
 def CreateEvent(request):
     activity = CreateEventos()
+    puntos_deportivos = Puntosdeportivos.objects.all()
+
     if request.method == 'POST':
         activity = CreateEventos(request.POST, request.FILES)
         if activity.is_valid():
             usuario = activity.save(commit=False)
+
+            # Aquí deberías asignar el punto deportivo seleccionado al modelo
+            usuario.puntosdeportivos = activity.cleaned_data.get('puntosdeportivos')
+
             usuario.empresa_idempresa = request.user
             usuario.estado = 'activo'
             usuario.save()
@@ -110,9 +115,12 @@ def CreateEvent(request):
             print("Errores en el formulario CreateEventos:", activity.errors)
             messages.add_message(request=request, level=messages.ERROR, message='datos incompletos')
 
-        
-    
-    return render(request, 'view/VistasPCU/crearEvento.html', {'activity': activity})
+        return redirect('vistaPrincipal')
+
+    print('Puntos deportivos:', puntos_deportivos)
+
+    return render(request, 'view/VistasPCU/crearEvento.html', {'activity': activity, 'puntos_deportivos': puntos_deportivos})
+
 
 
 
@@ -616,6 +624,25 @@ def ReportEvent(request, pk):
      usuario = EmpresaPersona.objects.get(pk=pk)
      contexto = {'usuario': usuario}     
      return render(request, 'view/VistasPCU/ReportEvent.html', contexto)
+ 
+def agregarPd(request):
+    if request.method == 'POST':
+        form = PuntosDeportivosForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('vistaPrincipal')
+    else:
+        form = PuntosDeportivosForm()
+    return render(request, 'view/VistasPCU/puntoDeportivo.html', {'form': form})
+
+
+# def mostrarPd(request):
+#     puntos_deportivos = Puntosdeportivos.objects.all()
+#     context = {
+#         'puntos_deportivos': puntos_deportivos,
+#     }
+#     return render(request, 'view/VistasPCU/crearEvento.html', context)
+
      
      
 def send_report_email(request, pk):

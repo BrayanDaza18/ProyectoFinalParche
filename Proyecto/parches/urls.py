@@ -45,6 +45,10 @@ urlpatterns = [
     path('resena/Evento/<int:idEvento>',views.calificacionFinal, name='finalReseña' ),
 
 
+    path('puntoDeportivo', views.agregarPd, name='puntoDeportivo'),
+    # path('mostrarPd/', views.mostrarPd, name='mostrarPd'),
+
+    
     path('api/actividades/', ActividadListAPIView.as_view(), name='actividad-list'),
     path('api/actividades/<int:pk>/', ActividadDetailAPIView.as_view(), name='actividad-detail'),
     path('api/usuarios/', EmpresaPersonaListAPIView.as_view(), name='usuario-list'),

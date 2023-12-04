@@ -73,6 +73,9 @@ style="background-color: #cbe9d7; z-index: -3; ">
                 <li><a href="{% url "profile" %}">Perfil</a></li>
                 <li><a href="{% url "eventUser" %}">Mis eventos</a></li>
                 <li><a href="{% url "inscripcion"  %}">Inscripciones</a></li>
+                {% if user.tipousuario == 'E' %}
+                <li><a href="{% url "puntoDeportivo" %}">agregar pd</a></li>
+                {% endif %} 
              
                 <li><div class="d-flex justify-content-center align-items-center">
                   <button type="button" class="btn btn-success m-1">

@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from .models import (Actividad, Documento, EmpresaPersona, Persona,
-                     Realizacion, comentarioUSer)
+                     Realizacion, comentarioUSer, Puntosdeportivos)
 
 
 def validate_password(value):
@@ -237,7 +237,6 @@ class Document(forms.ModelForm):
 
 
 class CreateEventos(forms.ModelForm):
-
     class Meta:
         model = Actividad
         fields = ['nombreactividad', 'tipoactividad', 'lugar', 'fechainicio', 'fechafin', 'hora', 'imagen', 'contacto', 'descripcion']
@@ -255,7 +254,7 @@ class CreateEventos(forms.ModelForm):
                     'class': 'form-control,justify-content-center',
                     'placeholder': 'Lugar',
                     'id': 'lugar',
-                    'required': 'required'
+                    'required': False
                 }),
             'fechainicio': forms.DateInput(
                 attrs={
@@ -269,50 +268,46 @@ class CreateEventos(forms.ModelForm):
                     'class': 'form-control,justify-content-center',
                     'placeholder': 'Fecha de Fin',
                     'id': 'fechafin',
-
                 }),
             'hora': forms.TimeInput(
                 attrs={
                     'class': 'form-control,justify-content-center',
                     'placeholder': 'Hora',
                     'id': 'hora',
-
                 }),
             'imagen': forms.FileInput(
                 attrs={
                     'class': 'form-control,justify-content-center',
                     'placeholder': 'Imagen',
                     'id': 'imagen',
-
                 }),
             'contacto': forms.NumberInput(
                 attrs={
                     'class': 'form-control,justify-content-center',
                     'placeholder': 'Contacto',
                     'id': 'contacto',
-
                 }),
             'descripcion': forms.Textarea(
                 attrs={
                     'class': 'form-control,justify-content-center',
                     'placeholder': 'Descripción',
                     'id': 'descripcion',
-
                 }),
         }
 
     latitud = forms.FloatField(widget=forms.HiddenInput(), required=False)
     longitud = forms.FloatField(widget=forms.HiddenInput(), required=False)
+    puntosdeportivos = forms.ModelChoiceField(queryset=Puntosdeportivos.objects.all(), empty_label="Seleccione un punto deportivo", required=False)
 
     def save(self, commit=True):
         user = super().save(commit=False)
         user.latitud = self.cleaned_data.get('latitud', 0)
         user.longitud = self.cleaned_data.get('longitud', 0)
+        user.puntosdeportivos = self.cleaned_data.get('puntosdeportivos')
 
         if commit:
             user.save()
         return user
-
 
 class FormUserUpdate(forms.ModelForm):
 
@@ -437,8 +432,20 @@ class joinEventP(forms.ModelForm):
         if commit:
             user.save()
         return user
+    
+class PuntosDeportivosForm(forms.ModelForm):
+    class Meta:
+        model = Puntosdeportivos
+        fields = ['nombre', 'direccion']
 
-
+        widgets = {
+            'nombre': forms.TextInput(
+                attrs={
+                    'class': 'form-control', 'placeholder': 'Nombre'}),
+            'direccion': forms.TextInput(
+                attrs={
+                    'class': 'form-control', 'placeholder': 'Dirección'}),
+        }
 
 class ResenaEventoF(forms.ModelForm):
     class Meta:
