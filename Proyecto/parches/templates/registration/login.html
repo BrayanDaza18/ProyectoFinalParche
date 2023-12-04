@@ -15,50 +15,45 @@
         crossorigin="anonymous"></script>
 </head>
 
+<body style="background-image: url(http://m.gettywallpapers.com/es/wp-content/uploads/2023/06/Fondos-de-Pantalla-Futbol-4k.jpg); background-size: cover; background-position: center;">
+    <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 44.8rem; ">
+        {% block content %}
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <div class="login-form">
+                <h1 style="color: #365C45;">Iniciar sesión</h1>
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="{{ form.username.id_for_label }}" class="form-label">Nombre de usuario</label>
+                        <input type="text" name="{{form.username.name}}" id="{{ form.username.id_for_label }}"
+                            class="form-control" placeholder="Nombre de usuario" required autofocus>
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.contrasena.id_for_label }}" class="form-label">Contraseña</label>
+                        <input type="password" name="{{form.password.name}}" id="{{ form.contrasena.id_for_label }}"
+                            class="form-control" placeholder="Contraseña" required>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <a href="{% url 'password_reset' %}" class="forgot-link text-secondary-emphasis" style="color: #0c331b;">¿Olvidaste tu contraseña?</a>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-success">Iniciar sesión</button>
+                        <input type="hidden" name="next" value="{{ next }}">
+                    </div>
+                </form>
 
-<body>
-    <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 44.8rem;  background-color: rgb(214, 213, 213);">
-            {% block content %}
-            {% if form.errors %}
-            <p>Su nombre de usuario y contraseña no coinciden. Inténtalo de nuevo.</p>
-            {% endif %}
-            {% if next %}
-            {% if user.is_authenticated %}
-            <p>Su cuenta no tiene acceso a esta página. Para continuar, inicie sesión con una cuenta que tenga acceso.</p>
-            {% else %}
-            <p>Por favor inicie sesión para ver esta página.</p>
-            {% endif %}
-            {% endif %}
-            <div class="col-lg-6 col-md-8 mx-auto">
-                <div class="login-form">
-                    <h1 style="color: #365C45;">Iniciar sesión</h1>
-                    <form method="post" action="{% url 'login' %}">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            <label for="{{ form.username.id_for_label }}" class="form-label">Nombre de usuario</label>
-                            <input type="text" name="{{form.username.name}}" id="{{ form.username.id_for_label }}"
-                                class="form-control" placeholder="Nombre de usuario" required autofocus>
-                        </div>
-                        <div class="mb-3">
-                            <label for="{{ form.contrasena.id_for_label }}" class="form-label">Contraseña</label>
-                            <input type="password" name="{{form.password.name}}" id="{{ form.contrasena.id_for_label }}"
-                                class="form-control" placeholder="Contraseña" required>
-                        </div>
-                        <div class="mb-3 form-check">
-                            <a href="{% url 'password_reset' %}" class="forgot-link text-secondary-emphasis" style="color: #365C45;">¿Olvidaste tu contraseña?</a>
-                        </div>
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-success">Iniciar sesión</button>
-                            <input type="hidden" name="next" value="{{ next }}">
-                        </div>
-                        <!-- CLICK HACIA LA VISTA DE TIPO DE CUENTA -->
-                        <div class="text-center mt-3">
-                            <a href="{% url 'selectUser' %}" class="" style="color: #365C45;">Regístrate</a>
-                        </div>
-                    </form>
+                {% if form.errors %}
+                <div class="alert alert-danger mt-3" role="alert">
+                    Su nombre de usuario y/o contraseña no coinciden. Inténtalo de nuevo.
+                </div>
+                {% endif %}
+
+                <div class="text-center mt-3">
+                    <a href="{% url 'selectUser' %}" class="" style="color: #052411;">Registrarme</a>
                 </div>
             </div>
-            {% endblock %}
+        </div>
+        {% endblock %}
     </div>
 </body>
 

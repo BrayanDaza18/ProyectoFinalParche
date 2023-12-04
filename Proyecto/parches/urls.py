@@ -34,4 +34,6 @@ urlpatterns = [
     path('detalles/<int:idactividad>/', views.DetallesEvento, name='detalles_evento'),
     path('profile/delete/<int:id>/comment', views.deleteCommentUser, name='deleteCommentUser'),
     path('join/event/<int:pk>', views.joinEvent, name='joinEvent'),
+
+    # path('actualizar_imagen_de_perfil/', views.update_profile, name='actualizar_imagen_de_perfil'),
 ]

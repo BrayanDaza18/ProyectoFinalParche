@@ -14,6 +14,7 @@ from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
 from django.db import models
 from django.utils import timezone
 
+
 import uuid
 
 class Actividad(models.Model):
@@ -118,7 +119,7 @@ class EmpresaPersona(AbstractBaseUser, PermissionsMixin):
     correo = models.CharField(max_length=45)
     telefono = models.CharField(max_length=40)
     tipousuario = models.CharField(db_column='tipoUsuario', choices=TipoUser, max_length=1)  # Field name made lowercase.
-    fotoperfil = models.CharField(db_column='fotoPerfil', max_length=80)
+    fotoperfil = models.ImageField(upload_to='fotoperfil/', max_length=80, null=True)
     resena = models.CharField(max_length=40)
     usuario_activo = models.BooleanField(default=True)
     usuario_administrador = models.BooleanField(default=False)
@@ -126,7 +127,6 @@ class EmpresaPersona(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     likes = models.ManyToManyField('self', blank=True, related_name='likes')
     dislikes = models.ManyToManyField('self', blank=True, related_name='dislikes')
-    # motivos_reporte = models.ManyToManyField('self', )
 
     
 

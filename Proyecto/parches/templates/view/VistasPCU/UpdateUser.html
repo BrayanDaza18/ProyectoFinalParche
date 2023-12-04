@@ -1,39 +1,39 @@
 {% if user.is_authenticated %}
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="inputRegistro">
         <div class="nombreRegistro d-block ">
-           
+
             {{ form.usuario }}
         </div>
         <div class="correoRegistro d-block">
-    
+
             {{ form.correo }}
         </div>
         <div class="telefonoRegistro   ">
-         
+
             {{ form.telefono }}
+        </div>
+        <div>
+            {{ form.fotoperfil }}
         </div>
         <div class="contraseñaRegistro   ">
             {% if form.nombreempresa.value %}
             {{ form.nombreempresa }}
-        {% endif %}
-        
-        {% if form.direccion.value %}
+            {% endif %}
+
+            {% if form.direccion.value %}
             {{ form.direccion }}
-        {% endif %}
+            {% endif %}
             {% comment %} {{ form.password }} {% endcomment %}
         </div>
-      
+
     </div>
     <div class="botonRegistrarse    ">
         <button type="submit" class="btn btn-primary">Registrarse</button>
     </div>
-    
+
 </form>
 
 {% endif %}
-
-
-

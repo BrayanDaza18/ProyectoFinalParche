@@ -293,7 +293,7 @@ class FormUserUpdate(forms.ModelForm):
 
     class Meta:
         model = EmpresaPersona
-        fields = ('usuario', 'correo', 'telefono')
+        fields = ('usuario', 'correo', 'telefono', 'fotoperfil')
         widgets = {
             'usuario': forms.TextInput(
                  attrs= {
@@ -315,6 +315,14 @@ class FormUserUpdate(forms.ModelForm):
             'placeholder': 'telefono',
             'id': 'email',
             'required': 'required'
+        }),
+        'fotoperfil': forms.FileInput(
+            attrs= {
+             'class': 'form-control,justify-content-center',
+            'placeholder': 'imagen',
+            'id': 'fotoperfil',
+            'required': False
+       
         }),
         #   'password': forms.PasswordInput(
         #     attrs= {

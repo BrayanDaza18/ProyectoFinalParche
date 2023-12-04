@@ -61,8 +61,7 @@ def registerUser(request):
         now = datetime.now()
         fecha_hora_actual = now.strftime("%Y-%m-%d %H:%M:%S")
 
-        send_email(correo, usuario, fecha_hora_actual)
-        send_report_email(usuario,request)
+        send_email(correo, usuario, fecha_hora_actual)        
         #    data = form.save() 
         #    datos =usuario.save(commit = False)
         #    datos.empresa_idEmpresa = data
@@ -189,7 +188,7 @@ def Profile(request):
     usuario = request.user
     form = Actividad.objects.filter(empresa_idempresa=usuario)
     comment = comentarioUSer.objects.filter(author = usuario).order_by('created_on')
-    actividad = EmpresaPersona.objects.all()
+    actividad = EmpresaPersona.objects.get(usuario = usuario)
 
     if request.method == 'POST':
        comment = comentarioUserform(request.POST)
@@ -335,12 +334,13 @@ from django.conf import settings
 
 def send_report_email(request, pk):
     print("Entró en send_report_email")
-
+    
     try:
                 # Obtener el objeto del usuario_reportado usando el ID
         # EmpresaPersona = get_user_model()
         # usuario_reportado = EmpresaPersona.objects.get(idregistro=usuario_reportado_id)
         usuario = EmpresaPersona.objects.get(idregistro=pk)
+        motivo = request.POST.get('motivo')
 
         infraccion1 = request.POST.get('infraccion1')
         infraccion2 = request.POST.get('infraccion2')
@@ -350,6 +350,7 @@ def send_report_email(request, pk):
 
         context = {
             'usuario': usuario,
+            'motivo': motivo,
             'infraccion1': infraccion1,
             'infraccion2': infraccion2,
             'infraccion3': infraccion3,
@@ -533,6 +534,15 @@ def joinEvent(request, pk):
             newpost = post.save(commit=False)
             newpost.usuario_idusuario = request.user
             newpost.save()
+
+            usuario_correo = request.user.correo
+            usuario_nombre = request.user.usuario
+            evento_nombre = newpost.actividad_idactividad.nombreactividad
+            fecha_inicio_evento = newpost.actividad_idactividad.fechainicio
+            hora_inicio_evento = newpost.actividad_idactividad.hora
+
+            send_event_notification(usuario_correo, usuario_nombre, evento_nombre, fecha_inicio_evento, hora_inicio_evento)
+
             messages.add_message(request=request, level=messages.SUCCESS, message='registro exitoso')
             return redirect('mostrarEventos')
         else:
@@ -541,10 +551,28 @@ def joinEvent(request, pk):
 
 
     return redirect('mostrarEventos')
-    
 
-
+def send_event_notification(usuario_correo, usuario_nombre, evento_nombre, fecha_inicio_evento, hora_inicio_evento):
+    try:
+        context = {
+            'usuario_correo': usuario_correo,
+            'usuario_nombre': usuario_nombre,
+            'evento_nombre': evento_nombre,
+            'fecha_inicio_evento': fecha_inicio_evento,
+            'hora_inicio_evento': hora_inicio_evento,
+        }
+        template = get_template('evento_notificacion.html')
+        content = template.render(context)
         
-     
+        email = EmailMultiAlternatives(
+            'Unión a evento',
+            '¡Te has unido a un nuevo evento!',
+            settings.EMAIL_HOST_USER,
+            [usuario_correo]
+        )
 
-        
+        email.attach_alternative(content, 'text/html')
+        email.send()
+
+    except (ValidationError, SMTPException) as e:
+        print(f"Error al enviar correo de notificación de evento: {e}")
