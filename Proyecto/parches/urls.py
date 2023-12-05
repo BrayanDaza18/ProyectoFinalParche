@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib.staticfiles.urls import static
 from django.urls import include, path
-from .views import ActividadListAPIView, ActividadDetailAPIView, EmpresaPersonaListAPIView, EmpresaPersonaDetailAPIView
+from .views import ActividadListAPIView, ActividadDetailAPIView, EmpresaPersonaListAPIView, EmpresaPersonaDetailAPIView, puntos_deportivos_ordenados, EventosEnPuntoDeportivoView
 from . import views
 
 urlpatterns = [
@@ -38,7 +38,8 @@ urlpatterns = [
     path('Report/<int:pk>/', views.ReportEvent, name='Report'),
     path('puntoDeportivo', views.agregarPd, name='puntoDeportivo'),
     # path('mostrarPd/', views.mostrarPd, name='mostrarPd'),
-
+    path('puntos_deportivos_ordenados/', puntos_deportivos_ordenados, name='puntos_deportivos_ordenados'),
+    path('eventos_en_punto_deportivo/<int:pk>/', EventosEnPuntoDeportivoView.as_view(), name='eventos_en_punto_deportivo'),
     
     path('api/actividades/', ActividadListAPIView.as_view(), name='actividad-list'),
     path('api/actividades/<int:pk>/', ActividadDetailAPIView.as_view(), name='actividad-detail'),

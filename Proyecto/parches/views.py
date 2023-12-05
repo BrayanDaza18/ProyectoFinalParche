@@ -10,7 +10,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import get_template
 from folium import Marker
-
+from django.db.models import Count
+from django.views.generic import DetailView
 from .forms import (CreateEventos, Document, FormCompanyUpdate, FormUser,
                     FormUserCompany, FormUserUpdate, UserRegister,
                     comentarioUserform, joinEventP, PuntosDeportivosForm)
@@ -106,8 +107,20 @@ def CreateEvent(request):
 
     return render(request, 'view/VistasPCU/crearEvento.html', {'activity': activity, 'puntos_deportivos': puntos_deportivos})
 
+def puntos_deportivos_ordenados(request):
+    puntos_deportivos = Puntosdeportivos.objects.annotate(num_actividades=Count('actividad')).order_by('-num_actividades')
+    return render(request, 'view/VistasPCU/puntos_deportivos_ordenados.html', {'puntos_deportivos': puntos_deportivos})
 
+class EventosEnPuntoDeportivoView(DetailView):
+    model = Puntosdeportivos
+    template_name = 'view/VistasPCU/eventos_en_punto_deportivo.html'
+    context_object_name = 'punto_deportivo'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        actividades_relacionadas = Actividad.objects.filter(puntosdeportivos=self.object)
+        context['actividades_relacionadas'] = actividades_relacionadas
+        return context
 
 def RegisterCompany(request):
     document_form = Document()  
