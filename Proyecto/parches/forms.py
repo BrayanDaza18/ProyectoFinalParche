@@ -241,7 +241,7 @@ class CreateEventos(forms.ModelForm):
 
     class Meta:
         model = Actividad
-        fields = ['nombreactividad', 'tipoactividad', 'lugar', 'fechainicio', 'fechafin', 'hora', 'imagen', 'contacto', 'descripcion']
+        fields = ['nombreactividad', 'tipoactividad', 'lugar', 'fechainicio', 'fechafin', 'hora', 'imagen', 'contacto', 'descripcion','latitud','longitud']
         widgets = {
             'nombreactividad': forms.TextInput(
                 attrs={
@@ -299,6 +299,20 @@ class CreateEventos(forms.ModelForm):
                     'placeholder': 'Descripción',
                     'id': 'descripcion',
 
+                }),
+                 'latitud': forms.TextInput(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'latitud',
+                    'id': 'latitud',
+                     'required': False
+                }),
+                 'longitud': forms.TextInput(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'longitud',
+                    'id': 'longitud',
+                     'required': False
                 }),
         }
 

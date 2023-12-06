@@ -103,7 +103,7 @@
 {% endif %}
             {% for element in data %}
            
-        
+        {% if element.estado == 'activo' %}
           
             <div class="col-md-12">
                 <div class="fondo" id="eventos">
@@ -208,7 +208,7 @@
             </div>
           
           
-          
+            {% endif %}
             {% endfor %}
         </div>
     </div>

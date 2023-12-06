@@ -214,12 +214,17 @@ def CoverImage(request):
 def SelectUser(request):
     return render(request, 'view/VistasPCU/seleccionDeUsuario.html')
 
-
 def eventForUser(request):
     users = request.user
-    data = Actividad.objects.filter(empresa_idempresa = users)
-    print(data)
-    return render(request, 'view/VistasPCU/viewCreateEventForUser.html',{'data': data})
+    data = Actividad.objects.filter(empresa_idempresa=users)
+
+    # Obtener el número de participantes para cada actividad
+    participantes_por_actividad = {}
+    for actividad in data:
+        participantes_por_actividad[actividad.idactividad] = Realizacion.objects.filter(actividad_idactividad=actividad.idactividad).count()
+
+    return render(request, 'view/VistasPCU/viewCreateEventForUser.html', {'data': data, 'participantes_por_actividad': participantes_por_actividad})
+
 
 
 def viewEventoELI(request, idactividad):
@@ -235,13 +240,40 @@ def UpdateEvent(request, idactividad):
 
     if form.is_valid() and request.method == 'POST':
         form.save()
+        SendUpdateEvent(event)
         return redirect('eventUser')
+        
     
     else:
         print(form.errors)
 
         
     return render(request, 'view/VistasPCU/UpdateEvent.html', {'form': form})
+
+def SendUpdateEvent(event):
+ realizarcion = Realizacion.objects.filter(actividad_idactividad = event)
+ for elelment in realizarcion:
+    print(elelment)
+    usuario = elelment.usuario_idusuario
+    try:
+        context = {'correo': usuario.correo, 'usuario': usuario, 'event':event}
+        template = get_template('modificacionSend.html')
+        content = template.render(context)
+        print(usuario.correo)
+        print(usuario)
+
+        email = EmailMultiAlternatives(
+            'El evento ha sido modificado Parche',  # Título
+            'Probando app parche',  # Descripción
+            settings.EMAIL_HOST_USER,  # Quién envía el correo
+            [usuario.correo]
+        )
+
+        email.attach_alternative(content, 'text/html')
+        email.send()
+
+    except (ValidationError, SMTPException) as e:
+        print(f"Error al enviar correo: {e}")
 
 
 def UpdateUser(request, idregistro,tipousuario):
@@ -260,7 +292,8 @@ def UpdateUser(request, idregistro,tipousuario):
 
     return render(request, 'view/VistasPCU/UpdateUser.html',  {'form': form})
 
-    
+
+
 def UpdateUserCompany(request, idregistro, tipousuario):
     # usuario = request.user
     activity = EmpresaPersona.objects.get(idregistro=idregistro, tipousuario=tipousuario)
@@ -610,6 +643,7 @@ def messageEnd():
             if realizarc.usuario_idusuario and element.estado == 'finalizado':
                 usuario = realizarc.usuario_idusuario
                 evento = realizarc.actividad_idactividad
+                
                 print(usuario)
                 try:
                    context = {'correo': usuario.correo, 'usuario': usuario.usuario, 'current_datetime': element.fechafin, 'idEvento': evento.pk}
@@ -626,6 +660,8 @@ def messageEnd():
 
                    email.attach_alternative(content, 'text/html')
                    email.send()
+                   element.estado = 'enviado'
+                   element.save()
 
                 except (ValidationError, SMTPException) as e:
                   print(f"Error al enviar correo: {e}")
