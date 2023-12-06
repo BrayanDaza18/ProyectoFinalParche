@@ -1,5 +1,6 @@
 from datetime import datetime
 from smtplib import SMTPException
+from django.views import View
 
 import folium
 from django.conf import settings
@@ -82,6 +83,12 @@ def login(request):
     return render(request, 'view/VistasPCU/registration/login.html')
 # Importa el modelo Puntosdeportivos al principio de tu archivo views.py
 
+class SeleccionarPuntoDeportivo(View):
+    template_name = 'view/VistasPCU/crearEvento.html'
+
+    def get(self, request, punto_id):
+        punto_deportivo = get_object_or_404(Puntosdeportivos, idPuntoDeportivo=punto_id)
+        return render(request, self.template_name, {'punto_deportivo': punto_deportivo})
 
 
 def CreateEvent(request):

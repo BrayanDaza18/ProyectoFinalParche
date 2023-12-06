@@ -124,6 +124,8 @@
                                 </div>
                                 <div class="d-flex justify-content-center align-content-center">
                                     <div class="p-1" style="border: 1px solid #e4e7ea; width: 637px; border-radius: 6px;">
+                                        <input type="hidden" name="puntosdeportivos" value="{{ punto_deportivo.idPuntoDeportivo }}">
+                                        <input type="text" name="puntosdeportivos" value="{{ punto_deportivo.idPuntoDeportivo }}, {{ punto_deportivo.nombre }},  {{ punto_deportivo.direccion }}">
                                         <input type="text" name="lugar" id="lugar" placeholder="Ingrese otra dirección" style="border-radius: 10px; margin-left: 20px;">
                                         <select name="puntosdeportivos" id="direccion" style="border-radius: 10px; margin-left: 120px;">
                                             <option value="" disabled selected>Spuntos deportivos comunes</option>

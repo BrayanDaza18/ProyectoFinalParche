@@ -27,6 +27,7 @@
                 <p class="card-text">Número de Actividades: {{ punto.num_actividades }}</p>
                 <!-- Modificación aquí: -->
                 <a href="{% url 'eventos_en_punto_deportivo' punto.idPuntoDeportivo %}" class="btn btn-primary">Ver Eventos</a>
+                <a href="{% url 'seleccionar_punto_deportivo' punto.idPuntoDeportivo %}" class="btn btn-primary">Seleccionar punto deportivo</a>
             </div>
         </div>
     {% endfor %}
