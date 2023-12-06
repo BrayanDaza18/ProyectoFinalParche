@@ -634,13 +634,16 @@ def anularinscripcion(request, idregistro, pk):
 def messageEnd():
     userFinally = Actividad.objects.all()
     for element in userFinally:
-        if element.fechafin  < str(datetime.now().date()):
+        if element.fechafin  < str(datetime.now().date()) and element.estado == 'activo':
            element.estado = 'finalizado'
            element.save()
-           realizar = Realizacion.objects.filter(actividad_idactividad = element.idactividad)
-           
-           for realizarc in realizar:
-            if realizarc.usuario_idusuario and element.estado == 'finalizado':
+          
+           if  element.estado == 'finalizado':
+            element.estado = 'enviado'
+            element.save()
+            realizar = Realizacion.objects.filter(actividad_idactividad = element.idactividad)
+            for realizarc in realizar:
+             if realizarc.usuario_idusuario :
                 usuario = realizarc.usuario_idusuario
                 evento = realizarc.actividad_idactividad
                 
@@ -660,8 +663,7 @@ def messageEnd():
 
                    email.attach_alternative(content, 'text/html')
                    email.send()
-                   element.estado = 'enviado'
-                   element.save()
+                   
 
                 except (ValidationError, SMTPException) as e:
                   print(f"Error al enviar correo: {e}")

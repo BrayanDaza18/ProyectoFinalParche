@@ -189,8 +189,10 @@ a {
 }
 
 .descripcion img {
-  height: 150px;
-  width: 260px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  height: 200px;
+  width: 400px;
   border: 1px solid black;
 
 
@@ -225,12 +227,12 @@ a {
 }
 
 .nombretorneo {
-  justify-content: center;
+text-align: center;
   display: flex;
   align-items: center;
   background-image: url(../IMG/Rectangle\ 178.png);
   background-size: cover;
-  height: 40px;
+  height: 50px;
   border: none;
   border-radius: 8px 10px 10px 8px;
   text-transform: uppercase;
