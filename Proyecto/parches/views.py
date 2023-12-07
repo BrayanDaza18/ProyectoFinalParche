@@ -46,8 +46,8 @@ from django.template.loader import get_template
 
 
 def HomepageProject(request):
-     return render(request, 'view/VistasPCU/vistaPrincipal.html')
-
+     form = EmpresaPersona.objects.get(usuario= request.user)
+     return render(request, 'view/VistasPCU/vistaPrincipal.html',{'form': form})
 
 
 
@@ -194,7 +194,7 @@ def MostrarEvento(request):
     messageEnd()
     query = request.GET.get('q', '')
     tipo_actividad = request.GET.get('tipo_actividad', '') 
-    form = EmpresaPersona.objects.all()
+    form = EmpresaPersona.objects.get(usuario = request.user)
     eventos = Actividad.objects.all()
     if query:
         eventos = eventos.filter(nombreactividad__icontains=query)
@@ -219,6 +219,7 @@ def MostrarEvento(request):
 
 def DetallesEvento(request, idactividad):
     evento = get_object_or_404(Actividad, idactividad=idactividad)
+    form = EmpresaPersona.objects.get(usuario= request.user)
 
     mapa = folium.Map(location=[evento.latitud, evento.longitud], zoom_start=13)
     folium.Marker(
@@ -228,7 +229,7 @@ def DetallesEvento(request, idactividad):
 
     mapa_html = mapa._repr_html_()
 
-    return render(request, 'view/VistasPCU/detalles_evento.html', {'evento': evento, 'mapa_html': mapa_html})
+    return render(request, 'view/VistasPCU/detalles_evento.html', {'evento': evento, 'mapa_html': mapa_html, 'form': form})
 
 @login_required
 def Profile(request):
@@ -300,6 +301,9 @@ def UpdateEvent(request, idactividad):
 
         
     return render(request, 'view/VistasPCU/UpdateEvent.html', {'form': form})
+
+
+
 
 def SendUpdateEvent(event):
  realizarcion = Realizacion.objects.filter(actividad_idactividad = event)

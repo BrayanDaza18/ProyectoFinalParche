@@ -43,7 +43,7 @@ urlpatterns = [
     path('participantes/evento/<int:pk>/', views.eventParticipante, name='participantes'),
     path('eliminar/participantes/evento/<int:idregistro>/<int:pk>', views.anularinscripcion, name='Eliminarparticipantes'),
     path('resena/Evento/<int:idEvento>',views.calificacionFinal, name='finalReseña' ),
-
+     
 
     path('puntoDeportivo', views.agregarPd, name='puntoDeportivo'),
     # path('mostrarPd/', views.mostrarPd, name='mostrarPd'),
