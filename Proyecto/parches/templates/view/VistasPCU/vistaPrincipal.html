@@ -45,7 +45,7 @@ style="background-color: #cbe9d7; z-index: -3; ">
       </div>
 
       <div class="menu-items col-5">
-        <a href="#eventos" class="scroll">
+        <a href="{% url 'mostrarEventos'%}">
           <h3 style="color: #365C45;">Eventos</h3>
         </a>
         <a href="#nosotros" class="scroll">
@@ -53,10 +53,9 @@ style="background-color: #cbe9d7; z-index: -3; ">
         </a>
         <a href="#contactanos">
           <h3 style="color: #365C45;">Contactanos</h3>
-
         </a>
         {% if user.is_authenticated %}
-        <ul class="sidebar-nav btnIniciarS">
+        <div class="sidebar-nav btnIniciarS d-flex justify-content-center align-items-center">
 
       
           {% if user.is_authenticated %}
@@ -74,6 +73,9 @@ style="background-color: #cbe9d7; z-index: -3; ">
                 <li><a href="{% url "profile" %}">Perfil</a></li>
                 <li><a href="{% url "eventUser" %}">Mis eventos</a></li>
                 <li><a href="{% url "inscripcion"  %}">Inscripciones</a></li>
+                {% if user.tipousuario == 'E' %}
+                <li><a href="{% url "puntoDeportivo" %}">agregar pd</a></li>
+                {% endif %} 
              
                 <li><div class="d-flex justify-content-center align-items-center">
                   <button type="button" class="btn btn-success m-1">
@@ -216,7 +218,7 @@ style="background-color: #cbe9d7; z-index: -3; ">
   <section id="contactanos" class="container-fluid" style="background-color: rgb(214, 213, 213); padding: 5px;">
     <div class="row container-fluid">
       <div class="col-lg-5">
-        <h3 style="color: #365C45;">___________________________________________________</h3>
+        <h3 style="color: #365C45;">______________________________________</h3>
       </div>
       <div class="col-lg-2 col-md-12 p-2 d-flex justify-content-center align-items-center">
           <img src="{% static "img/Facebook_Logo_(2019).png" %}" alt="" style="width: 30px; margin: 4px;">
@@ -224,7 +226,7 @@ style="background-color: #cbe9d7; z-index: -3; ">
           <img src="{% static "img/png-transparent-twitter-logo-social-media-iphone-organization-logo-twitter-computer-network-leaf-media-removebg-preview.png"%}" alt="" style="width: 30px; margin: 4px; margin-left: 50px;">
         </div>
       <div class="col-lg-5">
-        <h3 style="color: #365C45;">_____________________________________________________</h3>
+        <h3 style="color: #365C45;">________________________________________</h3>
       </div>
     </div> 
     <div class="row container-fluid p-2">

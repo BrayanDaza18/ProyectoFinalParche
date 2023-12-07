@@ -4,21 +4,27 @@ from smtplib import SMTPException
 import folium
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, update_session_auth_hash
+from django.contrib.auth import (authenticate, get_user_model, login,
+                                 update_session_auth_hash)
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.core.mail import EmailMultiAlternatives
+# from .forms import UserReportForm
+from django.core.mail import EmailMultiAlternatives, send_mail
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import get_template
 from folium import Marker
 
 from .forms import (CreateEventos, Document, FormCompanyUpdate, FormUser,
-                    FormUserCompany, FormUserUpdate, ResenaEventoF,
-                    UserRegister, comentarioUserform, joinEventP)
-from .models import (Actividad, EmpresaPersona, Persona, Realizacion,
-                     comentarioUSer)
+                    FormUserCompany, FormUserUpdate, PuntosDeportivosForm,
+                    ResenaEventoF, UserRegister, comentarioUserform,
+                    joinEventP)
+from .models import (Actividad, EmpresaPersona, Persona, Puntosdeportivos,
+                     Realizacion, comentarioUSer)
+
+# REPORTAR
+# from .models import Usuario 
 
 # Create your views here.
 
@@ -59,12 +65,9 @@ def registerUser(request):
             now = datetime.now()
             fecha_hora_actual = now.strftime("%Y-%m-%d %H:%M:%S")
             send_email(correo, usuario, fecha_hora_actual)
-           
             return redirect('login')
 
     return render(request, 'registration/register.html', {'form': form})
-
-
 
 
 def login(request):
@@ -85,21 +88,59 @@ def login(request):
 @login_required
 def CreateEvent(request):
     activity = CreateEventos()
+    puntos_deportivos = Puntosdeportivos.objects.all()
+
     if request.method == 'POST':
         activity = CreateEventos(request.POST, request.FILES)
         if activity.is_valid():
             usuario = activity.save(commit=False)
-            usuario.empresa_idempresa = request.user
+
+
+            lugar_modal = request.POST.get('lugarModal', "")
+            lugar_ingresado = request.POST.get('lugar', "")
+
+            usuario.lugar = lugar_ingresado if lugar_ingresado else None
+
+            puntos_deportivos_id = request.POST.get('lugar', None)
+            if puntos_deportivos_id:
+
+                usuario.puntosdeportivos_id = None
+            else:
+                usuario.puntosdeportivos_id = lugar_modal
             usuario.estado = 'activo'
+            usuario.empresa_idempresa = request.user
             usuario.save()
-            return redirect('vistaPrincipal')
         else:
             print("Errores en el formulario CreateEventos:", activity.errors)
-            messages.add_message(request=request, level=messages.ERROR, message='datos incompletos')
 
-        
-    
-    return render(request, 'view/VistasPCU/crearEvento.html', {'activity': activity})
+        return redirect('vistaPrincipal')
+
+    print('Puntos deportivos:', puntos_deportivos)
+
+    return render(request, 'view/VistasPCU/crearEvento.html', {'activity': activity, 'puntos_deportivos': puntos_deportivos})
+
+
+
+
+from django.db.models import Count
+from django.http import JsonResponse
+from django.views.generic import DetailView
+
+from .models import Puntosdeportivos
+
+
+def get_sorted_puntos_deportivos(request):
+    puntos_deportivos = Puntosdeportivos.objects.annotate(num_eventos=Count('actividad')).order_by('-num_eventos')
+    data = [{'nombre': punto.nombre, 'idPuntoDeportivo': punto.idPuntoDeportivo, 'direccion': punto.direccion, 'num_eventos': punto.num_eventos} for punto in puntos_deportivos]
+
+    return JsonResponse({'puntos_deportivos': data})
+
+
+class PuntoDeportivoDetailView(DetailView):
+    model = Puntosdeportivos
+    template_name = 'view/VistasPCU/punto_deportivo_detail.html'
+    context_object_name = 'punto_deportivo'
+
 
 
 
@@ -191,7 +232,7 @@ def Profile(request):
         form = Actividad.objects.filter(empresa_idempresa=usuario)
         send = Realizacion.objects.filter(usuario_idusuario=usuario)
         comment = comentarioUSer.objects.filter(author = usuario).order_by('created_on')
-        actividad = EmpresaPersona.objects.all()
+        actividad = EmpresaPersona.objects.get(usuario = usuario)
 
     if request.method == 'POST':
        comment = comentarioUserform(request.POST)
@@ -209,6 +250,10 @@ def Profile(request):
 def CoverImage(request):
      return render(request, 'view/VistasPCU/PantallaDeCarga.html')
 
+def ReportEvent(request, pk):
+     usuario = EmpresaPersona.objects.get(pk=pk)
+     contexto = {'usuario': usuario}     
+     return render(request, 'view/VistasPCU/ReportEvent.html', contexto)
 
 
 def SelectUser(request):
@@ -357,6 +402,62 @@ def send_email_empresa(usuario, correo, nombreempresa, fecha_hora_actual):
         print(f"Error al enviar correo: {e}")
 
 
+
+from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import get_template
+from django.utils.html import strip_tags
+
+
+def send_report_email(request, pk):
+    print("Entró en send_report_email")
+    
+    try:
+                # Obtener el objeto del usuario_reportado usando el ID
+        # EmpresaPersona = get_user_model()
+        # usuario_reportado = EmpresaPersona.objects.get(idregistro=usuario_reportado_id)
+        usuario = EmpresaPersona.objects.get(idregistro=pk)
+        motivo = request.POST.get('motivo')
+
+        infraccion1 = request.POST.get('infraccion1')
+        infraccion2 = request.POST.get('infraccion2')
+        infraccion3 = request.POST.get('infraccion3')
+        infraccion4 = request.POST.get('infraccion4')
+        infraccion5 = request.POST.get('infraccion5')
+
+        context = {
+            'usuario': usuario,
+            'motivo': motivo,
+            'infraccion1': infraccion1,
+            'infraccion2': infraccion2,
+            'infraccion3': infraccion3,
+            'infraccion4': infraccion4,
+            'infraccion5': infraccion5
+            }
+        template = get_template('correo_reporte.html')
+        content = template.render(context)
+
+        email = EmailMultiAlternatives(
+                    'Reporte de usuario',
+                    'Probando app parche',
+                    settings.EMAIL_HOST_USER,
+                    ['contactoparchecorp@gmail.com']
+                )
+
+        email.attach_alternative(content, 'text/html')
+        email.send()
+
+        print(f"Correo enviado:")
+        return HttpResponse("Correo de reporte enviado correctamente")
+    except EmpresaPersona.DoesNotExist:
+                messages.error(request, 'Usuario no encontrado.')
+    except Exception as e:
+                print(f"Error al enviar correo de reporte: {e}")
+                messages.error(request, 'Error al enviar correo de reporte.')
+
+    return render(request, 'view/VistasPCU/perfil.html')
+
+    
 
 def addLikes(request, pk):
     post = EmpresaPersona.objects.get(pk=pk)
@@ -519,7 +620,7 @@ def joinEvent(request, pk):
 
             send_event_notification(usuario_correo, usuario_nombre, evento_nombre, fecha_inicio_evento, hora_inicio_evento)
 
-            messages.add_message(request=request, level=messages.SUCCESS, message='Registro exitoso')
+            messages.add_message(request=request, level=messages.SUCCESS, message='registro exitoso')
             return redirect('mostrarEventos')
         else:
             print(post.errors)
@@ -573,6 +674,25 @@ def ReportEvent(request, pk):
      usuario = EmpresaPersona.objects.get(pk=pk)
      contexto = {'usuario': usuario}     
      return render(request, 'view/VistasPCU/ReportEvent.html', contexto)
+ 
+def agregarPd(request):
+    if request.method == 'POST':
+        form = PuntosDeportivosForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('vistaPrincipal')
+    else:
+        form = PuntosDeportivosForm()
+    return render(request, 'view/VistasPCU/puntoDeportivo.html', {'form': form})
+
+
+# def mostrarPd(request):
+#     puntos_deportivos = Puntosdeportivos.objects.all()
+#     context = {
+#         'puntos_deportivos': puntos_deportivos,
+#     }
+#     return render(request, 'view/VistasPCU/crearEvento.html', context)
+
      
      
 def send_report_email(request, pk):

@@ -9,4 +9,4 @@ class ActividadSerializer(serializers.ModelSerializer):
 class EmpresaPersonaSerializer(serializers.ModelSerializer):
     class Meta:
         model = EmpresaPersona
-        fields = '__all__'
+        fields='__all__'

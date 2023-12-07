@@ -15,6 +15,8 @@ from django.db import models
 from django.utils import timezone
 
 
+import uuid
+
 class Actividad(models.Model):
     Futbol = "FUTBOL"
     Baloncesto = "Baloncesto"
@@ -41,8 +43,8 @@ class Actividad(models.Model):
     idactividad = models.AutoField(db_column='idActividad', primary_key=True)
     nombreactividad = models.CharField(db_column='nombreActividad', max_length=30)
     tipoactividad = models.CharField(db_column='tipoActividad', choices=deporte,max_length=15)
-    lugar = models.CharField(max_length=40)
-    ubicacion = models.CharField(max_length=80)
+    lugar = models.CharField(max_length=40, null=True, blank=True)
+    # ubicacion = models.CharField(max_length=80)
     fechainicio = models.CharField(db_column='fechaInicio', max_length=40)
     fechafin = models.CharField(db_column='fechaFin', max_length=40)
     descripcion = models.TextField(db_column="descripcion", max_length=75, blank=True, null=True)
@@ -50,7 +52,7 @@ class Actividad(models.Model):
     imagen = models.ImageField(upload_to='actividad/', max_length=80)
     contacto = models.CharField(max_length=30)
     estado = models.CharField(max_length=20)
-    puntosdeportivos = models.ForeignKey('Puntosdeportivos', models.DO_NOTHING, null=True)
+    puntosdeportivos = models.ForeignKey('Puntosdeportivos', models.DO_NOTHING, null=True, blank=True)
     empresa_idempresa = models.ForeignKey('EmpresaPersona', on_delete=models.CASCADE, db_column='empresa_idEmpresa', null=True)
 
     latitud = models.FloatField(blank=True, null=True)
@@ -119,7 +121,7 @@ class EmpresaPersona(AbstractBaseUser, PermissionsMixin):
     correo = models.CharField(max_length=45)
     telefono = models.CharField(max_length=40)
     tipousuario = models.CharField(db_column='tipoUsuario', choices=TipoUser, max_length=1)  # Field name made lowercase.
-    fotoperfil = models.CharField(db_column='fotoPerfil', max_length=80)
+    fotoperfil = models.ImageField(upload_to='fotoperfil/', max_length=80, null=True)
     resena = models.CharField(max_length=40)
     usuario_activo = models.BooleanField(default=True)
     usuario_administrador = models.BooleanField(default=False)
@@ -203,10 +205,9 @@ class Persona(models.Model ):
 
 
 class Puntosdeportivos(models.Model):
-    nombre = models.CharField(max_length=50)
-    id = models.IntegerField(primary_key=True)
-    logo = models.CharField(max_length=80)
-    direccion = models.CharField(max_length=40)
+    idPuntoDeportivo = models.AutoField(db_column='idPuntoDeportivo', primary_key=True)
+    nombre = models.CharField(db_column='nombre',max_length=50)
+    direccion = models.CharField(db_column='direccion', max_length=40)
 
     class Meta:
    

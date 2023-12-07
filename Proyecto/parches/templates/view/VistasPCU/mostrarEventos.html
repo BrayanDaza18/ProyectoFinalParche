@@ -161,8 +161,25 @@
                                                     placeholder="nombre del evento" style="text-align: center; border: none;" disabled>
                                             </div>
                                             <div class="row d-flex justify-content-center text-center ms-4 " style="margin-bottom: 20px; ">
+
                                                 <label>Lugar: </label><input type="text" class="rounded-2 shadow"
                                                     value="{{element.lugar}}" style="text-align: center; border: none;" disabled>
+
+                                                {% if element.lugar == Null %}
+                                                <input type="hidden" class="rounded-2 shadow"
+                                                value="{{element.lugar}}" disabled>
+                                                {% else %}
+                                                <span>Lugar: </span><input type="text" class="rounded-2 shadow"
+                                                    value="{{element.lugar}}" disabled>
+                                                {% endif %} 
+                                                {% if element.puntosdeportivos.nombre == Null %}
+                                                <input type="hidden" class="rounded-2 shadow"
+                                                    value="{{element.puntosdeportivos.nombre}} - {{element.puntosdeportivos.direccion}}" disabled>
+                                                    {% else %}
+                                                    <span>Punto deportivo: </span><input type="text" class="rounded-2 shadow"
+                                                    value="{{element.puntosdeportivos.nombre}} - {{element.puntosdeportivos.direccion}}" disabled>
+                                                    {% endif %}
+
                                             </div>
                                             <div class="d-flex justify-content-center text-center" style="margin-bottom: 20px;">
 

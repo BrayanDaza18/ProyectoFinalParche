@@ -18,12 +18,20 @@
 </div>
 
 <div class="mt-5  d-flex justify-content-center p-5 flex-wrap">
+
   {% for element in data %}
  
 <div class="card mb-4 p-3 " style="width: 840px; max-height: 500px; background-color: rgba(239, 231, 231, 0.572);">
     <div class="row g-0 ">
       <div class="col-md-5 d-flex justify-content-center align-content-center">
         <img src="{{element.imagen.url}}" class="img-fluid rounded-start" alt="...">
+
+  {% for element in data  %}
+  <div class="card mb-4 p-3 " style="width: 840px; background-color: rgba(239, 231, 231, 0.572);">
+    <div class="row g-0 ">
+      <div class="col-md-5 ">
+        <img src="{{element.imagen.url}}" class="img-fluid rounded-start d-flex justify-content-center"  alt="...">
+
       </div>
       <div class="col-md-7">
         <div class="card-body">
@@ -45,11 +53,16 @@
             {% endif %}
           {% endfor %}
            
+
           <p class="card-text text-end mt-4 ">
             <a class="btn btn-primary me-4" type="button" href="{% url 'participantes' element.idactividad %}">ver integrantes</a>
             <a class="btn btn-primary me-4" type="button" href="{% url 'eliminar' element.idactividad %}">Eliminar</a>
             <a class="btn btn-success ms-4" type="button" href="{% url 'update' element.idactividad %}">Modificar</a>
           </p>
+
+          <hr class="border border-black border border-3 rounded-3">
+          <p class="card-text text-end mt-4 "><a class="btn btn-primary me-4 " type="button" href="{% url 'participantes' element.idactividad %}">ver integrantes</a><a class="btn btn-primary me-4 " type="button" href="{% url 'eliminar' element.idactividad %}">Eliminar</a> <a class="btn btn-success ms-4" type="button" href="{% url 'update' element.idactividad %}">Modificar</a></p>
+
         </div>
       </div>
     </div>

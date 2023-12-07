@@ -4,9 +4,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-
 from .models import (Actividad, Documento, EmpresaPersona, Persona,
-                     Realizacion, comentarioUSer)
+                     Realizacion, comentarioUSer, Puntosdeportivos)
 
 
 def validate_password(value):
@@ -238,10 +237,18 @@ class Document(forms.ModelForm):
 
 
 class CreateEventos(forms.ModelForm):
+    lugarModal = forms.CharField(
+        widget=forms.HiddenInput(),
+        required=False
+    )
 
     class Meta:
         model = Actividad
+
         fields = ['nombreactividad', 'tipoactividad', 'lugar', 'fechainicio', 'fechafin', 'hora', 'imagen', 'contacto', 'descripcion','latitud','longitud']
+
+        fields = ['nombreactividad', 'tipoactividad', 'fechainicio', 'fechafin', 'hora', 'imagen', 'contacto', 'descripcion','latitud','longitud']
+
         widgets = {
             'nombreactividad': forms.TextInput(
                 attrs={
@@ -251,13 +258,6 @@ class CreateEventos(forms.ModelForm):
                     'required': 'required'
                 }),
 
-            'lugar': forms.TextInput(
-                attrs={
-                    'class': 'form-control,justify-content-center',
-                    'placeholder': 'Lugar',
-                    'id': 'lugar',
-                    'required': 'required'
-                }),
             'fechainicio': forms.DateInput(
                 attrs={
                     'class': 'form-control, justify-content-center',
@@ -270,35 +270,44 @@ class CreateEventos(forms.ModelForm):
                     'class': 'form-control,justify-content-center',
                     'placeholder': 'Fecha de Fin',
                     'id': 'fechafin',
-
                 }),
             'hora': forms.TimeInput(
                 attrs={
                     'class': 'form-control,justify-content-center',
                     'placeholder': 'Hora',
                     'id': 'hora',
-
                 }),
             'imagen': forms.FileInput(
                 attrs={
                     'class': 'form-control,justify-content-center',
                     'placeholder': 'Imagen',
                     'id': 'imagen',
-
                 }),
             'contacto': forms.NumberInput(
                 attrs={
                     'class': 'form-control,justify-content-center',
                     'placeholder': 'Contacto',
                     'id': 'contacto',
-
                 }),
             'descripcion': forms.Textarea(
                 attrs={
                     'class': 'form-control,justify-content-center',
                     'placeholder': 'Descripción',
                     'id': 'descripcion',
-
+                }),
+                 'latitud': forms.TextInput(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'latitud',
+                    'id': 'latitud',
+                     'required': False
+                }),
+                 'longitud': forms.TextInput(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'longitud',
+                    'id': 'longitud',
+                     'required': False
                 }),
                  'latitud': forms.TextInput(
                 attrs={
@@ -318,22 +327,29 @@ class CreateEventos(forms.ModelForm):
 
     latitud = forms.FloatField(widget=forms.HiddenInput(), required=False)
     longitud = forms.FloatField(widget=forms.HiddenInput(), required=False)
+    puntosdeportivos = forms.ModelChoiceField(queryset=Puntosdeportivos.objects.all(), empty_label="Seleccione un punto deportivo", required=False)
 
     def save(self, commit=True):
         user = super().save(commit=False)
         user.latitud = self.cleaned_data.get('latitud', 0)
         user.longitud = self.cleaned_data.get('longitud', 0)
+        
+        # Obtener el ID del punto deportivo desde lugarModal
+        lugar_modal = self.cleaned_data.get('lugarModal', None)
+
+        # Si hay un ID de punto deportivo seleccionado, asignarlo al campo puntosdeportivos
+        if lugar_modal:
+            user.puntosdeportivos_id = lugar_modal
 
         if commit:
             user.save()
         return user
 
-
 class FormUserUpdate(forms.ModelForm):
 
     class Meta:
         model = EmpresaPersona
-        fields = ('usuario', 'correo', 'telefono', 'Descripcion')
+        fields = ('usuario', 'correo', 'telefono', 'fotoperfil', 'Descripcion')
         widgets = {
             'usuario': forms.TextInput(
                 attrs={
@@ -356,6 +372,15 @@ class FormUserUpdate(forms.ModelForm):
                     'id': 'email',
                     'required': 'required'
                 }),
+            'fotoperfil': forms.FileInput(
+            attrs= {
+             
+            'class': 'form-control,justify-content-center',
+            'placeholder': 'imagen',
+            'id': 'fotoperfil',
+            'required': False
+       
+        }),
             'Descripcion': forms.Textarea(
                 attrs={
                    'class': 'form-control,justify-content-center',
@@ -443,8 +468,20 @@ class joinEventP(forms.ModelForm):
         if commit:
             user.save()
         return user
+    
+class PuntosDeportivosForm(forms.ModelForm):
+    class Meta:
+        model = Puntosdeportivos
+        fields = ['nombre', 'direccion']
 
-
+        widgets = {
+            'nombre': forms.TextInput(
+                attrs={
+                    'class': 'form-control', 'placeholder': 'Nombre'}),
+            'direccion': forms.TextInput(
+                attrs={
+                    'class': 'form-control', 'placeholder': 'Dirección'}),
+        }
 
 class ResenaEventoF(forms.ModelForm):
     class Meta:
