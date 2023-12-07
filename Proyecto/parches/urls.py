@@ -3,7 +3,7 @@ from django.contrib.staticfiles.urls import static
 from django.urls import include, path
 from . import views
 from .views import (ActividadDetailAPIView, ActividadListAPIView,
-                    EmpresaPersonaDetailAPIView, EmpresaPersonaListAPIView)
+                    EmpresaPersonaDetailAPIView, EmpresaPersonaListAPIView, PuntoDeportivoDetailView, get_sorted_puntos_deportivos)
 
 urlpatterns = [
     
@@ -47,7 +47,8 @@ urlpatterns = [
 
     path('puntoDeportivo', views.agregarPd, name='puntoDeportivo'),
     # path('mostrarPd/', views.mostrarPd, name='mostrarPd'),
-
+    path('punto_deportivo/<int:pk>/', PuntoDeportivoDetailView.as_view(), name='punto_deportivo_detail'),
+    path('api/get_sorted_puntos_deportivos/', get_sorted_puntos_deportivos, name='get_sorted_puntos_deportivos'),
     
     path('api/actividades/', ActividadListAPIView.as_view(), name='actividad-list'),
     path('api/actividades/<int:pk>/', ActividadDetailAPIView.as_view(), name='actividad-detail'),

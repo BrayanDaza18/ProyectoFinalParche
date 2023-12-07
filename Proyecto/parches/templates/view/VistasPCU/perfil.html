@@ -93,27 +93,38 @@
               
                {% else %}
                {% if form.pk == form.pk %}
-               <h3>{{ form.likes.all.count }}likes</h3>
-               <h3>{{ form.dislikes.all.count }}dislikes</h3>   
-                
-               <div class="d-flex justify-content-center ">
-                
-                <form method="POST" action="{% url 'likes' form.pk %}">
-                    {% csrf_token %}
-                    <input type="hidden" name="next" value="{{request.path}}">
-                    <button  class= "btn btn-info me-5 " type="submit">
-                        <h1><i class="fas fa-regular fa-thumbs-up me-5"></i></h1>
-                    </button>
-                </form>   
                
+
+               <div class="d-flex justify-content-evenly align-content-content ">
+                
+                   
+                <div class=" d-flex justify-content-center ">
+                    <form method="POST" action="{% url 'likes' form.pk %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{request.path}}">
+                        <button class= "btn btn-info  " type="submit" style="background-color: transparent; border: none; " >
+                            <h1><i class="fas fa-regular fa-thumbs-up "></i></h1>
+                            <h4 class=" p-2">{{ form.likes.all.count }}likes</h4>
+                        </button>
+                    </form>
+                  
+                   
+               </div>
          
-                <form method="POST" action="{% url "dislike" form.pk %}">
-                    {% csrf_token %}
-                    <button  class= "btn btn-info me-5 "  type="submit">
-                    <input type="hidden" name="next" value="{{request.path}}">
-                    <h1><i class="fas fa-regular fa-thumbs-down"></i></h1>
-                </button>
-                </form>   
+                 
+                <div class=" d-flex justify-content-center ">
+                    <form method="POST" action="{% url "dislike" form.pk %}">
+                        {% csrf_token %}
+                        <button class= "btn btn-info  ms-5  " style="background-color: transparent; border: none;" type="submit">
+                        <input  type="hidden" name="next" value="{{request.path}}">
+                        <h1><i class="fas fa-regular fa-thumbs-down"></i></h1>
+                        <h4  class="p-2">{{ form.dislikes.all.count }} dislikes</h4>  
+                    </button>
+                    </form>   
+                   
+               </div>
+               
+        
             </div>
             {% endif %}
                {% endif %}        
@@ -145,34 +156,61 @@
                     <div class="row comentarios">
                         {% if form and commentUser %}
                             {% for comments in commentUser %}
-                                <div class="com mt-2">
+                               
+                            <div class="d-block mt-2  rounded w-75  "  style="background-color: #D6D3DF;">
+                                <div class="com d-block">
                                     <span class="fw-bold">{{ comments.author }}</span>
+                                </div>
+                                <div class="com d-block">
                                     <span>{{ comments.comment }}</span>
-                                    <span>{{ comments.created_on }}</span>
-                    
-                                    <span>{{ comments.dislikes.all.count }} dislike</span>
-                                    <span>{{ comments.likes.all.count }} likes</span>
-                                    <a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalId">
-                                        eliminar Comentario
-                                      </a>
-                    
-                                    <div class="d-flex justify-content-center">
-                                        <form method="POST" action="{% url "likescomment" comments.id %}">
-                                            {% csrf_token %}
-                                            <input type="hidden" name="next" value="{{ request.path }}">
-                                            <button  class= "btn btn-info me-5 " type="submit" style="background-color: transparent; border: none;" type="submit">
-                                                <i class="fas fa-regular fa-thumbs-up me-5"></i>
-                                            </button>
-                                        </form>
-                    
-                                        <form method="POST" action="{% url 'dislikecomment' comments.id %}">
-                                            {% csrf_token %}
-                                            <input type="hidden" name="next" value="{{ request.path }}">
-                                            <button  class= "btn btn-info me-5 " type="submit style="background-color: transparent; border: none;" type="submit"">
-                                                <i class="fas fa-regular fa-thumbs-down"></i>
-                                            </button>
-                                        </form>
-                                    </div>
+                                   
+                                </div>
+                              
+                               <div class="d-flex">
+                                <span>{{ comments.created_on }}</span>
+                                
+                               </div>
+                               
+                               
+                            </div>
+                            
+                           
+                            
+                            <!-- Optional: Place to the bottom of scripts -->
+                            <script>
+                                const myModal = new bootstrap.Modal(document.getElementById('modalId'), options)
+                            
+                            </script>
+                             <div class="  d-flex">
+                             
+                             
+                                <div class="d-flex justify-content-evenly  col-8">
+                                    <form method="POST" action="{% url "likescomment" comments.id %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="next" value="{{ request.path }}">
+                                        <button  class= "btn btn-info me-5" style="background-color: transparent; border: none;"  type="submit">
+                                            <i class="fas fa-regular fa-thumbs-up "></i>
+                                            <span>{{ comments.likes.all.count }} likes</span>
+                                        </button>
+                                    </form>
+                                    
+                                   
+                                    <form method="POST" action="{% url 'dislikecomment' comments.id %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="next" value="{{ request.path }}">
+                                        <button  class= "btn btn-info me-5 " type="submit" style="background-color: transparent; border: none;" >
+                                            <i class="fas fa-regular fa-thumbs-down"></i>
+                                            <span>{{ comments.dislikes.all.count }} dislike</span>
+                                        </button>
+                                    </form>
+                                    
+                                </div>
+                                <div>
+
+                                    <a type="button" class="btn btn-bs-info-border-subtle "  data-bs-toggle="modal" data-bs-target="#modalId">
+                                        <i class="bi bi-trash3-fill"></i></a>
+                                </div>
+                            </div>
                                     <!-- Modal trigger button -->
                                     
                                     
@@ -198,7 +236,7 @@
                                     
                                     
                                  
-                                </div>
+                                
                             {% endfor %}
                         {% else %}
                             {% for comments in comment %}
@@ -331,7 +369,7 @@
                 {% if user.is_authenticated %}
                 <div class="col-5 right">
                     {% if form.pk %}
-                    <a href="{% url 'Report' form.pk %}" class="btn btn-danger mt-3 align-content-end rep ">Denunciar</a>
+                    <a href="{% url 'Report' form.pk %}" class="btn btn-danger mt-3 align-content-end rep "><i class="bi bi-exclamation-triangle-fill"></i>Denunciar</a>
                     {% endif %}
                     <div class="d-flex justify-content-center ms-5" >
                         {% if actividad.fotoperfil %}
@@ -390,7 +428,7 @@
                     
                     <br>
                         <h3 class="mb-4">Contacto</h3>
-                        <span >{{element.telefono}}</span>
+                        <span >{{actividad.telefono}}</span>
                         <hr>
                         <br>
                          <a href="{% url 'logout'%}?next={{request.path}}" class="btn btn-success mt-3 w-50 cerrarSesion">Cerrar Sesion</a>
@@ -402,7 +440,23 @@
 
                
                 {% else %}
-                <h4>{{form.telefono}}</h4>  
+                {% if not actividad.Descripcion %}
+                <h3 class="mb-4">Descripcion</h3>
+                <span>#armaelparche</span>
+                    
+                    <br>    
+                         
+                {% else %}
+                <h3 class="mb-4">Descripcion</h3>
+                <span >{{form.Descripcion}} </span>
+                {% endif %}
+        </div>
+                <hr>       
+                           
+                            
+                            <br>
+                                <h3 class="mb-4">Contacto</h3>
+                                <span >{{form.telefono}}</span>
                
                 {% endif %}
 

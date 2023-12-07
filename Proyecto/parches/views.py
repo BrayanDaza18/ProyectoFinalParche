@@ -104,22 +104,48 @@ def CreateEvent(request):
         if activity.is_valid():
             usuario = activity.save(commit=False)
 
-            # Aquí deberías asignar el punto deportivo seleccionado al modelo
-            usuario.puntosdeportivos = activity.cleaned_data.get('puntosdeportivos')
 
-            usuario.empresa_idempresa = request.user
+            lugar_modal = request.POST.get('lugarModal', "")
+            lugar_ingresado = request.POST.get('lugar', "")
+
+            usuario.lugar = lugar_ingresado if lugar_ingresado else None
+
+            puntos_deportivos_id = request.POST.get('lugar', None)
+            if puntos_deportivos_id:
+
+                usuario.puntosdeportivos_id = None
+            else:
+                usuario.puntosdeportivos_id = lugar_modal
             usuario.estado = 'activo'
+            usuario.empresa_idempresa = request.user
             usuario.save()
-            return redirect('vistaPrincipal')
         else:
             print("Errores en el formulario CreateEventos:", activity.errors)
-            messages.add_message(request=request, level=messages.ERROR, message='datos incompletos')
 
         return redirect('vistaPrincipal')
 
     print('Puntos deportivos:', puntos_deportivos)
 
     return render(request, 'view/VistasPCU/crearEvento.html', {'activity': activity, 'puntos_deportivos': puntos_deportivos})
+
+
+
+
+from django.http import JsonResponse
+from django.db.models import Count
+from .models import Puntosdeportivos
+from django.views.generic import DetailView
+def get_sorted_puntos_deportivos(request):
+    puntos_deportivos = Puntosdeportivos.objects.annotate(num_eventos=Count('actividad')).order_by('-num_eventos')
+    data = [{'nombre': punto.nombre, 'idPuntoDeportivo': punto.idPuntoDeportivo, 'direccion': punto.direccion, 'num_eventos': punto.num_eventos} for punto in puntos_deportivos]
+
+    return JsonResponse({'puntos_deportivos': data})
+
+
+class PuntoDeportivoDetailView(DetailView):
+    model = Puntosdeportivos
+    template_name = 'view/VistasPCU/punto_deportivo_detail.html'
+    context_object_name = 'punto_deportivo'
 
 
 
@@ -184,10 +210,7 @@ def MostrarEvento(request):
             location=[evento.latitud, evento.longitud],
             popup=f"{evento.nombreactividad}"
         ).add_to(map)
-        maps.append({
-            "map": map._repr_html_(),
-            "idactividad": evento.pk
-        })
+        maps.append({'maps':map._repr_html_(), 'idactividad':evento.pk})
 
     context = {'data': eventos,'form':form, 'tipo_actividad_choices': tipo_actividad_choices, 'maps': maps}
     return render(request, 'view/VistasPCU/mostrarEventos.html', context)
@@ -245,9 +268,14 @@ def SelectUser(request):
 
 def eventForUser(request):
     users = request.user
-    data = Actividad.objects.filter(empresa_idempresa = users)
-    print(data)
-    return render(request, 'view/VistasPCU/viewCreateEventForUser.html',{'data': data})
+    data = Actividad.objects.filter(empresa_idempresa=users)
+
+    # Obtener el número de participantes para cada actividad
+    participantes_por_actividad = {}
+    for actividad in data:
+        participantes_por_actividad[actividad.idactividad] = Realizacion.objects.filter(actividad_idactividad=actividad.idactividad).count()
+
+    return render(request, 'view/VistasPCU/viewCreateEventForUser.html', {'data': data, 'participantes_por_actividad': participantes_por_actividad})
 
 
 def viewEventoELI(request, idactividad):
@@ -263,13 +291,41 @@ def UpdateEvent(request, idactividad):
 
     if form.is_valid() and request.method == 'POST':
         form.save()
+        SendUpdateEvent(event)
         return redirect('eventUser')
+        
     
     else:
         print(form.errors)
 
         
     return render(request, 'view/VistasPCU/UpdateEvent.html', {'form': form})
+
+def SendUpdateEvent(event):
+ realizarcion = Realizacion.objects.filter(actividad_idactividad = event)
+ for elelment in realizarcion:
+    print(elelment)
+    usuario = elelment.usuario_idusuario
+    try:
+        context = {'correo': usuario.correo, 'usuario': usuario, 'event':event}
+        template = get_template('modificacionSend.html')
+        content = template.render(context)
+        print(usuario.correo)
+        print(usuario)
+
+        email = EmailMultiAlternatives(
+            'El evento ha sido modificado Parche',  # Título
+            'Probando app parche',  # Descripción
+            settings.EMAIL_HOST_USER,  # Quién envía el correo
+            [usuario.correo]
+        )
+
+        email.attach_alternative(content, 'text/html')
+        email.send()
+
+    except (ValidationError, SMTPException) as e:
+        print(f"Error al enviar correo: {e}")
+
 
 
 def UpdateUser(request, idregistro,tipousuario):
@@ -704,15 +760,19 @@ def anularinscripcion(request, idregistro, pk):
 def messageEnd():
     userFinally = Actividad.objects.all()
     for element in userFinally:
-        if element.fechafin  < str(datetime.now().date()):
+        if element.fechafin  < str(datetime.now().date()) and element.estado == 'activo':
            element.estado = 'finalizado'
            element.save()
-           realizar = Realizacion.objects.filter(actividad_idactividad = element.idactividad)
-           
-           for realizarc in realizar:
-            if realizarc.usuario_idusuario and element.estado == 'finalizado':
+          
+           if  element.estado == 'finalizado':
+            element.estado = 'enviado'
+            element.save()
+            realizar = Realizacion.objects.filter(actividad_idactividad = element.idactividad)
+            for realizarc in realizar:
+             if realizarc.usuario_idusuario :
                 usuario = realizarc.usuario_idusuario
                 evento = realizarc.actividad_idactividad
+                
                 print(usuario)
                 try:
                    context = {'correo': usuario.correo, 'usuario': usuario.usuario, 'current_datetime': element.fechafin, 'idEvento': evento.pk}
@@ -729,6 +789,7 @@ def messageEnd():
 
                    email.attach_alternative(content, 'text/html')
                    email.send()
+                   
 
                 except (ValidationError, SMTPException) as e:
                   print(f"Error al enviar correo: {e}")

@@ -237,9 +237,14 @@ class Document(forms.ModelForm):
 
 
 class CreateEventos(forms.ModelForm):
+    lugarModal = forms.CharField(
+        widget=forms.HiddenInput(),
+        required=False
+    )
+
     class Meta:
         model = Actividad
-        fields = ['nombreactividad', 'tipoactividad', 'lugar', 'fechainicio', 'fechafin', 'hora', 'imagen', 'contacto', 'descripcion']
+        fields = ['nombreactividad', 'tipoactividad', 'fechainicio', 'fechafin', 'hora', 'imagen', 'contacto', 'descripcion','latitud','longitud']
         widgets = {
             'nombreactividad': forms.TextInput(
                 attrs={
@@ -249,13 +254,6 @@ class CreateEventos(forms.ModelForm):
                     'required': 'required'
                 }),
 
-            'lugar': forms.TextInput(
-                attrs={
-                    'class': 'form-control,justify-content-center',
-                    'placeholder': 'Lugar',
-                    'id': 'lugar',
-                    'required': False
-                }),
             'fechainicio': forms.DateInput(
                 attrs={
                     'class': 'form-control, justify-content-center',
@@ -293,6 +291,20 @@ class CreateEventos(forms.ModelForm):
                     'placeholder': 'Descripción',
                     'id': 'descripcion',
                 }),
+                 'latitud': forms.TextInput(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'latitud',
+                    'id': 'latitud',
+                     'required': False
+                }),
+                 'longitud': forms.TextInput(
+                attrs={
+                    'class': 'form-control,justify-content-center',
+                    'placeholder': 'longitud',
+                    'id': 'longitud',
+                     'required': False
+                }),
         }
 
     latitud = forms.FloatField(widget=forms.HiddenInput(), required=False)
@@ -303,7 +315,13 @@ class CreateEventos(forms.ModelForm):
         user = super().save(commit=False)
         user.latitud = self.cleaned_data.get('latitud', 0)
         user.longitud = self.cleaned_data.get('longitud', 0)
-        user.puntosdeportivos = self.cleaned_data.get('puntosdeportivos')
+        
+        # Obtener el ID del punto deportivo desde lugarModal
+        lugar_modal = self.cleaned_data.get('lugarModal', None)
+
+        # Si hay un ID de punto deportivo seleccionado, asignarlo al campo puntosdeportivos
+        if lugar_modal:
+            user.puntosdeportivos_id = lugar_modal
 
         if commit:
             user.save()
