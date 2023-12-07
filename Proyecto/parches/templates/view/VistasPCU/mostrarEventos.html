@@ -135,12 +135,12 @@
                                 
                                     </div>
                                  
-                                    <div class="descripcion row ">
-                                        <div class="col-6 fondodegradado">
+                                    <div class="descripcion row  ">
+                                        <div class="col-6 fondodegradado border-end border-dark-subtle">
                                             <img src="{{element.imagen.url}}" class="img-fluid rounded-2 ms-4 "
                                                 alt="...">
-
-                                           <div class="row  ms-2 " style="width: 380px;">
+                                            <hr>
+                                           <div class="row  ms-2 " style="width: 430px;">
                                             {% for map in maps %}
                                             {% if map.idactividad == element.idactividad %}
                                             {{ map.maps|safe }}
@@ -166,16 +166,16 @@
                                             </div>
                                             <div class="d-flex justify-content-center text-center" style="margin-bottom: 20px;">
 
-                                                <div class="row col-6 d-flex justify-content-center text-center">
+                                                <div class="row col-6 d-flex justify-content-center text-center ms-4">
                                                     <span class="ms-5">Hora: </span><input type="time" value="{{element.hora}}"
                                                         class="rounded-2 shadow ms-5"
-                                                        style="border-radius: 5px; width: 135px; text-align: center; border: none;" disabled>
+                                                        style="border-radius: 5px; width: 130px; height: 40px; text-align: center; border: none;" disabled>
                                                 </div>
                                                
                                                 <div class="row col-6 d-flex text-start ">
                                                     <span class="ms-4"> Fecha de Inicio: </span><input type="date"
                                                         value="{{element.fechainicio}}" class="rounded-2 shadow ms-4"
-                                                        style="border-radius: 5px;  width: 140px; text-align: center; border: none;" disabled>
+                                                        style="border-radius: 5px;  width: 125px;height: 40px; text-align: center; border: none;" disabled>
                                                 </div>
                                             </div>
                                             <div class="row d-flex justify-content-center text-center">
@@ -254,14 +254,14 @@
                 var idactividad = this.getAttribute('data-id');
                 var nombreactividad = this.getAttribute('data-nombre');
                 
-                var enlace = window.location.origin + '/detalles/' + idactividad + '/';
+                var enlace = window.location.ori
+                    console.error('Error al copiar enlace: ', err);
+                });gin + '/detalles/' + idactividad + '/';
                 
                 var mensaje = 'texto copiado en portapapeles';
                 navigator.clipboard.writeText(enlace).then(function() {
                     alert(mensaje);
                 }).catch(function(err) {
-                    console.error('Error al copiar enlace: ', err);
-                });
             });
         });
     });

@@ -17,14 +17,16 @@
     {%  include "view/VistasPCU/SearcheBar.html" %}
 </div>
 
-
+<div>
+  
+</div>
   {% for realizacion in data %}
      {% if request.user %}
-     <div class="mt-5  d-flex justify-content-center p-5 flex-wrap">
-      <div class="card mb-4 p-3 " style="max-width: 840px; background-color: rgba(251, 234, 234, 0.572);">
+     <div class="mt-5 d-flex justify-content-center p-5 flex-wrap">
+      <div class="card mb-4 p-3 " style="width: 840px; background-color: rgba(251, 234, 234, 0.572);">
         <div class="row g-0 ">
           <div class="col-md-4">
-            <img src="{{realizacion.imagen.url}}" class="img-fluid rounded-start" alt="...">
+            <img src="{{realizacion.imagen.url}}" class="img-fluid rounded-start d-flex justify-content-center align-content-center" alt="...">
           </div>
           <div class="col-md-8">
             <div class="card-body">
@@ -37,7 +39,7 @@
           </div>
         </div>
       </div>
-      
+     </div>
     {% endif %}
   {% endfor %}
 
