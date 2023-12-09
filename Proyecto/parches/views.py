@@ -46,8 +46,8 @@ from django.template.loader import get_template
 
 
 def HomepageProject(request):
-     form = EmpresaPersona.objects.get(usuario= request.user)
-     return render(request, 'view/VistasPCU/vistaPrincipal.html',{'form': form})
+  
+     return render(request, 'view/VistasPCU/vistaPrincipal.html')
 
 
 
@@ -415,7 +415,6 @@ def send_email_empresa(usuario, correo, nombreempresa, fecha_hora_actual):
 
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
-from django.utils.html import strip_tags
 from django.conf import settings
 
 
@@ -427,14 +426,14 @@ def send_report_email(request, pk):
         # EmpresaPersona = get_user_model()
         # usuario_reportado = EmpresaPersona.objects.get(idregistro=usuario_reportado_id)
         usuario = EmpresaPersona.objects.get(idregistro=pk)
-        motivo = request.POST.get('motivo')
 
+        motivo = request.POST.get('motivo')
         infraccion1 = request.POST.get('infraccion1')
         infraccion2 = request.POST.get('infraccion2')
         infraccion3 = request.POST.get('infraccion3')
         infraccion4 = request.POST.get('infraccion4')
         infraccion5 = request.POST.get('infraccion5')
-
+        
         context = {
             'usuario': usuario,
             'motivo': motivo,

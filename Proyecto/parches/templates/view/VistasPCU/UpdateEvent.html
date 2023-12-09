@@ -79,34 +79,29 @@
                             <div class="col-6 d-block justify-content-center align-items-center">
                                 <div class="input-group p-3">
                                     <span class="input-group-text">Nombre del evento</span>
-                                    <input type="text" aria-label="nombreactividad" name="nombreactividad" class="form-control">{{ form.nombreactividad }}
+                                    {{ form.nombreactividad }}
                                 </div>
                                 <div class="d-flex justify-content-center align-content-center">
                                     <div class="p-2" style="border: 1px solid #e4e7ea; width: 637px; border-radius: 6px;">
                                         <span class="p-1" style="border-radius: 7px;">Seleccione el tipo de evento
-                                            <select name="tipoactividad" style="border-radius: 10px; margin-left: 270px;">
-                                                {% for value, label in activity.fields.tipoactividad.choices %}
-                                                <option value="{{ value }}">{{ label }}</option>
-                                                {% endfor %}
-                                                       
-                                            </select>
+                                            <a style="margin-left: 270px; ">{{ form.tipoactividad }}</a>
                                         </span>   
                                     </div>    
                                 </div>
                                 <div class="p-3 d-block justify-content-center align-content-center">
                                     <div class="p-2" style="border: 1px solid #e4e7ea; width: 637px; border-radius: 6px;">
                                         <span>Seleccione la fecha de inicio
-                                            <input type="date" name="fechafin" style="border-radius: 10px; margin-left: 270px;"></span>
+                                            {{ form.fechainicio }}
                                     </div>
                                     <div class="p-2 mt-1" style="border: 1px solid #e4e7ea; width: 637px; border-radius: 6px;">
                                         <span>Seleccione la fecha de fin
-                                            <input type="date" name="fechainicio" style="border-radius: 10px; margin-left: 290px;"></span>
+                                            {{ form.fechafin }}
                                     </div>  
                                 </div>
                                 <div class="d-flex justify-content-center align-content-center">
                                     <div class="p-1" style="border: 1px solid #e4e7ea; width: 637px; border-radius: 6px;">
                                         <span style="border-radius: 7px;">Seleccione la hora del evento
-                                            <input type="time" name="hora" style="border-radius: 10px; margin-left: 285px;"></span>            
+                                            {{ form.hora }}          
                                     </div>
                                 </div>
                                 <div class="p-3 d-flex justify-content-center align-content-center">
@@ -114,30 +109,27 @@
                                         <div>
                                             <span >Escriba una breve descripción del evento</span>  
                                         </div>
-                                            <textarea name="descripcion" id="" cols="70" rows="2" style="border-radius: 10px;"></textarea>          
+                                        {{ form.descripcion }}      
                                     </div> 
                                 </div>
                                 <div class="d-flex justify-content-center align-content-center">
                                     <div class="p-1" style="border: 1px solid #e4e7ea; width: 637px; border-radius: 6px;">
                                         <input type="text" name="lugar" id="lugar" placeholder="Ingrese otra dirección" style="border-radius: 10px; margin-left: 20px;">
-                                        <select name="puntosdeportivos" id="direccion" style="border-radius: 10px; margin-left: 120px;">
-                                            <option value="" disabled selected>Puntos deportivos comunes</option>
-                                            {% for punto in puntos_deportivos %}
-                                                <option value="{{ punto.idPuntoDeportivo }}">{{ punto.nombre }}, {{ punto.direccion }}</option>
-                                            {% endfor %}
-                                        </select>
+                                        {{ form.lugar }}
                                     </div>
                                 </div>
                                 <div class="p-3 d-flex justify-content-center align-content-center">
                                     <div class="p-1" style="border: 1px solid #e4e7ea; width: 637px; border-radius: 6px;">
                                         <span>Digite su numero de contacto
-                                            <input type="number" placeholder="Contacto" name="contacto" style="border-radius: 10px; margin-left: 210px;"></span>            
+                                            {{ form.contacto }}  
+                                            {{form.longitud}}
+                                            {{form.latitud}}          
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-center align-content-center">
                                     <div class="p-1" style="border: 1px solid #e4e7ea; width: 637px; border-radius: 6px;">
                                         <span>Agrega imagen al evento
-                                            <input type="file" name="imagen" placeholder="Cargar imagen de portada" style="border-radius: 5px; margin-left: 115px;">
+                                            {{ form.imagen }}
                                         </span>
                                     </div> 
                                 </div>
@@ -145,7 +137,7 @@
                         </div>
                     </div>
                     <div class="crearEvento d-flex justify-content-center align-items-center">
-                        <button class="btn btn-success" type="submit">Crear Evento</button>
+                        <button class="btn btn-success" type="submit">Modificar</button>
                     </div>
                 </form>
                 {% if messages %}
