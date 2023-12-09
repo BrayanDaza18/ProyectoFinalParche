@@ -1,9 +1,11 @@
 from django.conf import settings
 from django.contrib.staticfiles.urls import static
 from django.urls import include, path
+
 from . import views
 from .views import (ActividadDetailAPIView, ActividadListAPIView,
-                    EmpresaPersonaDetailAPIView, EmpresaPersonaListAPIView, PuntoDeportivoDetailView, get_sorted_puntos_deportivos)
+                    EmpresaPersonaDetailAPIView, EmpresaPersonaListAPIView,
+                    PuntoDeportivoDetailView, get_sorted_puntos_deportivos)
 
 urlpatterns = [
     

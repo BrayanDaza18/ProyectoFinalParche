@@ -9,9 +9,7 @@
     <link rel="stylesheet" href="{% static "CSS/bootstrap.css" %}" />
     <link rel="stylesheet" href="{% static "CSS/style.css" %}">
     <style>
-        body {
-            padding: 20px;
-        }
+     
 
         form {
             text-align: center;
@@ -67,11 +65,15 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
-<body>
+<body style="background-color: #D8CBB1;" class="g-0">
 
 
+    <div  class="container-fluid   "
+    style="background-color: #393BC2; z-index: -3; ">
+    {%  include "view/VistasPCU/SearcheBar.html" %}
+</div>
 
-    <!-- Mostrar los eventos -->
+  
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -80,7 +82,7 @@
                         <div class="row event">
                             <div class="primerafila">
                                 <div class=" col-12 tablaUno rounded-2 ">
-                                    <div class="nombretorneo">
+                                    <div class="nombretorneo d-flex justify-content-center">
                                         <h4 class="text-center" style="color:white ;">{{evento.nombreactividad}}</h4>
                                     </div>
                                     <div class="descripcion row mt-3">
@@ -137,8 +139,14 @@
                                     </div>
                                     <div class="vinculo mt-3">
                                         <div class="col-6" style="margin-left: 220px;">
-                                            <button class="text-white" disabled>UNIRME <img src="{% static "img/unirme.png" %} "style=" margin:5px ;" width="20px" height="20px"alt="">
-                                            </button>
+                                            <form method='POST' action="{% url 'joinEvent' evento.pk %}">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="actividad_idactividad" value="{{ evento.pk }}">
+                                             
+                                                <button type='submit' class=" mt-4 text-white">
+                                                    UNIRME <img src="{% static 'img/unirme.png' %}" style="margin:8px;" width="20px" height="20px" alt="">
+                                                </button>
+                                            </form>
                                         </div>
 
                                     </div>

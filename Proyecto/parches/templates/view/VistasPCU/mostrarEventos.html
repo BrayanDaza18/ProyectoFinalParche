@@ -8,8 +8,10 @@
     <title>Eventos</title>
     <link rel="stylesheet" href="{% static "CSS/bootstrap.css" %}" />
     <link rel="stylesheet" href="{% static "CSS/style.css" %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
             padding: 20px;
@@ -89,18 +91,14 @@
     <!-- Mostrar los eventos -->
     {% if messages %}
     {% for message in messages %}
-    
-        {% if message.tags == messages.SUCCESS %}
-            <div class="alert alert-success" role="alert">
-                {{ message }}
-            </div>
-        {% else %}
-            <div class="alert alert-success" role="alert">
-                {{ message }}
-            </div>
-            
+    <script>
+        Swal.fire({
+  title: "{{ message }}",
+  text: "!todo esta correcto¡",
+  icon: "{{ message.tags }}"
+});
+    </script>
       
-        {% endif %}
     {% endfor %}
 {% endif %}
             {% for element in data %}
@@ -226,13 +224,13 @@
                                                 {% csrf_token %}
                                                 <input type="hidden" name="actividad_idactividad" value="{{ element.pk }}">
                                              
-                                                <button type='submit' class="compartir mt-4 text-white">
+                                                <button type='submit' class=" mt-4 text-white">
                                                     UNIRME <img src="{% static 'img/unirme.png' %}" style="margin:8px;" width="20px" height="20px" alt="">
                                                 </button>
                                             </form>
                                         </div>
                                    
-                                        <div class="col-6">
+                                        <div class="col-6 ">
                                             <button class="compartir" data-id="{{ element.idactividad }}" data-nombre="{{ element.nombreactividad }}">Compartir <img src="{% static "img/compartir.png" %}" style="margin:6px ;" width="22px"height="25px" alt=""></button>
 
                                         </div>
@@ -253,7 +251,7 @@
         </div>
     </div>
 
-    <!-- Mostrar mensaje si no se encuentran eventos -->
+ 
     {% if data.count == 0  %}
     <p style="text-align: center;">No se encontraron eventos.</p>
     {% endif %}
@@ -263,7 +261,6 @@
 </html>
 
 <script>
-
     document.addEventListener('DOMContentLoaded', function() {
         var botonesCompartir = document.querySelectorAll('.compartir');
         botonesCompartir.forEach(function(boton) {
@@ -271,14 +268,20 @@
                 var idactividad = this.getAttribute('data-id');
                 var nombreactividad = this.getAttribute('data-nombre');
                 
-                var enlace = window.location.ori
-                    console.error('Error al copiar enlace: ', err);
-                });gin + '/detalles/' + idactividad + '/';
+                var enlace = window.location.origin + '/detalles/' + idactividad + '/';
                 
                 var mensaje = 'texto copiado en portapapeles';
                 navigator.clipboard.writeText(enlace).then(function() {
-                    alert(mensaje);
+                    Swal.fire({
+  position: "top-end",
+  icon: "success",
+  title: mensaje,
+  showConfirmButton: false,
+  timer: 1500
+});
                 }).catch(function(err) {
+                    console.error('Error al copiar enlace: ', err);
+                });
             });
         });
     });

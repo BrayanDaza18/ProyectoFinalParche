@@ -4,8 +4,9 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+
 from .models import (Actividad, Documento, EmpresaPersona, Persona,
-                     Realizacion, comentarioUSer, Puntosdeportivos)
+                     Puntosdeportivos, Realizacion, comentarioUSer)
 
 
 def validate_password(value):
@@ -247,7 +248,7 @@ class CreateEventos(forms.ModelForm):
 
         fields = ['nombreactividad', 'tipoactividad', 'lugar', 'fechainicio', 'fechafin', 'hora', 'imagen', 'contacto', 'descripcion','latitud','longitud']
 
-        fields = ['nombreactividad', 'tipoactividad', 'fechainicio', 'fechafin', 'hora', 'imagen', 'contacto', 'descripcion','latitud','longitud']
+      
 
         widgets = {
             'nombreactividad': forms.TextInput(

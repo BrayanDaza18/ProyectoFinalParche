@@ -14,6 +14,8 @@
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body style="background-color: rgb(4, 179, 75)">
  
@@ -76,7 +78,7 @@
                 </div>
             
                 <div class="crearEvento">
-                    <button type="submit">Crear Evento</button>
+                    <button class="Update-event" type="submit">Crear Evento</button>
                 </div>
             </form>
         </div>
@@ -84,6 +86,26 @@
     
 </body>
 </html>
+<script>
+    $(document).ready(function () {
+   
+        $(".Update-event").click(function (e) {
+            e.preventDefault(); 
+
+           
+            Swal.fire({
+                title: "Evento Modificado",
+                text: "Disfruta del Deporte",
+                icon: "success"
+            }).then((result) => {
+     
+                if (result.isConfirmed) {
+                    window.location.href = "{% url 'eventUser' %}";
+                }
+            });
+        });
+    });
+</script>
 <script>
     var latitud = 2.9304;
     var longitud = -75.2829;
@@ -97,7 +119,7 @@
         var mymap = L.map('mapa').setView([latitud, longitud], zoom);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mymap);
 
-        // Limitar el mapa a la vista de Neiva, Huila
+       la
         mymap.setMaxBounds([
             [2.9104, -75.3129],
             [2.9504, -75.2529]
@@ -116,7 +138,6 @@
 
             marker = L.marker([clickedLatitud, clickedLongitud]).addTo(mymap);
 
-            // Actualiza los campos ocultos en el formulario
             document.getElementById("id_latitud").value = clickedLatitud;
             document.getElementById("id_longitud").value = clickedLongitud;
         });

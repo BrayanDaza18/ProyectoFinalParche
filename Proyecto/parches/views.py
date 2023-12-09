@@ -37,6 +37,7 @@ from .models import (Actividad, EmpresaPersona, Persona, Puntosdeportivos,
 
 
 def HomepageProject(request):
+    
      return render(request, 'view/VistasPCU/vistaPrincipal.html')
 
 
@@ -96,17 +97,6 @@ def CreateEvent(request):
             usuario = activity.save(commit=False)
 
 
-            lugar_modal = request.POST.get('lugarModal', "")
-            lugar_ingresado = request.POST.get('lugar', "")
-
-            usuario.lugar = lugar_ingresado if lugar_ingresado else None
-
-            puntos_deportivos_id = request.POST.get('lugar', None)
-            if puntos_deportivos_id:
-
-                usuario.puntosdeportivos_id = None
-            else:
-                usuario.puntosdeportivos_id = lugar_modal
             usuario.estado = 'activo'
             usuario.empresa_idempresa = request.user
             usuario.save()
@@ -115,7 +105,7 @@ def CreateEvent(request):
 
         return redirect('vistaPrincipal')
 
-    print('Puntos deportivos:', puntos_deportivos)
+
 
     return render(request, 'view/VistasPCU/crearEvento.html', {'activity': activity, 'puntos_deportivos': puntos_deportivos})
 
@@ -262,13 +252,14 @@ def SelectUser(request):
 def eventForUser(request):
     users = request.user
     data = Actividad.objects.filter(empresa_idempresa=users)
+    form = EmpresaPersona.objects.get(usuario = users)
 
     # Obtener el número de participantes para cada actividad
     participantes_por_actividad = {}
     for actividad in data:
         participantes_por_actividad[actividad.idactividad] = Realizacion.objects.filter(actividad_idactividad=actividad.idactividad).count()
 
-    return render(request, 'view/VistasPCU/viewCreateEventForUser.html', {'data': data, 'participantes_por_actividad': participantes_por_actividad})
+    return render(request, 'view/VistasPCU/viewCreateEventForUser.html', {'data': data,'form':form ,'participantes_por_actividad': participantes_por_actividad})
 
 
 
@@ -287,7 +278,7 @@ def UpdateEvent(request, idactividad):
         form.save()
         SendUpdateEvent(event)
         return redirect('eventUser')
-        
+    
     
     else:
         print(form.errors)
@@ -626,15 +617,16 @@ def joinEvent(request, pk):
             print(post.errors)
             messages.add_message(request=request, level=messages.ERROR, message='No puedes unirte de nuevo')
 
-    return redirect('mostrarEventos')
+   
 
 
 
 def eventoRegistration(request):
+    form = EmpresaPersona.objects.get(usuario = request.user)
     send = Realizacion.objects.filter(usuario_idusuario=request.user) 
-    form = Actividad.objects.filter(idactividad__in=send.values('actividad_idactividad'))
+    data = Actividad.objects.filter(idactividad__in=send.values('actividad_idactividad'))
     print(f"elemento{form}")
-    return render(request, 'view/VistasPCU/eventoEgistration.html', {'data':form})
+    return render(request, 'view/VistasPCU/eventoEgistration.html', {'data':data, 'form':form})
     
 
 def deleteRegistration(request,idactividad):
