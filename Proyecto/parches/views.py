@@ -37,9 +37,7 @@ from .models import (Actividad, EmpresaPersona, Persona, Puntosdeportivos,
 
 
 def HomepageProject(request):
-    
      return render(request, 'view/VistasPCU/vistaPrincipal.html')
-
 
 
 
@@ -66,6 +64,7 @@ def registerUser(request):
             now = datetime.now()
             fecha_hora_actual = now.strftime("%Y-%m-%d %H:%M:%S")
             send_email(correo, usuario, fecha_hora_actual)
+            messages.success(request, "Usuario Creado")
             return redirect('login')
 
     return render(request, 'registration/register.html', {'form': form})
@@ -100,12 +99,16 @@ def CreateEvent(request):
             usuario.estado = 'activo'
             usuario.empresa_idempresa = request.user
             usuario.save()
-        else:
+            messages.success(request, 'evento creado')
+            return redirect('vistaPrincipal')
+
+
+        else: 
+            messages.error(request, 'datos incompletos')
             print("Errores en el formulario CreateEventos:", activity.errors)
 
-        return redirect('vistaPrincipal')
 
-
+        
 
     return render(request, 'view/VistasPCU/crearEvento.html', {'activity': activity, 'puntos_deportivos': puntos_deportivos})
 
@@ -162,7 +165,7 @@ def RegisterCompany(request):
             fecha_hora_actual = now.strftime("%Y-%m-%d %H:%M:%S")
             
             send_email_empresa(usuario, correo, nombreempresa, fecha_hora_actual)
-
+            messages.success(request, "Empresa Creada")
             return redirect('login')
         else:
             print("Errores en el formulario FormUserCompany:", form.errors)
@@ -178,7 +181,7 @@ def MostrarEvento(request):
     messageEnd()
     query = request.GET.get('q', '')
     tipo_actividad = request.GET.get('tipo_actividad', '') 
-    form = EmpresaPersona.objects.all()
+    form = EmpresaPersona.objects.get(usuario = request.user)
     eventos = Actividad.objects.all()
     if query:
         eventos = eventos.filter(nombreactividad__icontains=query)
@@ -203,6 +206,7 @@ def MostrarEvento(request):
 
 def DetallesEvento(request, idactividad):
     evento = get_object_or_404(Actividad, idactividad=idactividad)
+    form = EmpresaPersona.objects.get(usuario= request.user)
 
     mapa = folium.Map(location=[evento.latitud, evento.longitud], zoom_start=13)
     folium.Marker(
@@ -212,7 +216,7 @@ def DetallesEvento(request, idactividad):
 
     mapa_html = mapa._repr_html_()
 
-    return render(request, 'view/VistasPCU/detalles_evento.html', {'evento': evento, 'mapa_html': mapa_html})
+    return render(request, 'view/VistasPCU/detalles_evento.html', {'evento': evento, 'mapa_html': mapa_html, 'form': form})
 
 @login_required
 def Profile(request):
@@ -277,6 +281,7 @@ def UpdateEvent(request, idactividad):
     if form.is_valid() and request.method == 'POST':
         form.save()
         SendUpdateEvent(event)
+        messages.success(request, 'Evento Modificado')
         return redirect('eventUser')
     
     
@@ -285,6 +290,9 @@ def UpdateEvent(request, idactividad):
 
         
     return render(request, 'view/VistasPCU/UpdateEvent.html', {'form': form})
+
+
+
 
 def SendUpdateEvent(event):
  realizarcion = Realizacion.objects.filter(actividad_idactividad = event)
@@ -322,6 +330,7 @@ def UpdateUser(request, idregistro,tipousuario):
     if form.is_valid() and request.method == 'POST':
         form.save()
         update_session_auth_hash(request, form)
+        messages.success(request,"datos del usuario modificado ")
         return redirect('profile')
     else:
         print(form.errors)
@@ -397,56 +406,14 @@ def send_email_empresa(usuario, correo, nombreempresa, fecha_hora_actual):
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
+
 from django.utils.html import strip_tags
 
+from django.conf import settings
 
-def send_report_email(request, pk):
-    print("Entró en send_report_email")
-    
-    try:
-                # Obtener el objeto del usuario_reportado usando el ID
-        # EmpresaPersona = get_user_model()
-        # usuario_reportado = EmpresaPersona.objects.get(idregistro=usuario_reportado_id)
-        usuario = EmpresaPersona.objects.get(idregistro=pk)
-        motivo = request.POST.get('motivo')
 
-        infraccion1 = request.POST.get('infraccion1')
-        infraccion2 = request.POST.get('infraccion2')
-        infraccion3 = request.POST.get('infraccion3')
-        infraccion4 = request.POST.get('infraccion4')
-        infraccion5 = request.POST.get('infraccion5')
 
-        context = {
-            'usuario': usuario,
-            'motivo': motivo,
-            'infraccion1': infraccion1,
-            'infraccion2': infraccion2,
-            'infraccion3': infraccion3,
-            'infraccion4': infraccion4,
-            'infraccion5': infraccion5
-            }
-        template = get_template('correo_reporte.html')
-        content = template.render(context)
 
-        email = EmailMultiAlternatives(
-                    'Reporte de usuario',
-                    'Probando app parche',
-                    settings.EMAIL_HOST_USER,
-                    ['contactoparchecorp@gmail.com']
-                )
-
-        email.attach_alternative(content, 'text/html')
-        email.send()
-
-        print(f"Correo enviado:")
-        return HttpResponse("Correo de reporte enviado correctamente")
-    except EmpresaPersona.DoesNotExist:
-                messages.error(request, 'Usuario no encontrado.')
-    except Exception as e:
-                print(f"Error al enviar correo de reporte: {e}")
-                messages.error(request, 'Error al enviar correo de reporte.')
-
-    return render(request, 'view/VistasPCU/perfil.html')
 
     
 
@@ -721,7 +688,8 @@ def send_report_email(request, pk):
         email.send()
 
         print(f"Correo enviado:")
-        return HttpResponse("Correo de reporte enviado correctamente")
+        messages.success(request, "reporte enviado correctamente")
+        return redirect('interfaz',empresa_idempresa= usuario)
     except EmpresaPersona.DoesNotExist:
         print("no funciono")
         

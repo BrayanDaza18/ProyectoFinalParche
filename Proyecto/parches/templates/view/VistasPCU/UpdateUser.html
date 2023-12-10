@@ -25,7 +25,7 @@
             <h2 class="text-white" style="font-style: italic;">Actualiza tu informacion</h2>
             <hr class="border border-4 border border-black">
         </div>
-        <form method="post" enctype="multipart/form-data" id="actualizarPerfilForm">
+        <form method="post" enctype="multipart/form-data" >
             {% csrf_token %}
             <div class="inputRegistro">
                 <div class="nombreRegistro d-block">
@@ -60,21 +60,5 @@
 
 {% endif %}
 </body>
-<script>
-    $(document).ready(function () {
-        $("#actualizarPerfilForm").submit(function (e) {
-            e.preventDefault(); // Evita el comportamiento predeterminado del formulario
 
-            Swal.fire({
-                title: "Evento Creado",
-                text: "Disfruta del Deporte",
-                icon: "success"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $(this).unbind('submit').submit(); // Envía el formulario después de la alerta
-                }
-            });
-        });
-    });
-</script>
 </html>

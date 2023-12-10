@@ -18,7 +18,18 @@
   style="background-color: #cbe9d7; z-index: -3; ">
   {%  include "view/VistasPCU/SearcheBar.html" %}
 </div>
-
+{% if messages %}
+{% for message in messages %}
+<script>
+    Swal.fire({
+title: "{{ message }}",
+text: "!todo esta correcto¡",
+icon: "{{ message.tags }}"
+});
+</script>
+  
+{% endfor %}
+{% endif %}
 <div class="mt-5  d-flex justify-content-center p-5 flex-wrap">
 
 

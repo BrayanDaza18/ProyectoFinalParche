@@ -17,49 +17,216 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
-<body style="background-color: rgb(4, 179, 75)">
- 
-    <div class="pagina container-fluid">
-        <div class="carta">
-            <div class="titulo">
-                <h1>Nuevo Evento</h1>
+<body>
+    <div class="container-fluid d-flex justify-content-center align-items-center"
+        style="height: 44.8rem;  background-color: rgb(214, 213, 213);">
+        <div class="pagina container-fluid">
+            <div class="carta">
+                <div class="titulo bg-success">
+                    <h1>Modificar Evento</h1>
+                </div>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div>
+                        <div class="parteCuatro">
+                            <div class="col-6 mapa">
+                                <p>Marca el mapa</p>
+                                <div id="mapa" style="height: 500px; width: 500px; margin-left: 110px;"></div>
+    
+                                {{ activity.latitud }}
+                                {{ activity.longitud }}
+    
+                                <script>
+                                    var latitud = 2.9304;
+                                    var longitud = -75.2829;
+                                    var zoom = 13;
+                                    var marker;
+    
+                                    console.log('Latitud:', latitud);
+                                    console.log('Longitud:', longitud);
+    
+                                    if (!isNaN(latitud) && !isNaN(longitud) && !isNaN(zoom)) {
+                                        var mymap = L.map('mapa').setView([latitud, longitud], zoom);
+                                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mymap);
+    
+                                        // Limitar el mapa a la vista de Neiva, Huila
+                                        mymap.setMaxBounds([
+                                            [2.9104, -75.3129],
+                                            [2.9504, -75.2529]
+                                        ]);
+    
+                                        mymap.on('click', function (e) {
+                                            var clickedLatitud = e.latlng.lat;
+                                            var clickedLongitud = e.latlng.lng;
+    
+                                            console.log('Latitud clic:', clickedLatitud);
+                                            console.log('Longitud clic:', clickedLongitud);
+    
+                                            if (marker) {
+                                                mymap.removeLayer(marker);
+                                            }
+    
+                                            marker = L.marker([clickedLatitud, clickedLongitud]).addTo(mymap);
+    
+                                            // Actualiza los campos ocultos en el formulario
+                                            document.getElementById("id_latitud").value = clickedLatitud;
+                                            document.getElementById("id_longitud").value = clickedLongitud;
+                                        });
+                                    } else {
+                                        console.error("Error al obtener las coordenadas o el zoom desde el contexto de Django.");
+                                    }
+                                </script>
+                            </div>
+                            <div class="col-6 d-block justify-content-center align-items-center">
+                                <div class="input-group p-3">
+                                    <span class="input-group-text">Nombre del evento</span>
+                                    {{ form.nombreactividad }}
+                                </div>
+                                <div class="d-flex justify-content-center align-content-center">
+                                    <div class="p-2" style="border: 1px solid #e4e7ea; width: 637px; border-radius: 6px;">
+                                        <span class="p-1" style="border-radius: 7px;">Seleccione el tipo de evento
+                                            <a style="margin-left: 270px; ">{{ form.tipoactividad }}</a>
+                                        </span>   
+                                    </div>    
+                                </div>
+                                <div class="p-3 d-block justify-content-center align-content-center">
+                                    <div class="p-2" style="border: 1px solid #e4e7ea; width: 637px; border-radius: 6px;">
+                                        <span>Seleccione la fecha de inicio
+                                            {{ form.fechainicio }}
+                                    </div>
+                                    <div class="p-2 mt-1" style="border: 1px solid #e4e7ea; width: 637px; border-radius: 6px;">
+                                        <span>Seleccione la fecha de fin
+                                            {{ form.fechafin }}
+                                    </div>  
+                                </div>
+                                <div class="d-flex justify-content-center align-content-center">
+                                    <div class="p-1" style="border: 1px solid #e4e7ea; width: 637px; border-radius: 6px;">
+                                        <span style="border-radius: 7px;">Seleccione la hora del evento
+                                            {{ form.hora }}          
+                                    </div>
+                                </div>
+                                <div class="p-3 d-flex justify-content-center align-content-center">
+                                    <div style="border: 1px solid #e4e7ea; width: 637px; border-radius: 6px;">
+                                        <div>
+                                            <span >Escriba una breve descripción del evento</span>  
+                                        </div>
+                                        {{ form.descripcion }}      
+                                    </div> 
+                                </div>
+                                <div class="d-flex justify-content-center align-content-center">
+                                    <div class="p-1" style="border: 1px solid #e4e7ea; width: 637px; border-radius: 6px;">
+                                        <input type="text" name="lugar" id="lugar" placeholder="Ingrese otra dirección" style="border-radius: 10px; margin-left: 20px;">
+                                        {{ form.lugar }}
+                                    </div>
+                                </div>
+                                <div class="p-3 d-flex justify-content-center align-content-center">
+                                    <div class="p-1" style="border: 1px solid #e4e7ea; width: 637px; border-radius: 6px;">
+                                        <span>Digite su numero de contacto
+                                            {{ form.contacto }}  
+                                            {{form.longitud}}
+                                            {{form.latitud}}          
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-center align-content-center">
+                                    <div class="p-1" style="border: 1px solid #e4e7ea; width: 637px; border-radius: 6px;">
+                                        <span>Agrega imagen al evento
+                                            {{ form.imagen }}
+                                        </span>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="crearEvento d-flex justify-content-center align-items-center">
+                        <button class="btn btn-success" type="submit">Modificar</button>
+                    </div>
+                </form>
+                {% if messages %}
+                {% for message in messages %}
+                
+                    {% if message.tags == messages.SUCCESS %}
+                        <div class="alert alert-success" role="alert">
+                            {{ message }}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ message }}
+                        </div>
+                        
+                  
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
             </div>
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-              
-                <div class="row parteUno">
-                    <div class="col-6 seleccion">
-                        {{ form.nombreactividad }}
-                        {{ form.tipoactividad }}
-                    </div>
-                    <div class="col-6 cargarImagen">
-                        <div class="bloque">
-                            <img style="background-color:rgb(209, 203, 203);" width="70px" height="90px" src="{% static "img/5097978-removebg-preview.png" %}" alt="">
-                            {{ form.imagen }}
-                        </div>
-                    </div>
+        </div>
+    </div>
+
+
+    <!-- <div class="container-fluid d-flex justify-content-center align-items-center"
+    style="height: 44.8rem;  background-color: rgb(214, 213, 213);">
+        <div class="container-fluid d-flex justify-content-center align-items-center">
+            <div class="carta">
+                <div class="titulo">
+                    <h1>Modificar Evento</h1>
                 </div>
-                
-                <div class="row parteDos">
-                    <div class="col-6 fecha">
-                        <div class="tiempo">
-                            {{ form.fechainicio }}
-                            {{ form.fechafin }}
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                <div class="d-block justify-content-center align-items-center">
+                    <div class="row parteUno">
+                        <div class="col-6 seleccion">
+                            {{ form.nombreactividad }}
+                            {{ form.tipoactividad }}
                         </div>
-                        <div class="hora">
-                            {{ form.hora }}
+                        <div class="col-6 cargarImagen">
+                            <div class="bloque">
+                                <img style="background-color:rgb(209, 203, 203);" width="70px" height="90px" src="{% static "img/5097978-removebg-preview.png" %}" alt="">
+                                {{ form.imagen }}
+                            </div>
                         </div>
                     </div>
-                    <div class="col-6 descripcion">
-                        {{ form.descripcion }}
+                    
+                    <div class="row parteDos">
+                        <div class="col-6 fecha">
+                            <div class="tiempo">
+                                {{ form.fechainicio }}
+                                {{ form.fechafin }}
+                            </div>
+                            <div class="hora">
+                                {{ form.hora }}
+                            </div>
+                        </div>
+                        <div class="col-6 descripcion">
+                            {{ form.descripcion }}
+                        </div>
                     </div>
-                </div>
+                    
+                    <div class="parteTres">
+                        <div class="col-6 lugar">
+                            {{ form.lugar }}
+                            <button>Seleccionar ubicación</button>
+                        </div>
+                        <div class="col-6 contacto">
+                            {{ form.contacto }}
+                            {{form.longitud}}
+                            {{form.latitud}}
+                        </div>
+                     
+                    </div>
                 
-                <div class="parteTres">
-                    <div class="col-6 lugar">
-                        {{ form.lugar }}
-                        <button>Seleccionar ubicación</button>
+                    <div class="parteCuatro">
+                        <div class="col-6 mapa">
+                            <div id="mapa" style="height: 300px; width: 500px; margin-left: 110px;"></div>
+                        </div>
+                        <div class="col-6 publicidad">
+                            <img src="{% static "img/Penguins.jpg" %}" alt="">
+                        </div>
                     </div>
+                
+                    <div class="crearEvento">
+                        <button type="submit" class="btn-btn bg-success">Modificar Evento</button>
+                    </div>
+<<<<<<< HEAD
                     <div class="col-6 contacto">
                         {{ form.contacto }}
                         {{form.longitud}}
@@ -81,6 +248,12 @@
                     <button class="Update-event" type="submit">Crear Evento</button>
                 </div>
             </form>
+=======
+                </div>  
+                    
+                </form>
+            </div>
+>>>>>>> backup
         </div>
     </div>
     
@@ -144,4 +317,7 @@
     } else {
         console.error("Error al obtener las coordenadas o el zoom desde el contexto de Django.");
     }
+<<<<<<< HEAD
 </script>
+=======
+</script> -->
