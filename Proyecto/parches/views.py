@@ -176,13 +176,14 @@ def RegisterCompany(request):
 
 
 
-@login_required
+
 def MostrarEvento(request):
     messageEnd()
     query = request.GET.get('q', '')
     tipo_actividad = request.GET.get('tipo_actividad', '') 
-    form = EmpresaPersona.objects.get(usuario = request.user)
+    
     eventos = Actividad.objects.all()
+    form = EmpresaPersona.objects.filter(usuario__in = eventos.values('empresa_idempresa'))
     if query:
         eventos = eventos.filter(nombreactividad__icontains=query)
     if tipo_actividad:
@@ -406,16 +407,8 @@ def send_email_empresa(usuario, correo, nombreempresa, fecha_hora_actual):
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
-
 from django.utils.html import strip_tags
 
-from django.conf import settings
-
-
-
-
-
-    
 
 def addLikes(request, pk):
     post = EmpresaPersona.objects.get(pk=pk)
@@ -558,6 +551,7 @@ def deleteCommentUser(request, id):
 from django.shortcuts import get_object_or_404
 
 
+@login_required
 def joinEvent(request, pk):
     
     if request.method == 'POST':
@@ -748,7 +742,7 @@ def messageEnd():
                 except (ValidationError, SMTPException) as e:
                   print(f"Error al enviar correo: {e}")
 
-
+@login_required
 def calificacionFinal(request, idEvento):
     
     evento = Realizacion.objects.get(actividad_idactividad= idEvento,usuario_idusuario= request.user )
@@ -759,9 +753,37 @@ def calificacionFinal(request, idEvento):
         if resena.is_valid() :
             
             resena.save()
+            messages.success(request, "mensaje enviado")
+            sendComment(request,idEvento)
+            
+            return redirect('vistaPrincipal')
     
     return render(request, 'view/VistasPCU/ResenaFinalCalificacion.html', {'data':resena})
 
+def sendComment(request,idEvento):
+    Comment = Realizacion.objects.get(actividad_idactividad= idEvento,usuario_idusuario= request.user ).comentarios
+    event=  Actividad.objects.get(idactividad= idEvento,  empresa_idempresa= request.user)
+    usuario = event.empresa_idempresa
+
+    try:
+            context = {'correo': usuario.correo, 'usuario': usuario.usuario, 'current_datetime': event.fechafin,'evento': event.nombreactividad, 'comentario':Comment }
+            template = get_template('messageComments.html')
+            content = template.render(context)
+            print( usuario.correo)
+            print(usuario)
+
+            email = EmailMultiAlternatives(
+            'comentario del usuario',  # Título
+            'Probando app parche',  # Descripción
+            settings.EMAIL_HOST_USER,  # Quién envía el correo
+            ['contactoparchecorp@gmail.com'])
+            
+            email.attach_alternative(content, 'text/html')
+            email.send()
+                   
+
+    except (ValidationError, SMTPException) as e:
+                  print(f"Error al enviar correo: {e}")
 
 
 

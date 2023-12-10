@@ -8,14 +8,14 @@
 # from django.contrib.auth.models import User
 
 
+import uuid
+
 from django.conf import settings
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         PermissionsMixin, User)
 from django.db import models
 from django.utils import timezone
 
-
-import uuid
 
 class Actividad(models.Model):
     Futbol = "FUTBOL"
