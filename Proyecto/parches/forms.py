@@ -397,7 +397,7 @@ class FormCompanyUpdate(forms.ModelForm):
 
     class Meta:
         model = EmpresaPersona
-        fields = ('usuario', 'correo', 'telefono', 'nombreempresa', 'direccion','Descripcion')
+        fields = ('usuario', 'correo', 'telefono', 'nombreempresa', 'direccion','Descripcion','fotoperfil')
         widgets = {
             'usuario': forms.TextInput(
                 attrs={
@@ -441,7 +441,16 @@ class FormCompanyUpdate(forms.ModelForm):
                     'id': 'Descripcion',
                     'required': False
                 }
-            )
+            ),
+             'fotoperfil': forms.FileInput(
+            attrs= {
+             
+            'class': 'form-control,justify-content-center',
+            'placeholder': 'imagen',
+            'id': 'fotoperfil',
+            'required': False
+       
+        }),
         }
 
 class comentarioUserform(forms.ModelForm):

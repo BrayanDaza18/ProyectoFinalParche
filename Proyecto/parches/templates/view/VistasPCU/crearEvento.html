@@ -67,7 +67,6 @@
                                         var mymap = L.map('mapa').setView([latitud, longitud], zoom);
                                         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mymap);
     
-                                        // Limitar el mapa a la vista de Neiva, Huila
                                         mymap.setMaxBounds([
                                             [2.9104, -75.3129],
                                             [2.9504, -75.2529]
@@ -86,7 +85,7 @@
     
                                             marker = L.marker([clickedLatitud, clickedLongitud]).addTo(mymap);
     
-                                            // Actualiza los campos ocultos en el formulario
+                                        
                                             document.getElementById("id_latitud").value = clickedLatitud;
                                             document.getElementById("id_longitud").value = clickedLongitud;
                                         });
@@ -220,13 +219,13 @@
         var puntosDeportivosSelect = document.getElementById("direccion");
 
         puntosDeportivosSelect.addEventListener("change", function () {
-            // Verifica si se selecciona un punto deportivo
+     
             if (puntosDeportivosSelect.value !== "") {
-                // Si se selecciona un punto deportivo, desactiva el campo de "lugar"
+           
                 lugarField.disabled = true;
-                lugarField.value = ""; // También puedes limpiar el valor del campo si lo deseas
+                lugarField.value = ""; 
             } else {
-                // Si no se selecciona un punto deportivo, activa el campo de "lugar"
+                
                 lugarField.disabled = false;
             }
         });

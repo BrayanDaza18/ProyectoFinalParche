@@ -37,8 +37,17 @@ from .models import (Actividad, EmpresaPersona, Persona, Puntosdeportivos,
 
 
 def HomepageProject(request):
-     return render(request, 'view/VistasPCU/vistaPrincipal.html')
-
+    if request.user.is_authenticated:
+        try:
+            form = EmpresaPersona.objects.get(usuario=request.user)
+            return render(request, 'view/VistasPCU/vistaPrincipal.html', {'form': form})
+        except EmpresaPersona.DoesNotExist:
+            
+            return render(request, 'view/VistasPCU/vistaSinEmpresaPersona.html')
+    else:
+   
+        return render(request, 'view/VistasPCU/vistaPrincipal.html', {'form': None})
+    
 
 
 def registerUser(request):
@@ -253,9 +262,11 @@ def ReportEvent(request, pk):
 
 def SelectUser(request):
     return render(request, 'view/VistasPCU/seleccionDeUsuario.html')
-
+@login_required
 def eventForUser(request):
+ if request.user.is_authenticated:
     users = request.user
+ 
     data = Actividad.objects.filter(empresa_idempresa=users)
     form = EmpresaPersona.objects.get(usuario = users)
 
@@ -265,7 +276,9 @@ def eventForUser(request):
         participantes_por_actividad[actividad.idactividad] = Realizacion.objects.filter(actividad_idactividad=actividad.idactividad).count()
 
     return render(request, 'view/VistasPCU/viewCreateEventForUser.html', {'data': data,'form':form ,'participantes_por_actividad': participantes_por_actividad})
-
+ else:
+    messages.error(request, "debes vincularte primero")
+    return redirect('login')
 
 
 def viewEventoELI(request, idactividad):
@@ -462,7 +475,7 @@ def adddislike(request, pk):
 
     next = request.POST.get('next', '')
     return HttpResponseRedirect(next)
-
+@login_required
 def interfazUser(request, empresa_idempresa ):
   form = EmpresaPersona.objects.get(usuario=empresa_idempresa)
   comment = comentarioUSer.objects.filter(receptor=form).order_by('created_on')
