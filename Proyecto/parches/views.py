@@ -627,7 +627,7 @@ def deleteCommentUser(request, id):
     form = comentarioUSer.objects.get(id=id)
     form.delete()
     print(f"este es el usuario {form.receptor}")
-    return redirect('interfaz')
+    return redirect('profile')
 
 
 from django.shortcuts import get_object_or_404
@@ -659,7 +659,7 @@ def joinEvent(request, pk):
         else:
             print(post.errors)
             messages.add_message(request=request, level=messages.ERROR, message='No puedes unirte de nuevo')
-
+    return redirect('mostrarEventos')
 
 @login_required
 def eventoRegistration(request):
@@ -734,6 +734,7 @@ def send_report_email(request, pk):
     try:
         usuario = EmpresaPersona.objects.get(idregistro=pk)
 
+        motivo = request.POST.get('motivo')
         infraccion1 = request.POST.get('infraccion1')
         infraccion2 = request.POST.get('infraccion2')
         infraccion3 = request.POST.get('infraccion3')
@@ -741,6 +742,7 @@ def send_report_email(request, pk):
         infraccion5 = request.POST.get('infraccion5')
 
         context = {
+            'motivo': motivo,
             'usuario': usuario,
             'infraccion1': infraccion1,
             'infraccion2': infraccion2,
@@ -822,11 +824,54 @@ def messageEnd():
                 except (ValidationError, SMTPException) as e:
                   print(f"Error al enviar correo: {e}")
 
-
 @login_required
 def calificacionFinal(request, idEvento):
     
     evento = Realizacion.objects.get(actividad_idactividad= idEvento,usuario_idusuario= request.user )
+    resena = ResenaEventoF()
+    
+    if request.method == 'POST':
+        resena = ResenaEventoF(request.POST or None, instance=evento)
+        if resena.is_valid() :
+            
+            resena.save()
+            messages.success(request, "mensaje enviado")
+            sendComment(request,idEvento)
+            
+            return redirect('vistaPrincipal')
+    
+    return render(request, 'view/VistasPCU/ResenaFinalCalificacion.html', {'data':resena})
+
+def sendComment(request,idEvento):
+    Comment = Realizacion.objects.get(actividad_idactividad= idEvento,usuario_idusuario= request.user ).comentarios
+    event=  Actividad.objects.get(idactividad= idEvento,  empresa_idempresa= request.user)
+    usuario = event.empresa_idempresa
+
+    try:
+            context = {'correo': usuario.correo, 'usuario': usuario.usuario, 'current_datetime': event.fechafin,'evento': event.nombreactividad, 'comentario':Comment }
+            template = get_template('messageComments.html')
+            content = template.render(context)
+            print( usuario.correo)
+            print(usuario)
+
+            email = EmailMultiAlternatives(
+            'comentario del usuario',  # Título
+            'Probando app parche',  # Descripción
+            settings.EMAIL_HOST_USER,  # Quién envía el correo
+            ['contactoparchecorp@gmail.com'])
+            
+            email.attach_alternative(content, 'text/html')
+            email.send()
+                   
+
+    except (ValidationError, SMTPException) as e:
+                  print(f"Error al enviar correo: {e}")
+
+
+@login_required
+def calificacionFinal(request, idEvento):
+    
+    evento = Realizacion.objects.filter(actividad_idactividad= idEvento,usuario_idusuario= request.user )
     resena = ResenaEventoF()
     
     if request.method == 'POST':

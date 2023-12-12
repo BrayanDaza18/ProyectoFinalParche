@@ -244,7 +244,7 @@ class CreateEventos(forms.ModelForm):
 
     class Meta:
         model = Actividad
-        fields = ['nombreactividad', 'tipoactividad', 'fechainicio', 'fechafin', 'hora', 'imagen', 'contacto', 'descripcion','latitud','longitud']
+        fields = ['nombreactividad', 'tipoactividad', 'fechainicio', 'fechafin', 'hora', 'imagen', 'contacto', 'descripcion','latitud','longitud', 'lugar']
         widgets = {
             'nombreactividad': forms.TextInput(
                 attrs={
@@ -305,6 +305,7 @@ class CreateEventos(forms.ModelForm):
                     'id': 'longitud',
                      'required': True
                 }),
+                
         }
 
     latitud = forms.FloatField(widget=forms.HiddenInput(), required=True)

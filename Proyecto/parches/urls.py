@@ -34,7 +34,7 @@ urlpatterns = [
     path('reportar_usuario/<int:pk>/', views.send_report_email, name='report'),
     
     path('detalles/<int:idactividad>/', views.DetallesEvento, name='detalles_evento'),
-    path('profile/delete/<int:id>/comment', views.deleteCommentUser, name='deleteCommentUser'),
+    path('profile/delete/<int:id>/comment/user', views.deleteCommentUser, name='deleteCommentUser'),
     path('join/event/<int:pk>', views.joinEvent, name='joinEvent'),
     path('evento/inscripcion/', views.eventoRegistration , name='inscripcion'),
     path('evento/inscripcion/anular/<int:idactividad>', views.deleteRegistration , name='inscripcionDeletes'),

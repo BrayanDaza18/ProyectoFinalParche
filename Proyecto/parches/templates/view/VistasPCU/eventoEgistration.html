@@ -26,13 +26,21 @@
       <div class="card mb-4 p-3 " style="max-width: 840px; background-color: rgba(251, 234, 234, 0.572);">
         <div class="row g-0 ">
           <div class="col-md-4">
-            <img src="{{realizacion.imagen.url}}" class="img-fluid rounded-start" alt="...">
+            <img src="{{realizacion.imagen.url}}" class="img-fluid rounded-start" alt="..." style="margin-top: 80px;">
           </div>
           <div class="col-md-8">
             <div class="card-body">
+              <span>nombre</span>
               <h2 class="card-title " >{{realizacion.nombreactividad}}</h2>
               <hr>
+              <span>descripcion</span>
               <p class="card-text">{{realizacion.descripcion}}</p>
+              <hr>
+              <span>fecha inicio</span>
+              <p class="card-text">{{realizacion.fechainicio}}</p>
+              <hr>
+              <span>hora</span>
+              <p class="card-text">{{realizacion.hora}}</p>
               <hr>
               <a class="btn btn-success expulsar-btn" type="button" href="{% url 'inscripcionDeletes' realizacion.idactividad %}">cancelar inscripción</a> 
             </div>
