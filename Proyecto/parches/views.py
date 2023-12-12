@@ -262,6 +262,7 @@ def ReportEvent(request, pk):
 
 def SelectUser(request):
     return render(request, 'view/VistasPCU/seleccionDeUsuario.html')
+
 @login_required
 def eventForUser(request):
  if request.user.is_authenticated:
@@ -558,7 +559,7 @@ def deleteCommentUser(request, id):
     form = comentarioUSer.objects.get(id=id)
     form.delete()
     print(f"este es el usuario {form.receptor}")
-    return redirect('interfaz')
+    return redirect('profile')
 
 
 from django.shortcuts import get_object_or_404
@@ -590,7 +591,8 @@ def joinEvent(request, pk):
         else:
             print(post.errors)
             messages.add_message(request=request, level=messages.ERROR, message='No puedes unirte de nuevo')
-
+    
+    return redirect('mostrarEventos')
    
 
 

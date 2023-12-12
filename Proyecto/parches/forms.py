@@ -296,38 +296,24 @@ class CreateEventos(forms.ModelForm):
                     'placeholder': 'Descripción',
                     'id': 'descripcion',
                 }),
-                 'latitud': forms.TextInput(
-                attrs={
-                    'class': 'form-control,justify-content-center',
-                    'placeholder': 'latitud',
-                    'id': 'latitud',
-                     'required': False
-                }),
                  'longitud': forms.TextInput(
                 attrs={
                     'class': 'form-control,justify-content-center',
                     'placeholder': 'longitud',
                     'id': 'longitud',
-                     'required': False
+                     'required': 'required'
                 }),
                  'latitud': forms.TextInput(
                 attrs={
                     'class': 'form-control,justify-content-center',
                     'placeholder': 'latitud',
                     'id': 'latitud',
-                     'required': False
-                }),
-                 'longitud': forms.TextInput(
-                attrs={
-                    'class': 'form-control,justify-content-center',
-                    'placeholder': 'longitud',
-                    'id': 'longitud',
-                     'required': False
-                }),
+                     'required': 'required'
+                })
         }
 
-    latitud = forms.FloatField(widget=forms.HiddenInput(), required=False)
-    longitud = forms.FloatField(widget=forms.HiddenInput(), required=False)
+    latitud = forms.FloatField(widget=forms.HiddenInput(), required=True)
+    longitud = forms.FloatField(widget=forms.HiddenInput(), required=True)
     puntosdeportivos = forms.ModelChoiceField(queryset=Puntosdeportivos.objects.all(), empty_label="Seleccione un punto deportivo", required=False)
 
     def save(self, commit=True):
