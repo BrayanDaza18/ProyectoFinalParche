@@ -296,19 +296,19 @@ class CreateEventos(forms.ModelForm):
                     'class': 'form-control,justify-content-center',
                     'placeholder': 'latitud',
                     'id': 'latitud',
-                     'required': False
+                     'required': True
                 }),
                  'longitud': forms.TextInput(
                 attrs={
                     'class': 'form-control,justify-content-center',
                     'placeholder': 'longitud',
                     'id': 'longitud',
-                     'required': False
+                     'required': True
                 }),
         }
 
-    latitud = forms.FloatField(widget=forms.HiddenInput(), required=False)
-    longitud = forms.FloatField(widget=forms.HiddenInput(), required=False)
+    latitud = forms.FloatField(widget=forms.HiddenInput(), required=True)
+    longitud = forms.FloatField(widget=forms.HiddenInput(), required=True)
     puntosdeportivos = forms.ModelChoiceField(queryset=Puntosdeportivos.objects.all(), empty_label="Seleccione un punto deportivo", required=False)
 
     def save(self, commit=True):
@@ -378,7 +378,7 @@ class FormCompanyUpdate(forms.ModelForm):
 
     class Meta:
         model = EmpresaPersona
-        fields = ('usuario', 'correo', 'telefono', 'nombreempresa', 'direccion','Descripcion')
+        fields = ('usuario', 'correo', 'telefono', 'nombreempresa', 'fotoperfil', 'direccion','Descripcion')
         widgets = {
             'usuario': forms.TextInput(
                 attrs={
@@ -422,7 +422,17 @@ class FormCompanyUpdate(forms.ModelForm):
                     'id': 'Descripcion',
                     'required': False
                 }
-            )
+            ),
+            
+             'fotoperfil': forms.FileInput(
+            attrs= {
+             
+            'class': 'form-control,justify-content-center',
+            'placeholder': 'imagen',
+            'id': 'fotoperfil',
+            'required': False
+       
+        }),
         }
 
 class comentarioUserform(forms.ModelForm):

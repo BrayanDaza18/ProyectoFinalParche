@@ -67,6 +67,7 @@
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body style="background-color: #D8CBB1;">
@@ -89,18 +90,14 @@
     <!-- Mostrar los eventos -->
     {% if messages %}
     {% for message in messages %}
-    
-        {% if message.tags == messages.SUCCESS %}
-            <div class="alert alert-success" role="alert">
-                {{ message }}
-            </div>
-        {% else %}
-            <div class="alert alert-success" role="alert">
-                {{ message }}
-            </div>
-            
+    <script>
+        Swal.fire({
+  title: "{{ message }}",
+  text: "Selecciona otra actividad",
+  icon: "{{ message.tags }}"
+});
+    </script>
       
-        {% endif %}
     {% endfor %}
 {% endif %}
             {% for element in data %}
@@ -269,7 +266,13 @@
                 
                 var mensaje = 'texto copiado en portapapeles';
                 navigator.clipboard.writeText(enlace).then(function() {
-                    alert(mensaje);
+                    Swal.fire({
+  position: "top-end",
+  icon: "success",
+  title: mensaje,
+  showConfirmButton: false,
+  timer: 1500
+});
                 }).catch(function(err) {
                     console.error('Error al copiar enlace: ', err);
                 });

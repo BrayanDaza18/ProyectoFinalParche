@@ -46,8 +46,17 @@ from django.template.loader import get_template
 
 
 def HomepageProject(request):
-  
-     return render(request, 'view/VistasPCU/vistaPrincipal.html')
+    if request.user.is_authenticated:
+        try:
+            form = EmpresaPersona.objects.get(usuario=request.user)
+            return render(request, 'view/VistasPCU/vistaPrincipal.html', {'form': form})
+        except EmpresaPersona.DoesNotExist:
+            
+            return render(request, 'view/VistasPCU/vistaSinEmpresaPersona.html')
+    else:
+   
+        return render(request, 'view/VistasPCU/vistaPrincipal.html', {'form': None})
+    
 
 
 
@@ -74,6 +83,7 @@ def registerUser(request):
             now = datetime.now()
             fecha_hora_actual = now.strftime("%Y-%m-%d %H:%M:%S")
             send_email(correo, usuario, fecha_hora_actual)
+            messages.success(request, "Usuario Creado")
             return redirect('login')
 
     return render(request, 'registration/register.html', {'form': form})
@@ -119,10 +129,13 @@ def CreateEvent(request):
             usuario.estado = 'activo'
             usuario.empresa_idempresa = request.user
             usuario.save()
+            messages.success(request, 'evento creado')
+            return redirect('vistaPrincipal')
         else:
+            messages.error(request, 'datos incompletos')
             print("Errores en el formulario CreateEventos:", activity.errors)
 
-        return redirect('vistaPrincipal')
+        
 
     print('Puntos deportivos:', puntos_deportivos)
 
@@ -178,7 +191,7 @@ def RegisterCompany(request):
             fecha_hora_actual = now.strftime("%Y-%m-%d %H:%M:%S")
             
             send_email_empresa(usuario, correo, nombreempresa, fecha_hora_actual)
-
+            messages.success(request, "Empresa Creada")
             return redirect('login')
         else:
             print("Errores en el formulario FormUserCompany:", form.errors)
@@ -189,13 +202,12 @@ def RegisterCompany(request):
 
 
 
-@login_required
 def MostrarEvento(request):
     messageEnd()
     query = request.GET.get('q', '')
     tipo_actividad = request.GET.get('tipo_actividad', '') 
-    form = EmpresaPersona.objects.get(usuario = request.user)
     eventos = Actividad.objects.all()
+    form = EmpresaPersona.objects.filter(usuario__in = eventos.values('empresa_idempresa'))
     if query:
         eventos = eventos.filter(nombreactividad__icontains=query)
     if tipo_actividad:
@@ -216,7 +228,7 @@ def MostrarEvento(request):
     return render(request, 'view/VistasPCU/mostrarEventos.html', context)
 
 
-
+@login_required
 def DetallesEvento(request, idactividad):
     evento = get_object_or_404(Actividad, idactividad=idactividad)
     form = EmpresaPersona.objects.get(usuario= request.user)
@@ -267,16 +279,24 @@ def SelectUser(request):
     return render(request, 'view/VistasPCU/seleccionDeUsuario.html')
 
 
+@login_required
 def eventForUser(request):
+ if request.user.is_authenticated:
     users = request.user
+ 
     data = Actividad.objects.filter(empresa_idempresa=users)
+    form = EmpresaPersona.objects.get(usuario = users)
 
     # Obtener el número de participantes para cada actividad
     participantes_por_actividad = {}
     for actividad in data:
         participantes_por_actividad[actividad.idactividad] = Realizacion.objects.filter(actividad_idactividad=actividad.idactividad).count()
 
-    return render(request, 'view/VistasPCU/viewCreateEventForUser.html', {'data': data, 'participantes_por_actividad': participantes_por_actividad})
+    return render(request, 'view/VistasPCU/viewCreateEventForUser.html', {'data': data,'form':form ,'participantes_por_actividad': participantes_por_actividad})
+ else:
+    messages.error(request, "debes vincularte primero")
+    return redirect('login')
+
 
 
 def viewEventoELI(request, idactividad):
@@ -293,6 +313,7 @@ def UpdateEvent(request, idactividad):
     if form.is_valid() and request.method == 'POST':
         form.save()
         SendUpdateEvent(event)
+        messages.success(request, 'Evento Modificado')
         return redirect('eventUser')
         
     
@@ -342,6 +363,7 @@ def UpdateUser(request, idregistro,tipousuario):
     if form.is_valid() and request.method == 'POST':
         form.save()
         update_session_auth_hash(request, form)
+        messages.success(request,"datos del usuario modificado ")
         return redirect('profile')
     else:
         print(form.errors)
@@ -433,7 +455,8 @@ def send_report_email(request, pk):
         infraccion3 = request.POST.get('infraccion3')
         infraccion4 = request.POST.get('infraccion4')
         infraccion5 = request.POST.get('infraccion5')
-        
+        print(motivo)
+
         context = {
             'usuario': usuario,
             'motivo': motivo,
@@ -521,6 +544,7 @@ def adddislike(request, pk):
     next = request.POST.get('next', '')
     return HttpResponseRedirect(next)
 
+@login_required
 def interfazUser(request, empresa_idempresa ):
   form = EmpresaPersona.objects.get(usuario=empresa_idempresa)
   comment = comentarioUSer.objects.filter(receptor=form).order_by('created_on')
@@ -609,6 +633,7 @@ def deleteCommentUser(request, id):
 from django.shortcuts import get_object_or_404
 
 
+@login_required
 def joinEvent(request, pk):
     
     if request.method == 'POST':
@@ -635,15 +660,14 @@ def joinEvent(request, pk):
             print(post.errors)
             messages.add_message(request=request, level=messages.ERROR, message='No puedes unirte de nuevo')
 
-    return redirect('mostrarEventos')
 
-
-
+@login_required
 def eventoRegistration(request):
+    form = EmpresaPersona.objects.get(usuario = request.user)
     send = Realizacion.objects.filter(usuario_idusuario=request.user) 
-    form = Actividad.objects.filter(idactividad__in=send.values('actividad_idactividad'))
+    data = Actividad.objects.filter(idactividad__in=send.values('actividad_idactividad'))
     print(f"elemento{form}")
-    return render(request, 'view/VistasPCU/eventoEgistration.html', {'data':form})
+    return render(request, 'view/VistasPCU/eventoEgistration.html', {'data':data, 'form':form})
     
 
 def deleteRegistration(request,idactividad):
@@ -738,7 +762,8 @@ def send_report_email(request, pk):
         email.send()
 
         print(f"Correo enviado:")
-        return HttpResponse("Correo de reporte enviado correctamente")
+        messages.success(request, "reporte enviado correctamente")
+        return redirect('interfaz',empresa_idempresa= usuario)
     except EmpresaPersona.DoesNotExist:
         print("no funciono")
         
@@ -798,6 +823,7 @@ def messageEnd():
                   print(f"Error al enviar correo: {e}")
 
 
+@login_required
 def calificacionFinal(request, idEvento):
     
     evento = Realizacion.objects.get(actividad_idactividad= idEvento,usuario_idusuario= request.user )
@@ -808,8 +834,40 @@ def calificacionFinal(request, idEvento):
         if resena.is_valid() :
             
             resena.save()
+            messages.success(request, "mensaje enviado")
+            sendComment(request,idEvento)
+            
+            return redirect('vistaPrincipal')
     
     return render(request, 'view/VistasPCU/ResenaFinalCalificacion.html', {'data':resena})
+
+
+
+def sendComment(request,idEvento):
+    Comment = Realizacion.objects.get(actividad_idactividad= idEvento,usuario_idusuario= request.user ).comentarios
+    event=  Actividad.objects.get(idactividad= idEvento,  empresa_idempresa= request.user)
+    usuario = event.empresa_idempresa
+
+    try:
+            context = {'correo': usuario.correo, 'usuario': usuario.usuario, 'current_datetime': event.fechafin,'evento': event.nombreactividad, 'comentario':Comment }
+            template = get_template('messageComments.html')
+            content = template.render(context)
+            print( usuario.correo)
+            print(usuario)
+
+            email = EmailMultiAlternatives(
+            'comentario del usuario',  # Título
+            'Probando app parche',  # Descripción
+            settings.EMAIL_HOST_USER,  # Quién envía el correo
+            ['contactoparchecorp@gmail.com'])
+            
+            email.attach_alternative(content, 'text/html')
+            email.send()
+                   
+
+    except (ValidationError, SMTPException) as e:
+                  print(f"Error al enviar correo: {e}")
+
 
 
 
